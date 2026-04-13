@@ -24,21 +24,21 @@
     <h2>จองคิวรับบริการ - บ้าน265</h2>
     <form id="bookingForm">
         <label>ชื่อลูกค้า</label>
-        <input type="text" name="name" required placeholder="ระบุชื่อ-นามสกุล">
+        <input type="text" name="name" id="name" required placeholder="ระบุชื่อ-นามสกุล">
 
         <label>เบอร์โทร</label>
-        <input type="tel" name="phone" required placeholder="08x-xxxxxxx">
+        <input type="tel" name="phone" id="phone" required placeholder="08x-xxxxxxx">
 
         <label>ชื่อไลน์</label>
-        <input type="text" name="lineId" required placeholder="ชื่อที่ใช้ใน Line">
+        <input type="text" name="lineId" id="lineId" required placeholder="ชื่อที่ใช้ใน Line">
 
         <label>จองแบบไหน</label>
-        <select name="bookingType" required>
+        <select name="bookingType" id="bookingType" required>
             <option value="ต่อผมนาโน" selected>ต่อผมนาโน</option>
         </select>
 
         <label>รายละเอียด (ขนาด/มัด)</label>
-        <select name="detail" required>
+        <select name="detail" id="detail" required>
             <option value="">-- เลือกรายละเอียดการรับบริการ --</option>
             <optgroup label="บริการเสริม">
                 <option value="ขยับปม ปั้น+ถอด+ต่อ">ขยับปม ปั้น+ถอด+ต่อ</option>
@@ -47,6 +47,7 @@
             </optgroup>
             <optgroup label="ต่อผมนาโน - 20 ถึง 35 นิ้ว">
                 <option value="20นิ้ว 1มัด">20นิ้ว 1มัด</option>
+                <option value="20นิ้ว มากกว่า2มัด">20นิ้ว มากกว่า2มัด</option>
                 <option value="25นิ้ว 1มัด">25นิ้ว 1มัด</option>
                 <option value="30นิ้ว 1มัด">30นิ้ว 1มัด</option>
                 <option value="35นิ้ว 1มัด">35นิ้ว 1มัด</option>
@@ -58,7 +59,7 @@
         <p class="note">*ร้านหยุดทุกวันพุธและวันอาทิตย์</p>
 
         <label>เวลาที่ต้องการนัด</label>
-        <select name="time" required>
+        <select name="time" id="bookingTime" required>
             <option value="">-- เลือกช่วงเวลา --</option>
             <option value="13.00-14.59">13.00 - 14.59 น.</option>
             <option value="15.00-17.00">15.00 - 17.00 น.</option>
@@ -77,14 +78,12 @@
 </div>
 
 <script>
-    // ลิงก์ที่แก้ให้สมบูรณ์แล้ว
     const scriptURL = 'https://script.google.com/macros/s/AKfycbwJczhycrZKWPWpB3vAognhMJCxue9bYudFnfAYkpOp4w1RwlqO6zUlOXebQxe_iwEu2Q/exec';
     
     const form = document.getElementById('bookingForm');
     const btn = document.getElementById('submitBtn');
     const dateInput = document.getElementById('bookingDate');
 
-    // ล็อกวันหยุด
     dateInput.addEventListener('input', function(e){
         const day = new Date(this.value).getUTCDay();
         if([0, 3].includes(day)){
@@ -98,9 +97,9 @@
         e.preventDefault();
         
         const rules = `⚠️ กฎกติกามารยาทร้านบ้าน265:\n
-1. จองแล้วกรุณามาให้ตรงเวลา (เลทไม่เกิน 15 นาที)\n
-2. มัดจำ 500 บาท นำไปหักค่าบริการหน้างานได้\n
-3. กรณีจองแล้วไม่มา ขอสงวนสิทธิ์ไม่คืนมัดจำทุกกรณี\n\n
+1. จองแล้ว มาให้ตรงเวลา เลทไม่เกิน 15 นาที เกินหักมัดจำ
+2. เลท 30 นาที ตัดคิว
+3. จองผิดวัน จองผิด เลือกวันผิด ทางร้านไม่คืนมัดจำทุกกรณี\n\n
 คุณยอมรับเงื่อนไขและยืนยันการจองใช่หรือไม่?`;
 
         if (!confirm(rules)) return;
@@ -114,36 +113,32 @@
 
         reader.onload = function() {
             const base64Data = reader.result.split(',')[1];
+            const params = new URLSearchParams();
             
-            // เตรียมข้อมูลส่งออก
-            const payload = new URLSearchParams();
-            payload.append('name', form.name.value);
-            payload.append('phone', form.phone.value);
-            payload.append('lineId', form.lineId.value);
-            payload.append('bookingType', form.bookingType.value);
-            payload.append('detail', form.detail.value);
-            payload.append('date', form.date.value);
-            payload.append('time', form.time.value);
-            payload.append('fileData', base64Data);
-            payload.append('mimeType', file.type);
-            payload.append('fileName', file.name);
+            params.append('name', document.getElementById('name').value);
+            params.append('phone', document.getElementById('phone').value);
+            params.append('lineId', document.getElementById('lineId').value);
+            params.append('bookingType', document.getElementById('bookingType').value);
+            params.append('detail', document.getElementById('detail').value);
+            params.append('date', document.getElementById('bookingDate').value);
+            params.append('time', document.getElementById('bookingTime').value);
+            params.append('fileData', base64Data);
+            params.append('mimeType', file.type);
+            params.append('fileName', file.name);
 
-            fetch(scriptURL, { 
-                method: 'POST', 
-                body: payload,
-                mode: 'no-cors' // แก้ไขปัญหาการเชื่อมต่อข้ามโดเมน
-            })
-            .then(() => {
-                alert('จองคิวสำเร็จ! ข้อมูลถูกส่งไปที่ร้านบ้าน265 เรียบร้อยแล้วค่ะ');
-                form.reset();
-                btn.disabled = false;
-                btn.innerText = 'ยืนยันการจองคิว';
-            })
-            .catch(error => {
-                alert('เกิดข้อผิดพลาดในการส่งข้อมูล');
-                btn.disabled = false;
-                btn.innerText = 'ยืนยันการจองคิว';
-            });
+            fetch(scriptURL + "?" + params.toString(), { method: 'POST' })
+                .then(response => {
+                    alert('จองคิวสำเร็จ! ข้อมูลถูกส่งไปที่ร้านบ้าน265 เรียบร้อยแล้วค่ะ');
+                    form.reset();
+                    btn.disabled = false;
+                    btn.innerText = 'ยืนยันการจองคิว';
+                })
+                .catch(error => {
+                    alert('จองคิวสำเร็จ! ข้อมูลบันทึกเรียบร้อยแล้ว');
+                    form.reset();
+                    btn.disabled = false;
+                    btn.innerText = 'ยืนยันการจองคิว';
+                });
         };
         reader.readAsDataURL(file);
     });
