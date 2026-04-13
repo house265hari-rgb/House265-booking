@@ -40,34 +40,29 @@
         <label>รายละเอียด (ขนาด/มัด)</label>
         <select name="detail" required>
             <option value="">-- เลือกรายละเอียดการรับบริการ --</option>
-            
             <optgroup label="บริการเสริม">
                 <option value="ขยับปม ปั้น+ถอด+ต่อ">ขยับปม ปั้น+ถอด+ต่อ</option>
                 <option value="มีผมมาเอง(ต้องปั้นใหม่)">มีผมมาเอง(ต้องปั้นใหม่)</option>
                 <option value="มีผมมาเอง(ไม่มีปั้น)">มีผมมาเอง(ไม่มีปั้น)</option>
             </optgroup>
-
             <optgroup label="ต่อผมนาโน - 20 นิ้ว">
                 <option value="20นิ้ว 1มัด">20นิ้ว 1มัด</option>
                 <option value="20นิ้ว 1มัดครึ่ง">20นิ้ว 1มัดครึ่ง</option>
                 <option value="20นิ้ว 2มัด">20นิ้ว 2มัด</option>
                 <option value="20นิ้ว มากกว่า2มัด">20นิ้ว มากกว่า2มัด</option>
             </optgroup>
-            
             <optgroup label="ต่อผมนาโน - 25 นิ้ว">
                 <option value="25นิ้ว 1มัด">25นิ้ว 1มัด</option>
                 <option value="25นิ้ว 1มัดครึ่ง">25นิ้ว 1มัดครึ่ง</option>
                 <option value="25นิ้ว 2มัด">25นิ้ว 2มัด</option>
                 <option value="25นิ้ว มากกว่า2มัด">25นิ้ว มากกว่า2มัด</option>
             </optgroup>
-
             <optgroup label="ต่อผมนาโน - 30 นิ้ว">
                 <option value="30นิ้ว 1มัด">30นิ้ว 1มัด</option>
                 <option value="30นิ้ว 1มัดครึ่ง">30นิ้ว 1มัดครึ่ง</option>
                 <option value="30นิ้ว 2มัด">30นิ้ว 2มัด</option>
                 <option value="30นิ้ว มากกว่า2มัด">30นิ้ว มากกว่า2มัด</option>
             </optgroup>
-
             <optgroup label="ต่อผมนาโน - 35 นิ้ว">
                 <option value="35นิ้ว 1มัด">35นิ้ว 1มัด</option>
                 <option value="35นิ้ว 1มัดครึ่ง">35นิ้ว 1มัดครึ่ง</option>
@@ -89,8 +84,8 @@
         </select>
 
         <div class="qr-box">
-            <p>สแกนเพื่อโอนมัดจำ: 500 บาท</p> 
-            <img src="att.8Sn_yZRe9NxRT7e82xRROxZGprBrwV_hRbURzB6XKpo.jpeg" alt="QR Code สำหรับโอนเงิน" class="qr-code-img">
+            <p>สแกนเพื่อโอนมัดจำ: 500 บาท</p>
+            <img src="Att.8Sn_yZRe9NxRT7e82xRROxZGprBrwV_hRbURzB6XKpo.jpeg" alt="QR Code" class="qr-code-img">
         </div>
 
         <label>แนบสลิปมัดจำ (รูปภาพ)</label>
@@ -106,7 +101,6 @@
     const btn = document.getElementById('submitBtn');
     const dateInput = document.getElementById('bookingDate');
 
-    // บล็อกวันพุธ (3) และวันอาทิตย์ (0)
     dateInput.addEventListener('input', function(e){
         const day = new Date(this.value).getUTCDay();
         if([0, 3].includes(day)){
@@ -128,16 +122,29 @@
         reader.onload = function() {
             const base64Data = reader.result.split(',')[1];
             const formData = new FormData(form);
-            const queryString = new URLSearchParams();
+            const params = new URLSearchParams();
             
-            formData.forEach((value, key) => queryString.append(key, value));
-            queryString.append('fileData', base64Data);
-            queryString.append('mimeType', file.type);
-            queryString.append('fileName', file.name);
+            formData.forEach((value, key) => {
+                if(key !== 'file') params.append(key, value);
+            });
+            
+            params.append('fileData', base64Data);
+            params.append('mimeType', file.type);
+            params.append('fileName', file.name);
 
-            fetch(scriptURL + "?" + queryString.toString(), { method: 'POST' })
+            fetch(scriptURL + "?" + params.toString(), { method: 'POST' })
                 .then(response => {
-                    alert('จองคิวสำเร็จ! ข้อมูลและสลิปถูกส่งไปที่ร้านแล้วค่ะ');
+                    // ข้อความแจ้งกฎกติกาหลังจากจองสำเร็จ
+                    alert(
+                        "✅ จองคิวสำเร็จ! ข้อมูลถูกส่งเรียบร้อยแล้วค่ะ\n\n" +
+                        "⚠️ กฎกติกาของทางร้าน:\n" +
+                        "- เลทได้ไม่เกิน 15 นาที\n" +
+                        "- เลท 20 นาที หักมัดจำนะคะ\n" +
+                        "- กรณีมีถอดผม รบกวนมาก่อนเวลา 30 นาทีค่ะ\n" +
+                        "- กรณีเลื่อนคิว ต้องแจ้งก่อน 5 วัน (หักมัดจำ 200 บาท)\n" +
+                        "- ทางร้านไม่คืนมัดจำทุกกรณีนะคะ\n\n" +
+                        "ขอบคุณที่ใช้บริการบ้าน 265 ค่ะ"
+                    );
                     form.reset();
                     btn.disabled = false;
                     btn.innerText = 'ยืนยันการจองคิว';
