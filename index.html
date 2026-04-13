@@ -51,7 +51,6 @@
                 <option value="30นิ้ว 1มัด">30นิ้ว 1มัด</option>
                 <option value="35นิ้ว 1มัด">35นิ้ว 1มัด</option>
             </optgroup>
-            <option value="อื่นๆ (ทักไลน์เพิ่มเติม)">อื่นๆ (ทักไลน์เพิ่มเติม)</option>
         </select>
 
         <label>วันที่ต้องการนัด</label>
@@ -78,14 +77,14 @@
 </div>
 
 <script>
-    // ลิงก์ใหม่ล่าสุดที่คุณ Deploy มาครับ
-    const form = document.getElementById('bookingForm');
-const scriptURL = 'https://script.google.com/macros/s/AKfycbwJczhycrZKWPWpB3vAognhMJCxue9bYudFnfAYkpOp4w1RwlqO6zUlOXebQxe_iwEu2Q/exec';
+    // ลิงก์ที่แก้ให้สมบูรณ์แล้ว
+    const scriptURL = 'https://script.google.com/macros/s/AKfycbwJczhycrZKWPWpB3vAognhMJCxue9bYudFnfAYkpOp4w1RwlqO6zUlOXebQxe_iwEu2Q/exec';
     
     const form = document.getElementById('bookingForm');
     const btn = document.getElementById('submitBtn');
     const dateInput = document.getElementById('bookingDate');
 
+    // ล็อกวันหยุด
     dateInput.addEventListener('input', function(e){
         const day = new Date(this.value).getUTCDay();
         if([0, 3].includes(day)){
@@ -115,29 +114,36 @@ const scriptURL = 'https://script.google.com/macros/s/AKfycbwJczhycrZKWPWpB3vAog
 
         reader.onload = function() {
             const base64Data = reader.result.split(',')[1];
-            const formData = new FormData(form);
-            const params = new URLSearchParams();
             
-            formData.forEach((value, key) => {
-                if(key !== 'file') params.append(key, value);
-            });
-            
-            params.append('fileData', base64Data);
-            params.append('mimeType', file.type);
-            params.append('fileName', file.name);
+            // เตรียมข้อมูลส่งออก
+            const payload = new URLSearchParams();
+            payload.append('name', form.name.value);
+            payload.append('phone', form.phone.value);
+            payload.append('lineId', form.lineId.value);
+            payload.append('bookingType', form.bookingType.value);
+            payload.append('detail', form.detail.value);
+            payload.append('date', form.date.value);
+            payload.append('time', form.time.value);
+            payload.append('fileData', base64Data);
+            payload.append('mimeType', file.type);
+            payload.append('fileName', file.name);
 
-            fetch(scriptURL + "?" + params.toString(), { method: 'POST' })
-                .then(response => {
-                    alert('จองคิวสำเร็จ! ข้อมูลถูกส่งไปที่ร้านบ้าน265 เรียบร้อยแล้วค่ะ');
-                    form.reset();
-                    btn.disabled = false;
-                    btn.innerText = 'ยืนยันการจองคิว';
-                })
-                .catch(error => {
-                    alert('เกิดข้อผิดพลาด กรุณาลองใหม่อีกครั้ง');
-                    btn.disabled = false;
-                    btn.innerText = 'ยืนยันการจองคิว';
-                });
+            fetch(scriptURL, { 
+                method: 'POST', 
+                body: payload,
+                mode: 'no-cors' // แก้ไขปัญหาการเชื่อมต่อข้ามโดเมน
+            })
+            .then(() => {
+                alert('จองคิวสำเร็จ! ข้อมูลถูกส่งไปที่ร้านบ้าน265 เรียบร้อยแล้วค่ะ');
+                form.reset();
+                btn.disabled = false;
+                btn.innerText = 'ยืนยันการจองคิว';
+            })
+            .catch(error => {
+                alert('เกิดข้อผิดพลาดในการส่งข้อมูล');
+                btn.disabled = false;
+                btn.innerText = 'ยืนยันการจองคิว';
+            });
         };
         reader.readAsDataURL(file);
     });
