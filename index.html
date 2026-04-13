@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>จองคิวออนไลน์ - บ้าน265</title>
+    <style>
+        body { font-family: 'Tahoma', sans-serif; background-color: #f8f5f2; padding: 20px; color: #4a4a4a; }
+        .container { background: white; max-width: 450px; margin: auto; padding: 25px; border-radius: 20px; box-shadow: 0 10px 25px rgba(0,0,0,0.05); }
+        h2 { text-align: center; color: #7d6e63; margin-bottom: 25px; }
+        label { display: block; margin-top: 15px; font-weight: bold; font-size: 14px; }
+        input, select { width: 100%; padding: 12px; margin-top: 5px; border: 1px solid #e0e0e0; border-radius: 10px; box-sizing: border-box; font-size: 16px; }
+        button { width: 100%; background-color: #7d6e63; color: white; padding: 15px; border: none; border-radius: 10px; margin-top: 25px; cursor: pointer; font-size: 18px; font-weight: bold; transition: 0.3s; }
+        button:disabled { background-color: #ccc; }
+        .qr-box { text-align: center; margin: 20px 0; padding: 15px; border: 2px dashed #7d6e63; border-radius: 15px; background-color: #fffaf0; }
+        .qr-box p { margin: 5px 0; font-size: 14px; font-weight: bold; }
+        .qr-code-img { max-width: 200px; margin-top: 10px; border: 1px solid #ccc; }
+        .note { color: #d9534f; font-size: 12px; margin-top: 5px; }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h2>จองคิวรับบริการ - บ้าน265</h2>
+    <form id="bookingForm">
+        <label>ชื่อลูกค้า</label>
+        <input type="text" name="name" required placeholder="ระบุชื่อ-นามสกุล">
+
+        <label>เบอร์โทร</label>
+        <input type="tel" name="phone" required placeholder="08x-xxxxxxx">
+
+        <label>ชื่อไลน์</label>
+        <input type="text" name="lineId" required placeholder="ชื่อที่ใช้ใน Line">
+
+        <label>จองแบบไหน</label>
+        <select name="bookingType" required>
+            <option value="ต่อผมนาโน" selected>ต่อผมนาโน</option>
+        </select>
+
+        <label>รายละเอียด (ขนาด/มัด)</label>
+        <select name="detail" required>
+            <option value="">-- เลือกรายละเอียดการรับบริการ --</option>
+            
+            <optgroup label="บริการเสริม">
+                <option value="ขยับปม ปั้น+ถอด+ต่อ">ขยับปม ปั้น+ถอด+ต่อ</option>
+                <option value="มีผมมาเอง(ต้องปั้นใหม่)">มีผมมาเอง(ต้องปั้นใหม่)</option>
+                <option value="มีผมมาเอง(ไม่มีปั้น)">มีผมมาเอง(ไม่มีปั้น)</option>
+            </optgroup>
+
+            <optgroup label="ต่อผมนาโน - 20 นิ้ว">
+                <option value="20นิ้ว 1มัด">20นิ้ว 1มัด</option>
+                <option value="20นิ้ว 1มัดครึ่ง">20นิ้ว 1มัดครึ่ง</option>
+                <option value="20นิ้ว 2มัด">20นิ้ว 2มัด</option>
+                <option value="20นิ้ว มากกว่า2มัด">20นิ้ว มากกว่า2มัด</option>
+            </optgroup>
+            
+            <optgroup label="ต่อผมนาโน - 25 นิ้ว">
+                <option value="25นิ้ว 1มัด">25นิ้ว 1มัด</option>
+                <option value="25นิ้ว 1มัดครึ่ง">25นิ้ว 1มัดครึ่ง</option>
+                <option value="25นิ้ว 2มัด">25นิ้ว 2มัด</option>
+                <option value="25นิ้ว มากกว่า2มัด">25นิ้ว มากกว่า2มัด</option>
+            </optgroup>
+
+            <optgroup label="ต่อผมนาโน - 30 นิ้ว">
+                <option value="30นิ้ว 1มัด">30นิ้ว 1มัด</option>
+                <option value="30นิ้ว 1มัดครึ่ง">30นิ้ว 1มัดครึ่ง</option>
+                <option value="30นิ้ว 2มัด">30นิ้ว 2มัด</option>
+                <option value="30นิ้ว มากกว่า2มัด">30นิ้ว มากกว่า2มัด</option>
+            </optgroup>
+
+            <optgroup label="ต่อผมนาโน - 35 นิ้ว">
+                <option value="35นิ้ว 1มัด">35นิ้ว 1มัด</option>
+                <option value="35นิ้ว 1มัดครึ่ง">35นิ้ว 1มัดครึ่ง</option>
+                <option value="35นิ้ว 2มัด">35นิ้ว 2มัด</option>
+                <option value="35นิ้ว มากกว่า2มัด">35นิ้ว มากกว่า2มัด</option>
+            </optgroup>
+            <option value="อื่นๆ (ทักไลน์แจ้งเพิ่มเติม)">อื่นๆ (ทักไลน์แจ้งเพิ่มเติม)</option>
+        </select>
+
+        <label>วันที่ต้องการนัด</label>
+        <input type="date" name="date" id="bookingDate" required>
+        <p class="note">*ร้านหยุดทุกวันพุธและวันอาทิตย์</p>
+
+        <label>เวลาที่ต้องการนัด</label>
+        <select name="time" required>
+            <option value="">-- เลือกช่วงเวลา --</option>
+            <option value="13.00-14.59">13.00 - 14.59 น.</option>
+            <option value="15.00-17.00">15.00 - 17.00 น.</option>
+        </select>
+
+        <div class="qr-box">
+            <p>สแกนเพื่อโอนมัดจำ: 500 บาท</p>
+            <img src="Att.8Sn_yZRe9NxRT7e82xRROxZGprBrwV_hRbURzB6XKpo.jpeg" alt="QR Code สำหรับโอนเงิน" class="qr-code-img">
+        </div>
+
+        <label>แนบสลิปมัดจำ (รูปภาพ)</label>
+        <input type="file" id="fileInput" accept="image/*" required>
+
+        <button type="submit" id="submitBtn">ยืนยันการจองคิว</button>
+    </form>
+</div>
+
+<script>
+    const scriptURL = 'https://script.google.com/macros/s/AKfycbzaV-ykTTgvk0N_nuZUREZ389z25j8cHqjnqiAmaWxo-_cLh2LzlFOaUKeAIXl8OSxv/exec';
+    const form = document.getElementById('bookingForm');
+    const btn = document.getElementById('submitBtn');
+    const dateInput = document.getElementById('bookingDate');
+
+    // บล็อกวันพุธ (3) และวันอาทิตย์ (0)
+    dateInput.addEventListener('input', function(e){
+        const day = new Date(this.value).getUTCDay();
+        if([0, 3].includes(day)){
+            e.preventDefault();
+            this.value = '';
+            alert('ร้านหยุดวันพุธและวันอาทิตย์ กรุณาเลือกวันอื่นค่ะ');
+        }
+    });
+
+    form.addEventListener('submit', e => {
+        e.preventDefault();
+        btn.disabled = true;
+        btn.innerText = 'กำลังส่งข้อมูล...';
+
+        const fileInput = document.getElementById('fileInput');
+        const file = fileInput.files[0];
+        const reader = new FileReader();
+
+        reader.onload = function() {
+            const base64Data = reader.result.split(',')[1];
+            const formData = new FormData(form);
+            const queryString = new URLSearchParams();
+            
+            formData.forEach((value, key) => queryString.append(key, value));
+            queryString.append('fileData', base64Data);
+            queryString.append('mimeType', file.type);
+            queryString.append('fileName', file.name);
+
+            fetch(scriptURL + "?" + queryString.toString(), { method: 'POST' })
+                .then(response => {
+                    alert('จองคิวสำเร็จ! ข้อมูลและสลิปถูกส่งไปที่ร้านแล้วค่ะ');
+                    form.reset();
+                    btn.disabled = false;
+                    btn.innerText = 'ยืนยันการจองคิว';
+                })
+                .catch(error => {
+                    alert('เกิดข้อผิดพลาด กรุณาลองใหม่อีกครั้ง');
+                    btn.disabled = false;
+                    btn.innerText = 'ยืนยันการจองคิว';
+                });
+        };
+        reader.readAsDataURL(file);
+    });
+</script>
+
+</body>
+</html>
