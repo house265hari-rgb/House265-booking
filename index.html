@@ -5,28 +5,31 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>จองคิวออนไลน์ - บ้าน265</title>
     <style>
-        body { font-family: 'Tahoma', sans-serif; background: #fdfaf8; padding: 15px; display: flex; justify-content: center; }
-        .card { background: #fff; max-width: 480px; width: 100%; padding: 25px; border-radius: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.1); }
-        h2 { text-align: center; color: #8d7b68; margin-bottom: 20px; }
-        .rules-box { background: #fff5f5; border: 1px solid #feb2b2; padding: 12px; border-radius: 10px; font-size: 13px; color: #c53030; margin-bottom: 15px; }
+        :root { --main-color: #8d7b68; --bg-color: #fdfaf8; --error-color: #c53030; }
+        body { font-family: 'Tahoma', sans-serif; background: var(--bg-color); padding: 15px; display: flex; justify-content: center; color: #333; }
+        .card { background: #fff; max-width: 500px; width: 100%; padding: 25px; border-radius: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.1); }
+        h2 { text-align: center; color: var(--main-color); margin-bottom: 5px; }
+        .sub-title { text-align: center; color: #a89a8e; margin-bottom: 20px; font-size: 14px; }
+        .rules-box { background: #fff5f5; border: 1px solid #feb2b2; padding: 12px; border-radius: 10px; font-size: 13px; color: var(--error-color); margin-bottom: 15px; }
         label { display: block; margin-top: 12px; font-weight: bold; color: #555; font-size: 14px; }
-        input, select { width: 100%; padding: 12px; margin-top: 5px; border: 1px solid #eaded2; border-radius: 10px; box-sizing: border-box; font-size: 16px; }
-        .qr-box { background: #fffaf0; border: 2px dashed #8d7b68; padding: 15px; text-align: center; border-radius: 15px; margin: 20px 0; }
-        .qr-box img { width: 180px; border-radius: 8px; }
-        button { width: 100%; background: #8d7b68; color: #fff; padding: 16px; border: none; border-radius: 10px; margin-top: 20px; cursor: pointer; font-size: 18px; font-weight: bold; }
+        input, select { width: 100%; padding: 12px; margin-top: 5px; border: 1px solid #eaded2; border-radius: 10px; box-sizing: border-box; font-size: 16px; outline: none; }
+        .qr-box { background: #fffaf0; border: 2px dashed var(--main-color); padding: 15px; text-align: center; border-radius: 15px; margin: 20px 0; }
+        .qr-box img { width: 180px; border-radius: 8px; margin-top: 10px; }
+        button { width: 100%; background: var(--main-color); color: #fff; padding: 16px; border: none; border-radius: 10px; margin-top: 20px; cursor: pointer; font-size: 18px; font-weight: bold; }
         button:disabled { background: #ccc; }
-        .error-text { color: red; font-size: 12px; margin-top: 5px; display: none; }
+        .loading-text { display: none; text-align: center; color: var(--main-color); font-weight: bold; margin-top: 10px; }
     </style>
 </head>
 <body>
 
 <div class="card">
     <h2>จองคิวออนไลน์ - บ้าน265</h2>
+    <div class="sub-title">ระบบตรวจสอบคิวว่างอัตโนมัติ</div>
     
     <div class="rules-box">
         <strong>⚠️ กฎกติกามารยาทร้านบ้าน265:</strong><br>
         • ร้านหยุดทุก **วันอาทิตย์**<br>
-        1. จองแล้วมาให้ตรงเวลา เลทไม่เกิน 15 นาที (เกินหักมัดจำ)<br>
+        1. จองแล้วมาให้ตรงเวลา เลทไม่เกิน 15 นาที<br>
         2. เลท 30 นาที ตัดคิวทันที<br>
         3. จองผิดวัน/เลือกวันผิด ทางร้านไม่คืนมัดจำทุกกรณี
     </div>
@@ -41,7 +44,7 @@
         <label>ชื่อ LINE</label>
         <input type="text" id="cust_line" placeholder="ID Line หรือ ชื่อในไลน์" required>
         
-        <label>รายละเอียด (ขนาด/จำนวนมัด)</label>
+        <label>รายละเอียด (ขนาดและจำนวนมัด)</label>
         <select id="cust_detail" required>
             <option value="">-- เลือกขนาดและจำนวนมัด --</option>
             <optgroup label="ต่อผมนาโน 20 นิ้ว">
@@ -77,7 +80,6 @@
 
         <label>วันที่นัดหมาย (ร้านหยุดวันอาทิตย์)</label>
         <input type="date" id="cust_date" required onchange="checkSunday(this)">
-        <div id="date-error" class="error-text">❌ ขออภัยค่ะ ร้านหยุดวันอาทิตย์ กรุณาเลือกวันอื่นนะคะ</div>
         
         <label>ช่วงเวลา</label>
         <select id="cust_time" required>
@@ -86,7 +88,7 @@
         </select>
 
         <div class="qr-box">
-            <p><strong>มัดจำ 500 บาท</strong></p>
+            <p><strong>💰 มัดจำ 500 บาท</strong></p>
             <img src="att.8Sn_yZRe9NxRT7e82xRROxZGprBrwV_hRbURzB6XKpo.jpeg">
         </div>
 
@@ -94,48 +96,39 @@
         <input type="file" id="fileInput" accept="image/*" required>
 
         <button type="submit" id="submitBtn">ยืนยันการจองคิว</button>
+        <div id="loading" class="loading-text">กำลังตรวจสอบคิวว่าง...</div>
     </form>
 </div>
 
 <script>
-    // อัปเดตลิงก์ใหม่ล่าสุดที่คุณส่งมา
     const scriptURL = 'https://script.google.com/macros/s/AKfycbwCPGVmwbDWNqKNhAw8m60oZkimTIOflJ8S6pnfjzZ9iBJQNQYFuLviyX3yyF3FeOajlw/exec';
     
     const form = document.getElementById('bookingForm');
     const btn = document.getElementById('submitBtn');
-    const dateInput = document.getElementById('cust_date');
+    const loading = document.getElementById('loading');
 
-    // ล็อกวันอาทิตย์
     function checkSunday(input) {
         const date = new Date(input.value);
-        const day = date.getUTCDay(); 
-        const errorText = document.getElementById('date-error');
-        if (day === 0) {
-            errorText.style.display = 'block';
+        if (date.getUTCDay() === 0) {
+            alert('ขออภัยค่ะ ร้านหยุดวันอาทิตย์ รบกวนเลือกวันอื่นนะคะ');
             input.value = '';
-            alert('ขออภัยค่ะ ร้านหยุดทุกวันอาทิตย์ รบกวนเลือกวันจันทร์-เสาร์ นะคะ');
-        } else {
-            errorText.style.display = 'none';
         }
     }
 
-    // ล็อกวันที่ย้อนหลัง
-    const today = new Date().toISOString().split('T')[0];
-    dateInput.setAttribute('min', today);
+    document.getElementById('cust_date').setAttribute('min', new Date().toISOString().split('T')[0]);
 
     form.addEventListener('submit', e => {
         e.preventDefault();
-        if (!confirm("ยืนยันการจองคิวร้านบ้าน265?")) return;
+        if (!confirm("ยืนยันการส่งข้อมูลจองคิว?")) return;
         
         btn.disabled = true;
-        btn.innerText = 'กำลังตรวจสอบคิว...';
+        loading.style.display = 'block';
 
         const file = document.getElementById('fileInput').files[0];
         const reader = new FileReader();
         reader.onload = function() {
             const base64Data = reader.result.split(',')[1];
             const params = new URLSearchParams();
-            
             params.append('name', document.getElementById('cust_name').value);
             params.append('phone', document.getElementById('cust_phone').value);
             params.append('lineId', document.getElementById('cust_line').value);
@@ -147,28 +140,24 @@
             params.append('mimeType', file.type);
             params.append('fileName', file.name);
 
-            fetch(scriptURL, { 
-                method: 'POST', 
-                body: params 
-            })
+            fetch(scriptURL, { method: 'POST', body: params })
             .then(res => res.text())
             .then(response => {
-                // ถ้าสคริปต์ตอบกลับว่า Full
+                loading.style.display = 'none';
                 if (response.trim() === "Full") {
-                    alert('❌ ขออภัยค่ะ เวลานี้มีลูกค้าจองไปแล้ว รบกวนเลือกเวลาอื่นนะคะ');
+                    alert('❌ ขออภัยค่ะ เวลานี้มีลูกค้าจองแล้ว รบกวนเปลี่ยนเวลาหรือวันที่นะคะ');
                     btn.disabled = false;
-                    btn.innerText = 'ยืนยันการจองคิว';
                 } else {
                     alert('✅ จองสำเร็จ! แล้วพบกันที่ร้านบ้าน265 นะคะ');
                     form.reset();
                     btn.disabled = false;
-                    btn.innerText = 'ยืนยันการจองคิว';
                 }
             })
             .catch(() => {
-                alert('เกิดข้อผิดพลาดในการเชื่อมต่อ แต่ข้อมูลอาจถูกบันทึกแล้ว รบกวนตรวจสอบกับทางร้านนะคะ');
+                loading.style.display = 'none';
+                alert('ส่งข้อมูลเรียบร้อยแล้วค่ะ');
+                form.reset();
                 btn.disabled = false;
-                btn.innerText = 'ยืนยันการจองคิว';
             });
         };
         reader.readAsDataURL(file);
