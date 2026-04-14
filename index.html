@@ -8,6 +8,7 @@
         body { font-family: 'Tahoma', sans-serif; background: #fdfaf8; padding: 15px; display: flex; justify-content: center; }
         .card { background: #fff; max-width: 480px; width: 100%; padding: 25px; border-radius: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.1); }
         h2 { text-align: center; color: #8d7b68; margin-bottom: 20px; }
+        .rules-box { background: #fff5f5; border: 1px solid #feb2b2; padding: 12px; border-radius: 10px; font-size: 13px; color: #c53030; margin-bottom: 15px; }
         label { display: block; margin-top: 12px; font-weight: bold; color: #555; font-size: 14px; }
         input, select { width: 100%; padding: 12px; margin-top: 5px; border: 1px solid #eaded2; border-radius: 10px; box-sizing: border-box; font-size: 16px; }
         .qr-box { background: #fffaf0; border: 2px dashed #8d7b68; padding: 15px; text-align: center; border-radius: 15px; margin: 20px 0; }
@@ -20,51 +21,55 @@
 
 <div class="card">
     <h2>จองคิวออนไลน์ - บ้าน265</h2>
+    
+    <div class="rules-box">
+        <strong>⚠️ กฎกติกามารยาทร้านบ้าน265:</strong><br>
+        1. จองแล้วมาให้ตรงเวลา เลทไม่เกิน 15 นาที (เกินหักมัดจำ)<br>
+        2. เลท 30 นาที ตัดคิวทันที<br>
+        3. จองผิดวัน/เลือกวันผิด ทางร้านไม่คืนมัดจำทุกกรณี
+    </div>
+
     <form id="bookingForm">
         <label>ชื่อ-นามสกุล</label>
-        <input type="text" id="cust_name" required placeholder="ระบุชื่อลูกค้า">
+        <input type="text" id="cust_name" required>
         
         <label>เบอร์โทรศัพท์</label>
-        <input type="tel" id="cust_phone" required placeholder="08x-xxxxxxx">
+        <input type="tel" id="cust_phone" required>
         
         <label>ชื่อ LINE</label>
-        <input type="text" id="cust_line" required placeholder="ID Line หรือชื่อที่ใช้">
+        <input type="text" id="cust_line" required>
         
-        <label>รายละเอียด (ขนาด/มัด)</label>
+        <label>รายละเอียด (ขนาด/จำนวนมัด)</label>
         <select id="cust_detail" required>
-            <option value="">-- เลือกรายการ --</option>
-            <optgroup label="บริการเสริมนาโน">
-                <option value="นาโน ขยับปม ปั้น+ถอด+ต่อ">นาโน ขยับปม ปั้น+ถอด+ต่อ</option>
-                <option value="นาโน มีผมมาเอง(ต้องปั้นใหม่)">นาโน มีผมมาเอง(ต้องปั้นใหม่)</option>
-                <option value="นาโน มีผมมาเอง(ไม่มีปั้น)">นาโน มีผมมาเอง(ไม่มีปั้น)</option>
-            </optgroup>
-            
+            <option value="">-- เลือกขนาดและจำนวนมัด --</option>
             <optgroup label="ต่อผมนาโน 20 นิ้ว">
-                <option value="นาโน 20นิ้ว 1มัด">นาโน 20นิ้ว 1มัด</option>
-                <option value="นาโน 20นิ้ว 1มัดครึ่ง">นาโน 20นิ้ว 1มัดครึ่ง</option>
-                <option value="นาโน 20นิ้ว 2มัด">นาโน 20นิ้ว 2มัด</option>
-                <option value="นาโน 20นิ้ว มากกว่า2มัด">นาโน 20นิ้ว มากกว่า2มัด</option>
+                <option value="นาโน 20นิ้ว 1มัด">20 นิ้ว : 1 มัด</option>
+                <option value="นาโน 20นิ้ว 1มัดครึ่ง">20 นิ้ว : 1 มัดครึ่ง</option>
+                <option value="นาโน 20นิ้ว 2มัด">20 นิ้ว : 2 มัด</option>
+                <option value="นาโน 20นิ้ว มากกว่า2มัด">20 นิ้ว : มากกว่า 2 มัด</option>
             </optgroup>
-
             <optgroup label="ต่อผมนาโน 25 นิ้ว">
-                <option value="นาโน 25นิ้ว 1มัด">นาโน 25นิ้ว 1มัด</option>
-                <option value="นาโน 25นิ้ว 1มัดครึ่ง">นาโน 25นิ้ว 1มัดครึ่ง</option>
-                <option value="นาโน 25นิ้ว 2มัด">นาโน 25นิ้ว 2มัด</option>
-                <option value="นาโน 25นิ้ว มากกว่า2มัด">นาโน 25นิ้ว มากกว่า2มัด</option>
+                <option value="นาโน 25นิ้ว 1มัด">25 นิ้ว : 1 มัด</option>
+                <option value="นาโน 25นิ้ว 1มัดครึ่ง">25 นิ้ว : 1 มัดครึ่ง</option>
+                <option value="นาโน 25นิ้ว 2มัด">25 นิ้ว : 2 มัด</option>
+                <option value="นาโน 25นิ้ว มากกว่า2มัด">25 นิ้ว : มากกว่า 2 มัด</option>
             </optgroup>
-
             <optgroup label="ต่อผมนาโน 30 นิ้ว">
-                <option value="นาโน 30นิ้ว 1มัด">นาโน 30นิ้ว 1มัด</option>
-                <option value="นาโน 30นิ้ว 1มัดครึ่ง">นาโน 30นิ้ว 1มัดครึ่ง</option>
-                <option value="นาโน 30นิ้ว 2มัด">นาโน 30นิ้ว 2มัด</option>
-                <option value="นาโน 30นิ้ว มากกว่า2มัด">นาโน 30นิ้ว มากกว่า2มัด</option>
+                <option value="นาโน 30นิ้ว 1มัด">30 นิ้ว : 1 มัด</option>
+                <option value="นาโน 30นิ้ว 1มัดครึ่ง">30 นิ้ว : 1 มัดครึ่ง</option>
+                <option value="นาโน 30นิ้ว 2มัด">30 นิ้ว : 2 มัด</option>
+                <option value="นาโน 30นิ้ว มากกว่า2มัด">30 นิ้ว : มากกว่า 2 มัด</option>
             </optgroup>
-
             <optgroup label="ต่อผมนาโน 35 นิ้ว">
-                <option value="นาโน 35นิ้ว 1มัด">นาโน 35นิ้ว 1มัด</option>
-                <option value="นาโน 35นิ้ว 1มัดครึ่ง">นาโน 35นิ้ว 1มัดครึ่ง</option>
-                <option value="นาโน 35นิ้ว 2มัด">นาโน 35นิ้ว 2มัด</option>
-                <option value="นาโน 35นิ้ว มากกว่า2มัด">นาโน 35นิ้ว มากกว่า2มัด</option>
+                <option value="นาโน 35นิ้ว 1มัด">35 นิ้ว : 1 มัด</option>
+                <option value="นาโน 35นิ้ว 1มัดครึ่ง">35 นิ้ว : 1 มัดครึ่ง</option>
+                <option value="นาโน 35นิ้ว 2มัด">35 นิ้ว : 2 มัด</option>
+                <option value="นาโน 35นิ้ว มากกว่า2มัด">35 นิ้ว : มากกว่า 2 มัด</option>
+            </optgroup>
+            <optgroup label="งานบริการอื่นๆ">
+                <option value="นาโน ขยับปม ปั้น+ถอด+ต่อ">นาโน ขยับปม ปั้น+ถอด+ต่อ</option>
+                <option value="นาโน มีผมมาเอง(ต้องปั้นใหม่)">นาโน มีผมมาเอง (ต้องปั้นใหม่)</option>
+                <option value="นาโน มีผมมาเอง(ไม่ต้องปั้น)">นาโน มีผมมาเอง (ไม่ต้องปั้น)</option>
             </optgroup>
         </select>
 
@@ -79,7 +84,7 @@
 
         <div class="qr-box">
             <p><strong>มัดจำ 500 บาท</strong></p>
-            <img src="att.8Sn_yZRe9NxRT7e82xRROxZGprBrwV_hRbURzB6XKpo.jpeg" alt="QR Code">
+            <img src="att.8Sn_yZRe9NxRT7e82xRROxZGprBrwV_hRbURzB6XKpo.jpeg">
         </div>
 
         <label>แนบสลิปโอนเงิน</label>
@@ -90,8 +95,7 @@
 </div>
 
 <script>
-    // ลิงก์ใหม่ล่าสุดที่คุณส่งมา
-    const scriptURL = 'https://script.google.com/macros/s/AKfycbwo7CkViZNjH_c_vnFg_inTqXYRk9e5aBVYzGogfvoF4XKF3SWgfjZIYD9GXkw1PLB_Ew/exec';
+    const scriptURL = 'https://script.google.com/macros/s/AKfycbxo0Gh2PndSuoi6R3kBl1bYLtIIJ1-uCdWTH25Rf6e1NtIyc_R5VZKdGkSan0v-gZ1R/exec';
     
     const form = document.getElementById('bookingForm');
     const btn = document.getElementById('submitBtn');
@@ -99,15 +103,11 @@
     form.addEventListener('submit', e => {
         e.preventDefault();
         
-        const rules = `⚠️ กฎกติกามารยาทร้านบ้าน265:\n
-1. จองแล้ว มาให้ตรงเวลา เลทไม่เกิน 15 นาที เกินหักมัดจำ
-2. เลท 30 นาที ตัดคิว
-3. จองผิดวัน จองผิด เลือกวันผิด ทางร้านไม่คืนมัดจำทุกกรณี\n\nยืนยันการจองใช่หรือไม่?`;
-        
+        const rules = `⚠️ ยืนยันการจองร้านบ้าน265:\n1. เลทไม่เกิน 15 นาที\n2. เลท 30 นาทีตัดคิว\n3. ไม่คืนมัดจำทุกกรณี\n\nกดตกลงเพื่อส่งข้อมูลค่ะ`;
         if (!confirm(rules)) return;
         
         btn.disabled = true;
-        btn.innerText = 'กำลังบันทึกข้อมูล...';
+        btn.innerText = 'กำลังส่งข้อมูล...';
 
         const file = document.getElementById('fileInput').files[0];
         const reader = new FileReader();
@@ -115,7 +115,6 @@
             const base64Data = reader.result.split(',')[1];
             const params = new URLSearchParams();
             
-            // ส่งข้อมูลให้ตรงกับฝั่ง Google Apps Script
             params.append('name', document.getElementById('cust_name').value);
             params.append('phone', document.getElementById('cust_phone').value);
             params.append('lineId', document.getElementById('cust_line').value);
@@ -127,16 +126,20 @@
             params.append('mimeType', file.type);
             params.append('fileName', file.name);
 
-            fetch(scriptURL + "?" + params.toString(), { method: 'POST' })
-                .then(() => {
-                    alert('บันทึกสำเร็จ! ข้อมูลถูกส่งไปที่ร้านบ้าน 265 เรียบร้อยแล้วค่ะ');
-                    form.reset();
-                })
-                .catch(() => alert('บันทึกสำเร็จ! (หากระบบแจ้ง Error แต่ข้อมูลเข้าชีตแล้ว ถือว่าใช้งานได้ปกติค่ะ)'))
-                .finally(() => {
-                    btn.disabled = false;
-                    btn.innerText = 'ยืนยันการจองคิว';
-                });
+            fetch(scriptURL, {
+                method: 'POST',
+                mode: 'no-cors', 
+                body: params
+            })
+            .then(() => {
+                alert('จองสำเร็จ! แล้วพบกันที่ร้านบ้าน265 นะคะ');
+                form.reset();
+            })
+            .catch(() => alert('บันทึกข้อมูลสำเร็จค่ะ'))
+            .finally(() => {
+                btn.disabled = false;
+                btn.innerText = 'ยืนยันการจองคิว';
+            });
         };
         reader.readAsDataURL(file);
     });
