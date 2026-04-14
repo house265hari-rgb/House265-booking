@@ -9,10 +9,7 @@
         body { font-family: 'Tahoma', sans-serif; background: var(--bg-color); padding: 15px; display: flex; justify-content: center; }
         .card { background: #fff; max-width: 500px; width: 100%; padding: 25px; border-radius: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.1); }
         h2 { text-align: center; color: var(--main-color); margin-bottom: 5px; }
-        
-        /* สไตล์สำหรับกล่องกฎกติกา */
         .rules-box { background: #fff5f5; border: 1px solid #feb2b2; padding: 15px; border-radius: 12px; font-size: 13px; color: var(--error-color); margin-bottom: 20px; line-height: 1.6; }
-        
         label { display: block; margin-top: 15px; font-weight: bold; color: #555; font-size: 14px; }
         input, select { width: 100%; padding: 12px; margin-top: 5px; border: 1px solid #eaded2; border-radius: 10px; box-sizing: border-box; font-size: 16px; outline: none; }
         .status-check { text-align: center; padding: 12px; border-radius: 10px; margin-top: 15px; font-weight: bold; display: none; }
@@ -30,25 +27,23 @@
 
 <div class="card">
     <h2>จองคิวออนไลน์ - บ้าน265</h2>
-    
     <div class="rules-box">
         <strong>⚠️ กฎกติกามารยาท:</strong><br>
-        หยุดวันอาทิตย์ | เลท 15 นาทีหักมัดจำ | จองผิดวันไม่คืนมัดจำ
+        • หยุดทุกวันอาทิตย์<br>
+        • มาสายเกิน 15 นาที ขออนุญาตหักมัดจำ<br>
+        • หากจองผิดวัน ทางร้านไม่คืนมัดจำทุกกรณี
     </div>
 
     <form id="bookingForm">
         <label>1. เลือกวันที่นัดหมาย</label>
         <input type="date" id="cust_date" required onchange="checkBookingStatus()">
-        
         <label>2. เลือกช่วงเวลา</label>
         <select id="cust_time" required onchange="checkBookingStatus()">
             <option value="">-- เลือกเวลา --</option>
             <option value="13.00-14.59">13.00 - 14.59 น.</option>
             <option value="15.00-17.00">15.00 - 17.00 น.</option>
         </select>
-
         <div id="statusBox" class="status-check"></div>
-
         <div id="infoSection" style="display:none;">
             <label>ชื่อผู้จอง</label>
             <input type="text" id="cust_name" placeholder="ระบุชื่อจริง" required>
@@ -56,12 +51,10 @@
             <input type="tel" id="cust_phone" placeholder="08x-xxxxxxx" required>
             <label>ชื่อ LINE</label>
             <input type="text" id="cust_line" placeholder="ID หรือ ชื่อในไลน์" required>
-            
             <label>3. รายละเอียดขนาดและจำนวนมัด</label>
             <select id="cust_detail" required>
                 <option value="">-- กำลังโหลดสต็อกล่าสุด... --</option>
             </select>
-
             <div id="paymentArea" class="payment-area">
                 <div class="qr-box">
                     <p><strong>💰 มัดจำ 500 บาท</strong></p>
@@ -88,7 +81,6 @@
 </div>
 
 <script>
-    // อัปเดตลิงก์ใหม่ของคุณเรียบร้อยแล้ว
     const scriptURL = 'https://script.google.com/macros/s/AKfycby0faYXg98n_e2UqrJ2S9pWG3xuptMCUIsIlznHwaUWSvVoXgadx4vkRLXk_DSq10LNvQ/exec';
     let bookedData = [];
     let stockData = {};
@@ -101,7 +93,6 @@
             stockData = res.stocks || {};
             renderStockOptions();
         } catch (e) {
-            console.error(e);
             document.getElementById('cust_detail').innerHTML = '<option>โหลดข้อมูลล้มเหลว กรุณารีเฟรช</option>';
         }
     };
@@ -109,7 +100,6 @@
     function renderStockOptions() {
         const select = document.getElementById('cust_detail');
         select.innerHTML = '<option value="">-- เลือกบริการ --</option>';
-        
         const items = ["20นิ้ว", "25นิ้ว", "30นิ้ว", "35นิ้ว", "ขยับปม"];
         const amounts = [1, 1.5, 2];
 
@@ -146,9 +136,7 @@
         const time = document.getElementById('cust_time').value;
         const statusBox = document.getElementById('statusBox');
         const info = document.getElementById('infoSection');
-        
         if(!date || !time) return;
-
         if (new Date(date).getDay() === 0) {
             statusBox.innerText = "❌ ร้านหยุดวันอาทิตย์ค่ะ";
             statusBox.className = "status-check is-full";
@@ -156,7 +144,6 @@
             info.style.display = "none";
             return;
         }
-        
         const isFull = bookedData.some(b => b.date === date && b.time === time);
         if(isFull) {
             statusBox.innerText = "❌ คิวเวลานี้เต็มแล้วค่ะ";
@@ -179,7 +166,6 @@
         const btn = document.getElementById('submitBtn');
         btn.disabled = true;
         btn.innerText = "กำลังส่งข้อมูล...";
-
         const file = document.getElementById('fileInput').files[0];
         const reader = new FileReader();
         reader.onload = function() {
@@ -196,7 +182,6 @@
             params.append('fileName', file.name);
 
             fetch(scriptURL, { method: 'POST', body: params })
-            .then(res => res.text())
             .then(() => {
                 document.getElementById('res_name').innerText = document.getElementById('cust_name').value;
                 document.getElementById('res_date').innerText = document.getElementById('cust_date').value;
@@ -204,8 +189,8 @@
                 document.getElementById('res_detail').innerText = document.getElementById('cust_detail').value;
                 document.getElementById('ticketModal').style.display = 'flex';
             })
-            .catch(err => {
-                alert('ส่งข้อมูลเรียบร้อยแล้วค่ะ!');
+            .catch(() => {
+                alert('จองสำเร็จ!');
                 location.reload();
             });
         };
