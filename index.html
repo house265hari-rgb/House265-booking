@@ -98,8 +98,8 @@
 </div>
 
 <script>
-    // ลิงก์ล่าสุดที่คุณส่งมาเพื่อระบบเช็คคิวซ้ำ
-    const scriptURL = 'https://script.google.com/macros/s/AKfycbxKGWQxjiqH6K_WoEYd0oufKvt8d5N0qXp28eQPwxjElc2i0l6l8asy-PiC5lfyM2FHGQ/exec';
+    // ลิงก์ล่าสุดที่ใช้ระบบตรวจสอบคิวซ้ำจากคอลัมน์ A และ F
+    const scriptURL = 'https://script.google.com/macros/s/AKfycbwSDOlLHeiYjSmXlyCfkQNFAoLhx-OGiwMZvHA0yoTCgtfHStzuQbfBqwBqxbdS8Xxsww/exec';
     
     const form = document.getElementById('bookingForm');
     const btn = document.getElementById('submitBtn');
@@ -113,13 +113,13 @@
         if (day === 0) {
             errorText.style.display = 'block';
             input.value = '';
-            alert('ขออภัยค่ะ ร้านหยุดทุกวันอาทิตย์ รบกวนเลือกวันอื่นนะคะ');
+            alert('ขออภัยค่ะ ร้านหยุดทุกวันอาทิตย์ รบกวนเลือกวันจันทร์-เสาร์ นะคะ');
         } else {
             errorText.style.display = 'none';
         }
     }
 
-    // ล็อกวันที่ย้อนหลัง
+    // ล็อกวันที่ย้อนหลัง (เลือกได้ตั้งแต่วันนี้เป็นต้นไป)
     const today = new Date().toISOString().split('T')[0];
     dateInput.setAttribute('min', today);
 
@@ -136,8 +136,9 @@
         const reader = new FileReader();
         reader.onload = function() {
             const base64Data = reader.result.split(',')[1];
-            const params = new URLSearchParams();
             
+            // เตรียมส่งข้อมูลแบบ URLSearchParams เพื่อให้ Apps Script อ่านค่าได้แม่นยำ
+            const params = new URLSearchParams();
             params.append('name', document.getElementById('cust_name').value);
             params.append('phone', document.getElementById('cust_phone').value);
             params.append('lineId', document.getElementById('cust_line').value);
@@ -153,17 +154,23 @@
                 method: 'POST', 
                 body: params 
             })
-            .then(res => res.text()) // อ่านคำตอบจาก Script (Success หรือ Full)
+            .then(res => res.text()) // รับคำตอบ Success หรือ Full จาก Apps Script
             .then(response => {
-                if (response === "Full") {
-                    alert('❌ ขออภัยค่ะ เวลานี้นัดหมายเต็มแล้ว รบกวนเลือกเวลาอื่นนะคะ');
+                if (response.trim() === "Full") {
+                    alert('❌ ขออภัยค่ะ เวลานี้มีลูกค้าจองไปแล้ว รบกวนเลือกเวลาอื่นนะคะ');
+                    btn.disabled = false;
+                    btn.innerText = 'ยืนยันการจองคิว';
                 } else {
                     alert('✅ จองสำเร็จ! แล้วพบกันที่ร้านบ้าน265 นะคะ');
                     form.reset();
+                    btn.disabled = false;
+                    btn.innerText = 'ยืนยันการจองคิว';
                 }
             })
-            .catch(() => alert('จองสำเร็จ! ระบบกำลังบันทึกข้อมูลค่ะ'))
-            .finally(() => {
+            .catch(() => {
+                // กรณี Error จากเน็ต แต่ข้อมูลอาจจะเข้าแล้ว ให้แจ้งเตือนกว้างๆ
+                alert('ส่งข้อมูลเรียบร้อยแล้วค่ะ รบกวนรอการยืนยันจากทางร้านนะคะ');
+                form.reset();
                 btn.disabled = false;
                 btn.innerText = 'ยืนยันการจองคิว';
             });
