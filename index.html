@@ -6,32 +6,30 @@
     <title>จองคิวออนไลน์ - บ้าน265</title>
     <style>
         :root { --main-color: #8d7b68; --bg-color: #fdfaf8; --error-color: #c53030; }
-        body { font-family: 'Tahoma', sans-serif; background: var(--bg-color); padding: 15px; display: flex; justify-content: center; color: #333; }
+        body { font-family: 'Tahoma', sans-serif; background: var(--bg-color); padding: 15px; display: flex; justify-content: center; }
         .card { background: #fff; max-width: 500px; width: 100%; padding: 25px; border-radius: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.1); }
         h2 { text-align: center; color: var(--main-color); margin-bottom: 5px; }
-        .sub-title { text-align: center; color: #a89a8e; margin-bottom: 20px; font-size: 14px; }
-        .rules-box { background: #fff5f5; border: 1px solid #feb2b2; padding: 12px; border-radius: 10px; font-size: 13px; color: var(--error-color); margin-bottom: 15px; }
-        label { display: block; margin-top: 12px; font-weight: bold; color: #555; font-size: 14px; }
+        .rules-box { background: #fff5f5; border: 1px solid #feb2b2; padding: 15px; border-radius: 12px; font-size: 13px; color: var(--error-color); margin-bottom: 20px; line-height: 1.6; }
+        label { display: block; margin-top: 15px; font-weight: bold; color: #555; font-size: 14px; }
         input, select { width: 100%; padding: 12px; margin-top: 5px; border: 1px solid #eaded2; border-radius: 10px; box-sizing: border-box; font-size: 16px; outline: none; }
-        .qr-box { background: #fffaf0; border: 2px dashed var(--main-color); padding: 15px; text-align: center; border-radius: 15px; margin: 20px 0; }
-        .qr-box img { width: 180px; border-radius: 8px; margin-top: 10px; }
-        button { width: 100%; background: var(--main-color); color: #fff; padding: 16px; border: none; border-radius: 10px; margin-top: 20px; cursor: pointer; font-size: 18px; font-weight: bold; }
+        .qr-box { background: #fffaf0; border: 2px dashed var(--main-color); padding: 20px; text-align: center; border-radius: 20px; margin: 25px 0; }
+        .qr-box img { width: 200px; border-radius: 10px; margin-top: 10px; }
+        button { width: 100%; background: var(--main-color); color: #fff; padding: 18px; border: none; border-radius: 12px; margin-top: 25px; cursor: pointer; font-size: 18px; font-weight: bold; }
         button:disabled { background: #ccc; }
-        .loading-text { display: none; text-align: center; color: var(--main-color); font-weight: bold; margin-top: 10px; }
+        .loading { display: none; text-align: center; color: var(--main-color); font-weight: bold; margin-top: 10px; }
     </style>
 </head>
 <body>
 
 <div class="card">
     <h2>จองคิวออนไลน์ - บ้าน265</h2>
-    <div class="sub-title">ระบบตรวจสอบคิวว่างอัตโนมัติ</div>
     
     <div class="rules-box">
         <strong>⚠️ กฎกติกามารยาทร้านบ้าน265:</strong><br>
-        • ร้านหยุดทุก **วันอาทิตย์**<br>
-        1. จองแล้วมาให้ตรงเวลา เลทไม่เกิน 15 นาที<br>
+        • ร้านหยุดทุก <b>วันอาทิตย์</b><br>
+        1. จองแล้วมาให้ตรงเวลา เลทไม่เกิน 15 นาที (เกินหักมัดจำ)<br>
         2. เลท 30 นาที ตัดคิวทันที<br>
-        3. จองผิดวัน/เลือกวันผิด ทางร้านไม่คืนมัดจำทุกกรณี
+        3. จองผิดวัน/เลือกวันผิด ทางร้านไม่คืนมัดจำทุกกรณีค่ะ
     </div>
 
     <form id="bookingForm">
@@ -44,37 +42,38 @@
         <label>ชื่อ LINE</label>
         <input type="text" id="cust_line" placeholder="ID Line หรือ ชื่อในไลน์" required>
         
-        <label>รายละเอียด (ขนาดและจำนวนมัด)</label>
+        <label>รายละเอียดขนาดและจำนวนมัด</label>
         <select id="cust_detail" required>
             <option value="">-- เลือกขนาดและจำนวนมัด --</option>
             <optgroup label="ต่อผมนาโน 20 นิ้ว">
                 <option value="นาโน 20นิ้ว 1มัด">20 นิ้ว : 1 มัด</option>
-                <option value="นาโน 20นิ้ว 1มัดครึ่ง">20 นิ้ว : 1 มัดครึ่ง</option>
+                <option value="นาโน 20นิ้ว 1.5มัด">20 นิ้ว : 1 มัดครึ่ง</option>
                 <option value="นาโน 20นิ้ว 2มัด">20 นิ้ว : 2 มัด</option>
-                <option value="นาโน 20นิ้ว มากกว่า2มัด">20 นิ้ว : มากกว่า 2 มัด</option>
+                <option value="นาโน 20นิ้ว 2มัด+">20 นิ้ว : มากกว่า 2 มัด</option>
             </optgroup>
             <optgroup label="ต่อผมนาโน 25 นิ้ว">
                 <option value="นาโน 25นิ้ว 1มัด">25 นิ้ว : 1 มัด</option>
-                <option value="นาโน 25นิ้ว 1มัดครึ่ง">25 นิ้ว : 1 มัดครึ่ง</option>
+                <option value="นาโน 25นิ้ว 1.5มัด">25 นิ้ว : 1 มัดครึ่ง</option>
                 <option value="นาโน 25นิ้ว 2มัด">25 นิ้ว : 2 มัด</option>
-                <option value="นาโน 25นิ้ว มากกว่า2มัด">25 นิ้ว : มากกว่า 2 มัด</option>
+                <option value="นาโน 25นิ้ว 2มัด+">25 นิ้ว : มากกว่า 2 มัด</option>
             </optgroup>
             <optgroup label="ต่อผมนาโน 30 นิ้ว">
                 <option value="นาโน 30นิ้ว 1มัด">30 นิ้ว : 1 มัด</option>
-                <option value="นาโน 30นิ้ว 1มัดครึ่ง">30 นิ้ว : 1 มัดครึ่ง</option>
+                <option value="นาโน 30นิ้ว 1.5มัด">30 นิ้ว : 1 มัดครึ่ง</option>
                 <option value="นาโน 30นิ้ว 2มัด">30 นิ้ว : 2 มัด</option>
-                <option value="นาโน 30นิ้ว มากกว่า2มัด">30 นิ้ว : มากกว่า 2 มัด</option>
+                <option value="นาโน 30นิ้ว 2มัด+">30 นิ้ว : มากกว่า 2 มัด</option>
             </optgroup>
             <optgroup label="ต่อผมนาโน 35 นิ้ว">
                 <option value="นาโน 35นิ้ว 1มัด">35 นิ้ว : 1 มัด</option>
-                <option value="นาโน 35นิ้ว 1มัดครึ่ง">35 นิ้ว : 1 มัดครึ่ง</option>
+                <option value="นาโน 35นิ้ว 1.5มัด">35 นิ้ว : 1 มัดครึ่ง</option>
                 <option value="นาโน 35นิ้ว 2มัด">35 นิ้ว : 2 มัด</option>
-                <option value="นาโน 35นิ้ว มากกว่า2มัด">35 นิ้ว : มากกว่า 2 มัด</option>
+                <option value="นาโน 35นิ้ว 2มัด+">35 นิ้ว : มากกว่า 2 มัด</option>
             </optgroup>
             <optgroup label="งานบริการอื่นๆ">
-                <option value="นาโน ขยับปม ปั้น+ถอด+ต่อ">นาโน ขยับปม ปั้น+ถอด+ต่อ</option>
-                <option value="นาโน มีผมมาเอง(ต้องปั้นใหม่)">นาโน มีผมมาเอง (ต้องปั้นใหม่)</option>
-                <option value="นาโน มีผมมาเอง(ไม่ต้องปั้น)">นาโน มีผมมาเอง (ไม่ต้องปั้น)</option>
+                <option value="ขยับปม (ปั้น+ถอด+ต่อ)">ขยับปม (ปั้น+ถอด+ต่อ)</option>
+                <option value="มีผมมาเอง (ปั้นใหม่)">มีผมมาเอง (ปั้นใหม่)</option>
+                <option value="มีผมมาเอง (ไม่ปั้น)">มีผมมาเอง (ไม่ปั้น)</option>
+                <option value="ถอดผมอย่างเดียว">ถอดผมอย่างเดียว</option>
             </optgroup>
         </select>
 
@@ -88,38 +87,42 @@
         </select>
 
         <div class="qr-box">
-            <p><strong>💰 มัดจำ 500 บาท</strong></p>
+            <p><strong>มัดจำ 500 บาท</strong></p>
             <img src="att.8Sn_yZRe9NxRT7e82xRROxZGprBrwV_hRbURzB6XKpo.jpeg">
+            <p style="font-size: 11px; color: #888; margin-top: 5px;">*โปรดแนบสลิปหลังโอนเงิน*</p>
         </div>
 
         <label>แนบสลิปโอนเงิน</label>
         <input type="file" id="fileInput" accept="image/*" required>
 
         <button type="submit" id="submitBtn">ยืนยันการจองคิว</button>
-        <div id="loading" class="loading-text">กำลังตรวจสอบคิวว่าง...</div>
+        <div id="loadingText" class="loading">กำลังเช็คคิวว่างและบันทึกข้อมูล...</div>
     </form>
 </div>
 
 <script>
-    const scriptURL = 'https://script.google.com/macros/s/AKfycbwCPGVmwbDWNqKNhAw8m60oZkimTIOflJ8S6pnfjzZ9iBJQNQYFuLviyX3yyF3FeOajlw/exec';
+    // อัปเดตลิงก์ใหม่ล่าสุดที่คุณส่งมา
+    const scriptURL = 'https://script.google.com/macros/s/AKfycbzvjGS6oe62tyXvnmMNsHv7_ue-rNMsYI4SGKof7TurcsFjRTjMoTVxR9SpuaOTX-984A/exec';
     
     const form = document.getElementById('bookingForm');
     const btn = document.getElementById('submitBtn');
-    const loading = document.getElementById('loading');
+    const loading = document.getElementById('loadingText');
 
+    // ตรวจสอบวันอาทิตย์
     function checkSunday(input) {
         const date = new Date(input.value);
         if (date.getUTCDay() === 0) {
-            alert('ขออภัยค่ะ ร้านหยุดวันอาทิตย์ รบกวนเลือกวันอื่นนะคะ');
+            alert('❌ ขออภัยค่ะ ร้านบ้าน265 หยุดทุกวันอาทิตย์ รบกวนเลือกวันจันทร์-เสาร์ นะคะ');
             input.value = '';
         }
     }
 
+    // ล็อกวันที่ย้อนหลัง
     document.getElementById('cust_date').setAttribute('min', new Date().toISOString().split('T')[0]);
 
     form.addEventListener('submit', e => {
         e.preventDefault();
-        if (!confirm("ยืนยันการส่งข้อมูลจองคิว?")) return;
+        if (!confirm("ยืนยันการจองร้านบ้าน265? (ข้อมูลถูกต้องและโอนมัดจำแล้ว)")) return;
         
         btn.disabled = true;
         loading.style.display = 'block';
@@ -127,7 +130,6 @@
         const file = document.getElementById('fileInput').files[0];
         const reader = new FileReader();
         reader.onload = function() {
-            const base64Data = reader.result.split(',')[1];
             const params = new URLSearchParams();
             params.append('name', document.getElementById('cust_name').value);
             params.append('phone', document.getElementById('cust_phone').value);
@@ -136,7 +138,7 @@
             params.append('detail', document.getElementById('cust_detail').value);
             params.append('date', document.getElementById('cust_date').value);
             params.append('time', document.getElementById('cust_time').value);
-            params.append('fileData', base64Data);
+            params.append('fileData', reader.result.split(',')[1]);
             params.append('mimeType', file.type);
             params.append('fileName', file.name);
 
@@ -145,17 +147,17 @@
             .then(response => {
                 loading.style.display = 'none';
                 if (response.trim() === "Full") {
-                    alert('❌ ขออภัยค่ะ เวลานี้มีลูกค้าจองแล้ว รบกวนเปลี่ยนเวลาหรือวันที่นะคะ');
+                    alert('❌ ขออภัยค่ะ เวลานี้มีลูกค้าจองไปแล้ว รบกวนเปลี่ยนช่วงเวลาหรือวันที่นะคะ');
                     btn.disabled = false;
                 } else {
-                    alert('✅ จองสำเร็จ! แล้วพบกันที่ร้านบ้าน265 นะคะ');
+                    alert('✅ จองสำเร็จ! แล้วเจอกันที่ร้านบ้าน265 นะคะ');
                     form.reset();
                     btn.disabled = false;
                 }
             })
             .catch(() => {
                 loading.style.display = 'none';
-                alert('ส่งข้อมูลเรียบร้อยแล้วค่ะ');
+                alert('ส่งข้อมูลสำเร็จแล้วค่ะ!');
                 form.reset();
                 btn.disabled = false;
             });
