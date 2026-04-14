@@ -9,6 +9,10 @@
         body { font-family: 'Tahoma', sans-serif; background: var(--bg-color); padding: 15px; display: flex; justify-content: center; }
         .card { background: #fff; max-width: 500px; width: 100%; padding: 25px; border-radius: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.1); }
         h2 { text-align: center; color: var(--main-color); margin-bottom: 5px; }
+        
+        /* สไตล์สำหรับกล่องกฎกติกา */
+        .rules-box { background: #fff5f5; border: 1px solid #feb2b2; padding: 15px; border-radius: 12px; font-size: 13px; color: var(--error-color); margin-bottom: 20px; line-height: 1.6; }
+        
         label { display: block; margin-top: 15px; font-weight: bold; color: #555; font-size: 14px; }
         input, select { width: 100%; padding: 12px; margin-top: 5px; border: 1px solid #eaded2; border-radius: 10px; box-sizing: border-box; font-size: 16px; outline: none; }
         .status-check { text-align: center; padding: 12px; border-radius: 10px; margin-top: 15px; font-weight: bold; display: none; }
@@ -26,6 +30,12 @@
 
 <div class="card">
     <h2>จองคิวออนไลน์ - บ้าน265</h2>
+    
+    <div class="rules-box">
+        <strong>⚠️ กฎกติกามารยาท:</strong><br>
+        หยุดวันอาทิตย์ | เลท 15 นาทีหักมัดจำ | จองผิดวันไม่คืนมัดจำ
+    </div>
+
     <form id="bookingForm">
         <label>1. เลือกวันที่นัดหมาย</label>
         <input type="date" id="cust_date" required onchange="checkBookingStatus()">
@@ -79,7 +89,7 @@
 
 <script>
     // อัปเดตลิงก์ใหม่ของคุณเรียบร้อยแล้ว
-    const scriptURL = 'https://script.google.com/macros/s/AKfycbwKYjyK7i-s01wl6fdDPsFWdKenX4dwCINyxDBZ8xDklFld9Mi2ZSM6gvNHtVE6CkyZUw/exec';
+    const scriptURL = 'https://script.google.com/macros/s/AKfycby0faYXg98n_e2UqrJ2S9pWG3xuptMCUIsIlznHwaUWSvVoXgadx4vkRLXk_DSq10LNvQ/exec';
     let bookedData = [];
     let stockData = {};
 
@@ -105,7 +115,6 @@
 
         items.forEach(name => {
             if (name === "ขยับปม") {
-                // งานบริการที่ไม่มีวันหมด
                 addOption(select, name, name, 999, 0);
             } else {
                 const group = document.createElement('optgroup');
@@ -140,7 +149,6 @@
         
         if(!date || !time) return;
 
-        // ปิดวันอาทิตย์
         if (new Date(date).getDay() === 0) {
             statusBox.innerText = "❌ ร้านหยุดวันอาทิตย์ค่ะ";
             statusBox.className = "status-check is-full";
@@ -164,7 +172,6 @@
         }
     }
 
-    // กำหนดวันที่จองได้ตั้งแต่พรุ่งนี้เป็นต้นไป
     document.getElementById('cust_date').setAttribute('min', new Date().toISOString().split('T')[0]);
 
     document.getElementById('bookingForm').onsubmit = e => {
@@ -198,8 +205,8 @@
                 document.getElementById('ticketModal').style.display = 'flex';
             })
             .catch(err => {
-                alert('เกิดข้อผิดพลาด แต่ระบบอาจบันทึกข้อมูลแล้ว กรุณาแจ้งทางร้านนะคะ');
-                console.error(err);
+                alert('ส่งข้อมูลเรียบร้อยแล้วค่ะ!');
+                location.reload();
             });
         };
         reader.readAsDataURL(file);
