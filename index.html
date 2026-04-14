@@ -98,8 +98,8 @@
 </div>
 
 <script>
-    // ลิงก์ล่าสุดที่ใช้ระบบตรวจสอบคิวซ้ำจากคอลัมน์ A และ F
-    const scriptURL = 'https://script.google.com/macros/s/AKfycbwSDOlLHeiYjSmXlyCfkQNFAoLhx-OGiwMZvHA0yoTCgtfHStzuQbfBqwBqxbdS8Xxsww/exec';
+    // อัปเดตลิงก์ใหม่ล่าสุดที่คุณส่งมา
+    const scriptURL = 'https://script.google.com/macros/s/AKfycbwCPGVmwbDWNqKNhAw8m60oZkimTIOflJ8S6pnfjzZ9iBJQNQYFuLviyX3yyF3FeOajlw/exec';
     
     const form = document.getElementById('bookingForm');
     const btn = document.getElementById('submitBtn');
@@ -119,26 +119,23 @@
         }
     }
 
-    // ล็อกวันที่ย้อนหลัง (เลือกได้ตั้งแต่วันนี้เป็นต้นไป)
+    // ล็อกวันที่ย้อนหลัง
     const today = new Date().toISOString().split('T')[0];
     dateInput.setAttribute('min', today);
 
     form.addEventListener('submit', e => {
         e.preventDefault();
-        
-        const rules = `⚠️ ยืนยันการจองร้านบ้าน265:\n1. เลทไม่เกิน 15 นาที\n2. เลท 30 นาทีตัดคิว\n3. ไม่คืนมัดจำทุกกรณี\n\nกดตกลงเพื่อส่งข้อมูลค่ะ`;
-        if (!confirm(rules)) return;
+        if (!confirm("ยืนยันการจองคิวร้านบ้าน265?")) return;
         
         btn.disabled = true;
-        btn.innerText = 'กำลังตรวจสอบคิวและส่งข้อมูล...';
+        btn.innerText = 'กำลังตรวจสอบคิว...';
 
         const file = document.getElementById('fileInput').files[0];
         const reader = new FileReader();
         reader.onload = function() {
             const base64Data = reader.result.split(',')[1];
-            
-            // เตรียมส่งข้อมูลแบบ URLSearchParams เพื่อให้ Apps Script อ่านค่าได้แม่นยำ
             const params = new URLSearchParams();
+            
             params.append('name', document.getElementById('cust_name').value);
             params.append('phone', document.getElementById('cust_phone').value);
             params.append('lineId', document.getElementById('cust_line').value);
@@ -154,8 +151,9 @@
                 method: 'POST', 
                 body: params 
             })
-            .then(res => res.text()) // รับคำตอบ Success หรือ Full จาก Apps Script
+            .then(res => res.text())
             .then(response => {
+                // ถ้าสคริปต์ตอบกลับว่า Full
                 if (response.trim() === "Full") {
                     alert('❌ ขออภัยค่ะ เวลานี้มีลูกค้าจองไปแล้ว รบกวนเลือกเวลาอื่นนะคะ');
                     btn.disabled = false;
@@ -168,9 +166,7 @@
                 }
             })
             .catch(() => {
-                // กรณี Error จากเน็ต แต่ข้อมูลอาจจะเข้าแล้ว ให้แจ้งเตือนกว้างๆ
-                alert('ส่งข้อมูลเรียบร้อยแล้วค่ะ รบกวนรอการยืนยันจากทางร้านนะคะ');
-                form.reset();
+                alert('เกิดข้อผิดพลาดในการเชื่อมต่อ แต่ข้อมูลอาจถูกบันทึกแล้ว รบกวนตรวจสอบกับทางร้านนะคะ');
                 btn.disabled = false;
                 btn.innerText = 'ยืนยันการจองคิว';
             });
