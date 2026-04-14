@@ -9,38 +9,25 @@
         body { font-family: 'Tahoma', sans-serif; background: var(--bg-color); padding: 15px; display: flex; justify-content: center; }
         .card { background: #fff; max-width: 500px; width: 100%; padding: 25px; border-radius: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.1); }
         h2 { text-align: center; color: var(--main-color); margin-bottom: 5px; }
-        .rules-box { background: #fff5f5; border: 1px solid #feb2b2; padding: 15px; border-radius: 12px; font-size: 13px; color: var(--error-color); margin-bottom: 20px; line-height: 1.6; }
         label { display: block; margin-top: 15px; font-weight: bold; color: #555; font-size: 14px; }
         input, select { width: 100%; padding: 12px; margin-top: 5px; border: 1px solid #eaded2; border-radius: 10px; box-sizing: border-box; font-size: 16px; outline: none; }
-        
         .status-check { text-align: center; padding: 12px; border-radius: 10px; margin-top: 15px; font-weight: bold; display: none; }
         .is-available { background: #e6fffa; color: var(--success-color); border: 1px solid #b2f5ea; }
         .is-full { background: #fff5f5; color: var(--error-color); border: 1px solid #feb2b2; }
-
         .payment-area { display: none; margin-top: 10px; }
         .qr-box { background: #fffaf0; border: 2px dashed var(--main-color); padding: 20px; text-align: center; border-radius: 20px; margin: 20px 0; }
         .qr-box img { width: 200px; border-radius: 10px; margin-top: 10px; }
         button { width: 100%; background: var(--main-color); color: #fff; padding: 18px; border: none; border-radius: 12px; margin-top: 25px; cursor: pointer; font-size: 18px; font-weight: bold; }
-        button:disabled { background: #ccc; }
-        .loading { display: none; text-align: center; color: var(--main-color); font-weight: bold; margin-top: 10px; }
-
         .modal { display: none; position: fixed; z-index: 1000; left: 0; top: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.85); align-items: center; justify-content: center; }
-        .modal-content { background: #fff; padding: 30px; border-radius: 25px; width: 85%; max-width: 380px; text-align: center; border: 6px solid var(--main-color); position: relative; }
-        .ticket-header { font-size: 22px; color: var(--main-color); font-weight: bold; border-bottom: 2px dashed #ddd; padding-bottom: 15px; margin-bottom: 20px; }
-        .ticket-item { text-align: left; margin: 12px 0; font-size: 16px; line-height: 1.5; border-bottom: 1px solid #f9f9f9; padding-bottom: 5px; }
-        .ticket-item b { color: var(--main-color); width: 90px; display: inline-block; }
+        .modal-content { background: #fff; padding: 30px; border-radius: 25px; width: 85%; max-width: 380px; text-align: center; border: 6px solid var(--main-color); }
     </style>
 </head>
 <body>
 
 <div class="card">
     <h2>จองคิวออนไลน์ - บ้าน265</h2>
-    <div class="rules-box">
-        <strong>⚠️ กฎกติกามารยาท:</strong> หยุดวันอาทิตย์ | เลท 15 นาทีหักมัดจำ | จองผิดวันไม่คืนมัดจำ
-    </div>
-
     <form id="bookingForm">
-        <label>1. เลือกวันที่ต้องการนัดหมาย</label>
+        <label>1. เลือกวันที่นัดหมาย</label>
         <input type="date" id="cust_date" required onchange="checkBookingStatus()">
         
         <label>2. เลือกช่วงเวลา</label>
@@ -53,127 +40,138 @@
         <div id="statusBox" class="status-check"></div>
 
         <div id="infoSection" style="display:none;">
-            <label>ชื่อ-นามสกุล</label>
-            <input type="text" id="cust_name" placeholder="ระบุชื่อผู้จอง" required>
-            
+            <label>ชื่อผู้จอง</label>
+            <input type="text" id="cust_name" placeholder="ระบุชื่อจริง" required>
             <label>เบอร์โทรศัพท์</label>
             <input type="tel" id="cust_phone" placeholder="08x-xxxxxxx" required>
-            
             <label>ชื่อ LINE</label>
-            <input type="text" id="cust_line" placeholder="ID Line หรือ ชื่อในไลน์" required>
+            <input type="text" id="cust_line" placeholder="ID หรือ ชื่อในไลน์" required>
             
-            <label>รายละเอียดขนาดและบริการ (ตามสต็อกปัจจุบัน)</label>
+            <label>3. รายละเอียดขนาดและจำนวนมัด</label>
             <select id="cust_detail" required>
-                <option value="">-- กำลังโหลดข้อมูลสต็อกล่าสุด... --</option>
+                <option value="">-- กำลังโหลดสต็อกล่าสุด... --</option>
             </select>
 
-            <div class="payment-area" id="paymentArea">
+            <div id="paymentArea" class="payment-area">
                 <div class="qr-box">
                     <p><strong>💰 มัดจำ 500 บาท</strong></p>
-                    <img src="https://lh3.googleusercontent.com/d/1X_yZRe9NxRT7e82xRROxZGprBrwV_hRb"> <p style="font-size: 11px; color: #888; margin-top: 5px;">*โปรดโอนเงินแล้วแนบสลิปด้านล่าง*</p>
+                    <img src="att.8Sn_yZRe9NxRT7e82xRROxZGprBrwV_hRbURzB6XKpo.jpeg">
                 </div>
                 <label>แนบสลิปโอนเงิน</label>
                 <input type="file" id="fileInput" accept="image/*" required>
                 <button type="submit" id="submitBtn">ยืนยันการจองคิว</button>
             </div>
         </div>
-        <div id="loadingText" class="loading">กำลังตรวจสอบข้อมูล...</div>
     </form>
 </div>
 
 <div id="ticketModal" class="modal">
     <div class="modal-content">
-        <div class="ticket-header">🎟️ ยืนยันการจองคิว</div>
-        <div class="ticket-item"><b>ผู้จอง:</b> <span id="res_name"></span></div>
-        <div class="ticket-item"><b>วันที่:</b> <span id="res_date"></span></div>
-        <div class="ticket-item"><b>เวลา:</b> <span id="res_time"></span></div>
-        <div class="ticket-item"><b>บริการ:</b> <span id="res_detail"></span></div>
-        
-        <p style="color:#e53e3e; font-weight:bold; margin-top:20px;">📸 กรุณาแคปหน้าจอเก็บไว้เป็นหลักฐาน</p>
-        <button class="close-btn" onclick="location.reload()">ตกลง (กลับหน้าหลัก)</button>
+        <h3>🎟️ จองคิวสำเร็จ</h3>
+        <p>ชื่อ: <span id="res_name"></span></p>
+        <p>วันที่: <span id="res_date"></span></p>
+        <p>เวลา: <span id="res_time"></span></p>
+        <p>บริการ: <span id="res_detail"></span></p>
+        <p style="color:red; font-size:12px; margin-top:10px;">*กรุณาแคปหน้าจอเก็บไว้เป็นหลักฐาน*</p>
+        <button onclick="location.reload()">ตกลง</button>
     </div>
 </div>
 
 <script>
-    // อัปเดตลิงก์ใหม่ของคุณที่นี่
-    const scriptURL = 'https://script.google.com/macros/s/AKfycbyA5FdNBdEXhmyhyxZ4LdOkKZpvQmAcRtqlPjW2MriDwkHxBwyDiU47NHL60dBZglT9iQ/exec';
+    // อัปเดตลิงก์ใหม่ของคุณเรียบร้อยแล้ว
+    const scriptURL = 'https://script.google.com/macros/s/AKfycbwKYjyK7i-s01wl6fdDPsFWdKenX4dwCINyxDBZ8xDklFld9Mi2ZSM6gvNHtVE6CkyZUw/exec';
     let bookedData = [];
+    let stockData = {};
 
     window.onload = async () => {
         try {
             const response = await fetch(scriptURL);
-            const resData = await response.json();
-            
-            bookedData = resData.bookings || [];
-            const stockData = resData.stocks || [];
-            
-            const detailSelect = document.getElementById('cust_detail');
-            detailSelect.innerHTML = '<option value="">-- เลือกขนาดและจำนวนมัด --</option>';
-            
-            if (stockData.length === 0) {
-                detailSelect.innerHTML = '<option value="">❌ ไม่พบข้อมูลสต็อก</option>';
-            }
-
-            stockData.forEach(item => {
-                const option = document.createElement('option');
-                option.value = item.name;
-                if (item.count <= 0) {
-                    option.innerText = `❌ ${item.name} (ของหมด)`;
-                    option.disabled = true;
-                } else {
-                    option.innerText = `✅ ${item.name} (คงเหลือ ${item.count})`;
-                }
-                detailSelect.appendChild(option);
-            });
+            const res = await response.json();
+            bookedData = res.bookings || [];
+            stockData = res.stocks || {};
+            renderStockOptions();
         } catch (e) {
-            console.log("Error loading data:", e);
-            document.getElementById('cust_detail').innerHTML = '<option value="">❌ โหลดข้อมูลล้มเหลว</option>';
+            console.error(e);
+            document.getElementById('cust_detail').innerHTML = '<option>โหลดข้อมูลล้มเหลว กรุณารีเฟรช</option>';
         }
     };
 
+    function renderStockOptions() {
+        const select = document.getElementById('cust_detail');
+        select.innerHTML = '<option value="">-- เลือกบริการ --</option>';
+        
+        const items = ["20นิ้ว", "25นิ้ว", "30นิ้ว", "35นิ้ว", "ขยับปม"];
+        const amounts = [1, 1.5, 2];
+
+        items.forEach(name => {
+            if (name === "ขยับปม") {
+                // งานบริการที่ไม่มีวันหมด
+                addOption(select, name, name, 999, 0);
+            } else {
+                const group = document.createElement('optgroup');
+                group.label = `ผมขนาด ${name}`;
+                amounts.forEach(amt => {
+                    const label = `${name} : ${amt} มัด`;
+                    const currentStock = parseFloat(stockData[name]) || 0;
+                    addOption(group, label, label, currentStock, amt);
+                });
+                select.appendChild(group);
+            }
+        });
+    }
+
+    function addOption(parent, label, value, stock, needed) {
+        const opt = document.createElement('option');
+        opt.value = value;
+        if (stock < needed) {
+            opt.innerText = `❌ ${label} (ของหมด ติดต่อร้านนะคะ)`;
+            opt.disabled = true;
+        } else {
+            opt.innerText = `✅ ${label}`;
+        }
+        parent.appendChild(opt);
+    }
+
     function checkBookingStatus() {
-        const dateInput = document.getElementById('cust_date').value;
-        const timeInput = document.getElementById('cust_time').value;
+        const date = document.getElementById('cust_date').value;
+        const time = document.getElementById('cust_time').value;
         const statusBox = document.getElementById('statusBox');
-        const infoSection = document.getElementById('infoSection');
+        const info = document.getElementById('infoSection');
+        
+        if(!date || !time) return;
 
-        if (!dateInput || !timeInput) return;
-
-        if (new Date(dateInput).getDay() === 0) {
-            statusBox.innerText = "❌ ขออภัยค่ะ ร้านหยุดวันอาทิตย์";
+        // ปิดวันอาทิตย์
+        if (new Date(date).getDay() === 0) {
+            statusBox.innerText = "❌ ร้านหยุดวันอาทิตย์ค่ะ";
             statusBox.className = "status-check is-full";
             statusBox.style.display = "block";
-            infoSection.style.display = "none";
+            info.style.display = "none";
             return;
         }
-
-        const isFull = bookedData.some(b => b.date === dateInput && b.time === timeInput);
-
-        if (isFull) {
-            statusBox.innerText = "❌ ขออภัยค่ะ คิวเวลานี้เต็มแล้ว";
+        
+        const isFull = bookedData.some(b => b.date === date && b.time === time);
+        if(isFull) {
+            statusBox.innerText = "❌ คิวเวลานี้เต็มแล้วค่ะ";
             statusBox.className = "status-check is-full";
             statusBox.style.display = "block";
-            infoSection.style.display = "none";
+            info.style.display = "none";
         } else {
             statusBox.innerText = "✅ คิวว่าง สามารถจองได้ค่ะ";
             statusBox.className = "status-check is-available";
             statusBox.style.display = "block";
-            infoSection.style.display = "block";
+            info.style.display = "block";
             document.getElementById('paymentArea').style.display = "block";
         }
     }
 
+    // กำหนดวันที่จองได้ตั้งแต่พรุ่งนี้เป็นต้นไป
     document.getElementById('cust_date').setAttribute('min', new Date().toISOString().split('T')[0]);
 
-    const form = document.getElementById('bookingForm');
-    form.addEventListener('submit', e => {
+    document.getElementById('bookingForm').onsubmit = e => {
         e.preventDefault();
         const btn = document.getElementById('submitBtn');
-        const loading = document.getElementById('loadingText');
-        const detailValue = document.getElementById('cust_detail').value;
-        
         btn.disabled = true;
-        loading.style.display = 'block';
+        btn.innerText = "กำลังส่งข้อมูล...";
 
         const file = document.getElementById('fileInput').files[0];
         const reader = new FileReader();
@@ -183,7 +181,7 @@
             params.append('phone', document.getElementById('cust_phone').value);
             params.append('lineId', document.getElementById('cust_line').value);
             params.append('bookingType', 'ต่อผมนาโน');
-            params.append('detail', detailValue);
+            params.append('detail', document.getElementById('cust_detail').value);
             params.append('date', document.getElementById('cust_date').value);
             params.append('time', document.getElementById('cust_time').value);
             params.append('fileData', reader.result.split(',')[1]);
@@ -192,27 +190,20 @@
 
             fetch(scriptURL, { method: 'POST', body: params })
             .then(res => res.text())
-            .then(response => {
-                loading.style.display = 'none';
-                if (response.trim() === "Full") {
-                    alert('❌ คิวนี้เพิ่งถูกจองไป รบกวนเปลี่ยนเวลาหรือวันนะคะ');
-                    location.reload();
-                } else {
-                    document.getElementById('res_name').innerText = document.getElementById('cust_name').value;
-                    document.getElementById('res_date').innerText = document.getElementById('cust_date').value;
-                    document.getElementById('res_time').innerText = document.getElementById('cust_time').value;
-                    document.getElementById('res_detail').innerText = detailValue;
-                    document.getElementById('ticketModal').style.display = 'flex';
-                }
+            .then(() => {
+                document.getElementById('res_name').innerText = document.getElementById('cust_name').value;
+                document.getElementById('res_date').innerText = document.getElementById('cust_date').value;
+                document.getElementById('res_time').innerText = document.getElementById('cust_time').value;
+                document.getElementById('res_detail').innerText = document.getElementById('cust_detail').value;
+                document.getElementById('ticketModal').style.display = 'flex';
             })
-            .catch(() => {
-                loading.style.display = 'none';
-                alert('ส่งข้อมูลเรียบร้อยแล้วค่ะ!');
-                location.reload();
+            .catch(err => {
+                alert('เกิดข้อผิดพลาด แต่ระบบอาจบันทึกข้อมูลแล้ว กรุณาแจ้งทางร้านนะคะ');
+                console.error(err);
             });
         };
         reader.readAsDataURL(file);
-    });
+    };
 </script>
 </body>
 </html>
