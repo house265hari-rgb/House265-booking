@@ -26,9 +26,9 @@
     <div class="rules-box">
         <strong>⚠️ กฎกติกามารยาทร้านบ้าน265:</strong><br>
         • ร้านหยุดทุก **วันอาทิตย์**<br>
-        1. จองแล้วมาให้ตรงเวลา เลทไม่เกิน 15 นาที<br>
+        1. จองแล้วมาให้ตรงเวลา เลทไม่เกิน 15 นาที (เกินหักมัดจำ)<br>
         2. เลท 30 นาที ตัดคิวทันที<br>
-        3. จองผิดวัน/เลือกวันผิด ไม่คืนมัดจำทุกกรณี
+        3. จองผิดวัน/เลือกวันผิด ทางร้านไม่คืนมัดจำทุกกรณี
     </div>
 
     <form id="bookingForm">
@@ -44,15 +44,34 @@
         <label>รายละเอียด (ขนาด/จำนวนมัด)</label>
         <select id="cust_detail" required>
             <option value="">-- เลือกขนาดและจำนวนมัด --</option>
-            <optgroup label="ต่อผมนาโน 20-35 นิ้ว">
-                <option value="นาโน 1 มัด">นาโน : 1 มัด</option>
-                <option value="นาโน 1 มัดครึ่ง">นาโน : 1 มัดครึ่ง</option>
-                <option value="นาโน 2 มัด">นาโน : 2 มัด</option>
-                <option value="นาโน มากกว่า 2 มัด">นาโน : มากกว่า 2 มัด</option>
+            <optgroup label="ต่อผมนาโน 20 นิ้ว">
+                <option value="นาโน 20นิ้ว 1มัด">20 นิ้ว : 1 มัด</option>
+                <option value="นาโน 20นิ้ว 1มัดครึ่ง">20 นิ้ว : 1 มัดครึ่ง</option>
+                <option value="นาโน 20นิ้ว 2มัด">20 นิ้ว : 2 มัด</option>
+                <option value="นาโน 20นิ้ว มากกว่า2มัด">20 นิ้ว : มากกว่า 2 มัด</option>
+            </optgroup>
+            <optgroup label="ต่อผมนาโน 25 นิ้ว">
+                <option value="นาโน 25นิ้ว 1มัด">25 นิ้ว : 1 มัด</option>
+                <option value="นาโน 25นิ้ว 1มัดครึ่ง">25 นิ้ว : 1 มัดครึ่ง</option>
+                <option value="นาโน 25นิ้ว 2มัด">25 นิ้ว : 2 มัด</option>
+                <option value="นาโน 25นิ้ว มากกว่า2มัด">25 นิ้ว : มากกว่า 2 มัด</option>
+            </optgroup>
+            <optgroup label="ต่อผมนาโน 30 นิ้ว">
+                <option value="นาโน 30นิ้ว 1มัด">30 นิ้ว : 1 มัด</option>
+                <option value="นาโน 30นิ้ว 1มัดครึ่ง">30 นิ้ว : 1 มัดครึ่ง</option>
+                <option value="นาโน 30นิ้ว 2มัด">30 นิ้ว : 2 มัด</option>
+                <option value="นาโน 30นิ้ว มากกว่า2มัด">30 นิ้ว : มากกว่า 2 มัด</option>
+            </optgroup>
+            <optgroup label="ต่อผมนาโน 35 นิ้ว">
+                <option value="นาโน 35นิ้ว 1มัด">35 นิ้ว : 1 มัด</option>
+                <option value="นาโน 35นิ้ว 1มัดครึ่ง">35 นิ้ว : 1 มัดครึ่ง</option>
+                <option value="นาโน 35นิ้ว 2มัด">35 นิ้ว : 2 มัด</option>
+                <option value="นาโน 35นิ้ว มากกว่า2มัด">35 นิ้ว : มากกว่า 2 มัด</option>
             </optgroup>
             <optgroup label="งานบริการอื่นๆ">
                 <option value="นาโน ขยับปม ปั้น+ถอด+ต่อ">นาโน ขยับปม ปั้น+ถอด+ต่อ</option>
-                <option value="นาโน มีผมมาเอง">นาโน มีผมมาเอง</option>
+                <option value="นาโน มีผมมาเอง(ต้องปั้นใหม่)">นาโน มีผมมาเอง (ต้องปั้นใหม่)</option>
+                <option value="นาโน มีผมมาเอง(ไม่ต้องปั้น)">นาโน มีผมมาเอง (ไม่ต้องปั้น)</option>
             </optgroup>
         </select>
 
@@ -60,7 +79,7 @@
         <input type="date" id="cust_date" required onchange="checkSunday(this)">
         <div id="date-error" class="error-text">❌ ขออภัยค่ะ ร้านหยุดวันอาทิตย์ กรุณาเลือกวันอื่นนะคะ</div>
         
-        <label>เวลา</label>
+        <label>ช่วงเวลา</label>
         <select id="cust_time" required>
             <option value="13.00-14.59">13.00 - 14.59 น.</option>
             <option value="15.00-17.00">15.00 - 17.00 น.</option>
@@ -85,26 +104,30 @@
     const btn = document.getElementById('submitBtn');
     const dateInput = document.getElementById('cust_date');
 
-    // ฟังก์ชันเช็ควันอาทิตย์
+    // 1. ฟังก์ชันเช็ควันอาทิตย์
     function checkSunday(input) {
-        const day = new Date(input.value).getUTCDay();
+        const date = new Date(input.value);
+        const day = date.getUTCDay(); 
         const errorText = document.getElementById('date-error');
+        
         if (day === 0) { // 0 คือวันอาทิตย์
             errorText.style.display = 'block';
-            input.value = '';
+            input.value = ''; // ล้างค่าที่เลือก
             alert('ขออภัยค่ะ ร้านหยุดทุกวันอาทิตย์ รบกวนเลือกวันจันทร์-เสาร์ นะคะ');
         } else {
             errorText.style.display = 'none';
         }
     }
 
-    // ล็อกไม่ให้เลือกวันที่ย้อนหลัง
-    dateInput.min = new Date().toISOString().split("T")[0];
+    // 2. ล็อกไม่ให้เลือกวันที่ย้อนหลัง
+    const today = new Date().toISOString().split('T')[0];
+    dateInput.setAttribute('min', today);
 
     form.addEventListener('submit', e => {
         e.preventDefault();
         
-        if (!confirm("ยืนยันการจองและยอมรับกฎของร้านบ้าน265?")) return;
+        const rules = `⚠️ ยืนยันการจองร้านบ้าน265:\n1. เลทไม่เกิน 15 นาที\n2. เลท 30 นาทีตัดคิว\n3. ไม่คืนมัดจำทุกกรณี\n\nกดตกลงเพื่อส่งข้อมูลค่ะ`;
+        if (!confirm(rules)) return;
         
         btn.disabled = true;
         btn.innerText = 'กำลังส่งข้อมูล...';
