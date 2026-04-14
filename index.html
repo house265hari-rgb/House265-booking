@@ -13,7 +13,6 @@
         label { display: block; margin-top: 15px; font-weight: bold; color: #555; font-size: 14px; }
         input, select { width: 100%; padding: 12px; margin-top: 5px; border: 1px solid #eaded2; border-radius: 10px; box-sizing: border-box; font-size: 16px; outline: none; }
         
-        /* สไตล์สถานะคิว */
         .status-check { text-align: center; padding: 12px; border-radius: 10px; margin-top: 15px; font-weight: bold; display: none; }
         .is-available { background: #e6fffa; color: var(--success-color); border: 1px solid #b2f5ea; }
         .is-full { background: #fff5f5; color: var(--error-color); border: 1px solid #feb2b2; }
@@ -25,7 +24,6 @@
         button:disabled { background: #ccc; }
         .loading { display: none; text-align: center; color: var(--main-color); font-weight: bold; margin-top: 10px; }
 
-        /* Modal ตั๋ว */
         .modal { display: none; position: fixed; z-index: 1000; left: 0; top: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.85); align-items: center; justify-content: center; }
         .modal-content { background: #fff; padding: 30px; border-radius: 25px; width: 85%; max-width: 380px; text-align: center; border: 6px solid var(--main-color); position: relative; }
         .ticket-header { font-size: 22px; color: var(--main-color); font-weight: bold; border-bottom: 2px dashed #ddd; padding-bottom: 15px; margin-bottom: 20px; }
@@ -77,8 +75,16 @@
                     <option value="25 นิ้ว : 1.5 มัด">25 นิ้ว : 1.5 มัด</option>
                     <option value="25 นิ้ว : 2 มัด">25 นิ้ว : 2 มัด</option>
                 </optgroup>
-                <option value="ขยับปม (ปั้น+ถอด+ต่อ)">ขยับปม (ปั้น+ถอด+ต่อ)</option>
-                <option value="มีผมมาเอง (ปั้นใหม่)">มีผมมาเอง (ปั้นใหม่)</option>
+                <optgroup label="ต่อผมนาโน 30 นิ้ว">
+                    <option value="30 นิ้ว : 1 มัด">30 นิ้ว : 1 มัด</option>
+                    <option value="30 นิ้ว : 1.5 มัด">30 นิ้ว : 1.5 มัด</option>
+                    <option value="30 นิ้ว : 2 มัด">30 นิ้ว : 2 มัด</option>
+                </optgroup>
+                <optgroup label="งานบริการอื่นๆ">
+                    <option value="ขยับปม (ปั้น+ถอด+ต่อ)">ขยับปม (ปั้น+ถอด+ต่อ)</option>
+                    <option value="มีผมมาเอง (ปั้นใหม่)">มีผมมาเอง (ปั้นใหม่)</option>
+                    <option value="ถอดผมอย่างเดียว">ถอดผมอย่างเดียว</option>
+                </optgroup>
             </select>
 
             <div class="payment-area" id="paymentArea">
@@ -102,17 +108,17 @@
         <div class="ticket-item"><b>ผู้จอง:</b> <span id="res_name"></span></div>
         <div class="ticket-item"><b>วันที่:</b> <span id="res_date"></span></div>
         <div class="ticket-item"><b>เวลา:</b> <span id="res_time"></span></div>
-        <div class="ticket-item"><b>รายละเอียด:</b> <span id="res_detail"></span></div>
+        <div class="ticket-item"><b>บริการ:</b> <span id="res_detail"></span></div>
+        
         <p style="color:#e53e3e; font-weight:bold; margin-top:20px;">📸 กรุณาแคปหน้าจอเก็บไว้เป็นหลักฐาน</p>
         <button class="close-btn" onclick="location.reload()">ตกลง (กลับหน้าหลัก)</button>
     </div>
 </div>
 
 <script>
-    const scriptURL = 'https://script.google.com/macros/s/AKfycbw-o7RdM1Qov8UpWRfttRlo55mbtG9eDJU_MtgIlvgMYNjRDMnAcuyBcS0WrR418r1vqA/exec';
+    const scriptURL = 'https://script.google.com/macros/s/AKfycbzvjGS6oe62tyXvnmMNsHv7_ue-rNMsYI4SGKof7TurcsFjRTjMoTVxR9SpuaOTX-984A/exec';
     let bookedData = [];
 
-    // โหลดข้อมูลคิวที่จองแล้วทันทีที่เปิดหน้า
     window.onload = async () => {
         try {
             const response = await fetch(scriptURL);
@@ -128,7 +134,6 @@
 
         if (!dateInput || !timeInput) return;
 
-        // เช็ควันอาทิตย์
         if (new Date(dateInput).getDay() === 0) {
             statusBox.innerText = "❌ ขออภัยค่ะ ร้านหยุดวันอาทิตย์";
             statusBox.className = "status-check is-full";
@@ -137,7 +142,6 @@
             return;
         }
 
-        // เช็คความว่าง (เทียบวันที่และเวลา)
         const isFull = bookedData.some(b => b.date === dateInput && b.time === timeInput);
 
         if (isFull) {
@@ -162,6 +166,9 @@
         const btn = document.getElementById('submitBtn');
         const loading = document.getElementById('loadingText');
         
+        // เก็บค่าบริการก่อนส่ง
+        const detailValue = document.getElementById('cust_detail').value;
+        
         btn.disabled = true;
         loading.style.display = 'block';
 
@@ -173,7 +180,7 @@
             params.append('phone', document.getElementById('cust_phone').value);
             params.append('lineId', document.getElementById('cust_line').value);
             params.append('bookingType', 'ต่อผมนาโน');
-            params.append('detail', document.getElementById('cust_detail').value);
+            params.append('detail', detailValue); // ใช้ค่าที่เก็บไว้
             params.append('date', document.getElementById('cust_date').value);
             params.append('time', document.getElementById('cust_time').value);
             params.append('fileData', reader.result.split(',')[1]);
@@ -188,10 +195,12 @@
                     alert('❌ คิวนี้เพิ่งถูกจองไป รบกวนเปลี่ยนเวลาหรือวันนะคะ');
                     location.reload();
                 } else {
+                    // แสดงข้อมูลในหน้าตั๋ว
                     document.getElementById('res_name').innerText = document.getElementById('cust_name').value;
                     document.getElementById('res_date').innerText = document.getElementById('cust_date').value;
                     document.getElementById('res_time').innerText = document.getElementById('cust_time').value;
-                    document.getElementById('res_detail').innerText = document.getElementById('cust_detail').value;
+                    document.getElementById('res_detail').innerText = detailValue;
+                    
                     document.getElementById('ticketModal').style.display = 'flex';
                 }
             })
