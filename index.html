@@ -5,107 +5,94 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>จองคิวออนไลน์ - บ้าน265</title>
     <style>
-        :root { --main-color: #8d7b68; --bg-color: #fdfaf8; --error-color: #c53030; }
+        :root { --main-color: #8d7b68; --bg-color: #fdfaf8; --error-color: #c53030; --success-color: #28a745; }
         body { font-family: 'Tahoma', sans-serif; background: var(--bg-color); padding: 15px; display: flex; justify-content: center; }
         .card { background: #fff; max-width: 500px; width: 100%; padding: 25px; border-radius: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.1); }
         h2 { text-align: center; color: var(--main-color); margin-bottom: 5px; }
         .rules-box { background: #fff5f5; border: 1px solid #feb2b2; padding: 15px; border-radius: 12px; font-size: 13px; color: var(--error-color); margin-bottom: 20px; line-height: 1.6; }
         label { display: block; margin-top: 15px; font-weight: bold; color: #555; font-size: 14px; }
         input, select { width: 100%; padding: 12px; margin-top: 5px; border: 1px solid #eaded2; border-radius: 10px; box-sizing: border-box; font-size: 16px; outline: none; }
-        .qr-box { background: #fffaf0; border: 2px dashed var(--main-color); padding: 20px; text-align: center; border-radius: 20px; margin: 25px 0; }
+        
+        /* สไตล์สถานะคิว */
+        .status-check { text-align: center; padding: 12px; border-radius: 10px; margin-top: 15px; font-weight: bold; display: none; }
+        .is-available { background: #e6fffa; color: var(--success-color); border: 1px solid #b2f5ea; }
+        .is-full { background: #fff5f5; color: var(--error-color); border: 1px solid #feb2b2; }
+
+        .payment-area { display: none; margin-top: 10px; }
+        .qr-box { background: #fffaf0; border: 2px dashed var(--main-color); padding: 20px; text-align: center; border-radius: 20px; margin: 20px 0; }
         .qr-box img { width: 200px; border-radius: 10px; margin-top: 10px; }
         button { width: 100%; background: var(--main-color); color: #fff; padding: 18px; border: none; border-radius: 12px; margin-top: 25px; cursor: pointer; font-size: 18px; font-weight: bold; }
         button:disabled { background: #ccc; }
         .loading { display: none; text-align: center; color: var(--main-color); font-weight: bold; margin-top: 10px; }
 
-        /* --- สไตล์ตั๋วจอง (Modal) --- */
+        /* Modal ตั๋ว */
         .modal { display: none; position: fixed; z-index: 1000; left: 0; top: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.85); align-items: center; justify-content: center; }
         .modal-content { background: #fff; padding: 30px; border-radius: 25px; width: 85%; max-width: 380px; text-align: center; border: 6px solid var(--main-color); position: relative; }
         .ticket-header { font-size: 22px; color: var(--main-color); font-weight: bold; border-bottom: 2px dashed #ddd; padding-bottom: 15px; margin-bottom: 20px; }
         .ticket-item { text-align: left; margin: 12px 0; font-size: 16px; line-height: 1.5; border-bottom: 1px solid #f9f9f9; padding-bottom: 5px; }
         .ticket-item b { color: var(--main-color); width: 90px; display: inline-block; }
-        .cap-notice { color: #e53e3e; font-size: 14px; font-weight: bold; margin-top: 25px; padding: 12px; background: #fff5f5; border-radius: 10px; border: 1px dashed #feb2b2; }
-        .close-btn { background: var(--main-color); color: #fff; width: 100%; padding: 12px; border: none; border-radius: 10px; margin-top: 20px; cursor: pointer; font-weight: bold; }
     </style>
 </head>
 <body>
 
 <div class="card">
     <h2>จองคิวออนไลน์ - บ้าน265</h2>
-    
     <div class="rules-box">
-        <strong>⚠️ กฎกติกามารยาทร้านบ้าน265:</strong><br>
-        • ร้านหยุดทุก <b>วันอาทิตย์</b><br>
-        1. จองแล้วมาให้ตรงเวลา เลทไม่เกิน 15 นาที (เกินหักมัดจำ)<br>
-        2. เลท 30 นาที ตัดคิวทันที<br>
-        3. จองผิดวัน/เลือกวันผิด ทางร้านไม่คืนมัดจำทุกกรณีค่ะ
+        <strong>⚠️ กฎกติกามารยาท:</strong> หยุดวันอาทิตย์ | เลท 15 นาทีหักมัดจำ | จองผิดวันไม่คืนมัดจำ
     </div>
 
     <form id="bookingForm">
-        <label>ชื่อ-นามสกุล</label>
-        <input type="text" id="cust_name" placeholder="ระบุชื่อผู้จอง" required>
+        <label>1. เลือกวันที่ต้องการนัดหมาย</label>
+        <input type="date" id="cust_date" required onchange="checkBookingStatus()">
         
-        <label>เบอร์โทรศัพท์</label>
-        <input type="tel" id="cust_phone" placeholder="08x-xxxxxxx" required>
-        
-        <label>ชื่อ LINE</label>
-        <input type="text" id="cust_line" placeholder="ID Line หรือ ชื่อในไลน์" required>
-        
-        <label>รายละเอียดขนาดและจำนวนมัด</label>
-        <select id="cust_detail" required>
-            <option value="">-- เลือกขนาดและจำนวนมัด --</option>
-            <optgroup label="ต่อผมนาโน 20 นิ้ว">
-                <option value="20 นิ้ว : 1 มัด">20 นิ้ว : 1 มัด</option>
-                <option value="20 นิ้ว : 1.5 มัด">20 นิ้ว : 1.5 มัด</option>
-                <option value="20 นิ้ว : 2 มัด">20 นิ้ว : 2 มัด</option>
-                <option value="20 นิ้ว : มากกว่า 2 มัด">20 นิ้ว : มากกว่า 2 มัด</option>
-            </optgroup>
-            <optgroup label="ต่อผมนาโน 25 นิ้ว">
-                <option value="25 นิ้ว : 1 มัด">25 นิ้ว : 1 มัด</option>
-                <option value="25 นิ้ว : 1.5 มัด">25 นิ้ว : 1.5 มัด</option>
-                <option value="25 นิ้ว : 2 มัด">25 นิ้ว : 2 มัด</option>
-                <option value="25 นิ้ว : มากกว่า 2 มัด">25 นิ้ว : มากกว่า 2 มัด</option>
-            </optgroup>
-            <optgroup label="ต่อผมนาโน 30 นิ้ว">
-                <option value="30 นิ้ว : 1 มัด">30 นิ้ว : 1 มัด</option>
-                <option value="30 นิ้ว : 1.5 มัด">30 นิ้ว : 1.5 มัด</option>
-                <option value="30 นิ้ว : 2 มัด">30 นิ้ว : 2 มัด</option>
-                <option value="30 นิ้ว : มากกว่า 2 มัด">30 นิ้ว : มากกว่า 2 มัด</option>
-            </optgroup>
-            <optgroup label="ต่อผมนาโน 35 นิ้ว">
-                <option value="35 นิ้ว : 1 มัด">35 นิ้ว : 1 มัด</option>
-                <option value="35 นิ้ว : 1.5 มัด">35 นิ้ว : 1 มัดครึ่ง</option>
-                <option value="35 นิ้ว : 2 มัด">35 นิ้ว : 2 มัด</option>
-                <option value="35 นิ้ว : มากกว่า 2 มัด">35 นิ้ว : มากกว่า 2 มัด</option>
-            </optgroup>
-            <optgroup label="งานบริการอื่นๆ">
-                <option value="ขยับปม (ปั้น+ถอด+ต่อ)">ขยับปม (ปั้น+ถอด+ต่อ)</option>
-                <option value="มีผมมาเอง (ปั้นใหม่)">มีผมมาเอง (ปั้นใหม่)</option>
-                <option value="มีผมมาเอง (ไม่ปั้น)">มีผมมาเอง (ไม่ปั้น)</option>
-                <option value="ถอดผมอย่างเดียว">ถอดผมอย่างเดียว</option>
-            </optgroup>
-        </select>
-
-        <label>วันที่นัดหมาย (ร้านหยุดวันอาทิตย์)</label>
-        <input type="date" id="cust_date" required onchange="checkSunday(this)">
-        
-        <label>ช่วงเวลา</label>
-        <select id="cust_time" required>
+        <label>2. เลือกช่วงเวลา</label>
+        <select id="cust_time" required onchange="checkBookingStatus()">
+            <option value="">-- เลือกเวลา --</option>
             <option value="13.00-14.59">13.00 - 14.59 น.</option>
             <option value="15.00-17.00">15.00 - 17.00 น.</option>
         </select>
 
-        <div class="qr-box">
-            <p><strong>มัดจำ 500 บาท</strong></p>
-            <img src="att.8Sn_yZRe9NxRT7e82xRROxZGprBrwV_hRbURzB6XKpo.jpeg">
-            <p style="font-size: 11px; color: #888; margin-top: 5px;">*โปรดแนบสลิปหลังโอนเงิน*</p>
+        <div id="statusBox" class="status-check"></div>
+
+        <div id="infoSection" style="display:none;">
+            <label>ชื่อ-นามสกุล</label>
+            <input type="text" id="cust_name" placeholder="ระบุชื่อผู้จอง" required>
+            
+            <label>เบอร์โทรศัพท์</label>
+            <input type="tel" id="cust_phone" placeholder="08x-xxxxxxx" required>
+            
+            <label>ชื่อ LINE</label>
+            <input type="text" id="cust_line" placeholder="ID Line หรือ ชื่อในไลน์" required>
+            
+            <label>รายละเอียดขนาดและจำนวนมัด</label>
+            <select id="cust_detail" required>
+                <option value="">-- เลือกขนาดและจำนวนมัด --</option>
+                <optgroup label="ต่อผมนาโน 20 นิ้ว">
+                    <option value="20 นิ้ว : 1 มัด">20 นิ้ว : 1 มัด</option>
+                    <option value="20 นิ้ว : 1.5 มัด">20 นิ้ว : 1.5 มัด</option>
+                    <option value="20 นิ้ว : 2 มัด">20 นิ้ว : 2 มัด</option>
+                </optgroup>
+                <optgroup label="ต่อผมนาโน 25 นิ้ว">
+                    <option value="25 นิ้ว : 1 มัด">25 นิ้ว : 1 มัด</option>
+                    <option value="25 นิ้ว : 1.5 มัด">25 นิ้ว : 1.5 มัด</option>
+                    <option value="25 นิ้ว : 2 มัด">25 นิ้ว : 2 มัด</option>
+                </optgroup>
+                <option value="ขยับปม (ปั้น+ถอด+ต่อ)">ขยับปม (ปั้น+ถอด+ต่อ)</option>
+                <option value="มีผมมาเอง (ปั้นใหม่)">มีผมมาเอง (ปั้นใหม่)</option>
+            </select>
+
+            <div class="payment-area" id="paymentArea">
+                <div class="qr-box">
+                    <p><strong>💰 มัดจำ 500 บาท</strong></p>
+                    <img src="att.8Sn_yZRe9NxRT7e82xRROxZGprBrwV_hRbURzB6XKpo.jpeg">
+                    <p style="font-size: 11px; color: #888; margin-top: 5px;">*โปรดโอนเงินแล้วแนบสลิปด้านล่าง*</p>
+                </div>
+                <label>แนบสลิปโอนเงิน</label>
+                <input type="file" id="fileInput" accept="image/*" required>
+                <button type="submit" id="submitBtn">ยืนยันการจองคิว</button>
+            </div>
         </div>
-
-        <label>แนบสลิปโอนเงิน</label>
-        <input type="file" id="fileInput" accept="image/*" required>
-
-        <button type="submit" id="submitBtn">ยืนยันการจองคิว</button>
-        <div id="loadingText" class="loading">กำลังเช็คคิวว่างและบันทึกข้อมูล...</div>
+        <div id="loadingText" class="loading">กำลังตรวจสอบข้อมูล...</div>
     </form>
 </div>
 
@@ -116,33 +103,64 @@
         <div class="ticket-item"><b>วันที่:</b> <span id="res_date"></span></div>
         <div class="ticket-item"><b>เวลา:</b> <span id="res_time"></span></div>
         <div class="ticket-item"><b>รายละเอียด:</b> <span id="res_detail"></span></div>
-        
-        <div class="cap-notice">📸 กรุณาแคปหน้าจอนี้ไว้<br>เพื่อเป็นหลักฐานยืนยันกับทางร้าน</div>
-        
+        <p style="color:#e53e3e; font-weight:bold; margin-top:20px;">📸 กรุณาแคปหน้าจอเก็บไว้เป็นหลักฐาน</p>
         <button class="close-btn" onclick="location.reload()">ตกลง (กลับหน้าหลัก)</button>
     </div>
 </div>
 
 <script>
-    const scriptURL = 'https://script.google.com/macros/s/AKfycbzvjGS6oe62tyXvnmMNsHv7_ue-rNMsYI4SGKof7TurcsFjRTjMoTVxR9SpuaOTX-984A/exec';
-    
-    const form = document.getElementById('bookingForm');
-    const btn = document.getElementById('submitBtn');
-    const loading = document.getElementById('loadingText');
+    const scriptURL = 'https://script.google.com/macros/s/AKfycbw-o7RdM1Qov8UpWRfttRlo55mbtG9eDJU_MtgIlvgMYNjRDMnAcuyBcS0WrR418r1vqA/exec';
+    let bookedData = [];
 
-    function checkSunday(input) {
-        const date = new Date(input.value);
-        if (date.getUTCDay() === 0) {
-            alert('❌ ขออภัยค่ะ ร้านบ้าน265 หยุดทุกวันอาทิตย์ รบกวนเลือกวันจันทร์-เสาร์ นะคะ');
-            input.value = '';
+    // โหลดข้อมูลคิวที่จองแล้วทันทีที่เปิดหน้า
+    window.onload = async () => {
+        try {
+            const response = await fetch(scriptURL);
+            bookedData = await response.json();
+        } catch (e) { console.log("ยังไม่มีข้อมูลการจอง"); }
+    };
+
+    function checkBookingStatus() {
+        const dateInput = document.getElementById('cust_date').value;
+        const timeInput = document.getElementById('cust_time').value;
+        const statusBox = document.getElementById('statusBox');
+        const infoSection = document.getElementById('infoSection');
+
+        if (!dateInput || !timeInput) return;
+
+        // เช็ควันอาทิตย์
+        if (new Date(dateInput).getDay() === 0) {
+            statusBox.innerText = "❌ ขออภัยค่ะ ร้านหยุดวันอาทิตย์";
+            statusBox.className = "status-check is-full";
+            statusBox.style.display = "block";
+            infoSection.style.display = "none";
+            return;
+        }
+
+        // เช็คความว่าง (เทียบวันที่และเวลา)
+        const isFull = bookedData.some(b => b.date === dateInput && b.time === timeInput);
+
+        if (isFull) {
+            statusBox.innerText = "❌ ขออภัยค่ะ คิวเวลานี้เต็มแล้ว";
+            statusBox.className = "status-check is-full";
+            statusBox.style.display = "block";
+            infoSection.style.display = "none";
+        } else {
+            statusBox.innerText = "✅ คิวว่าง สามารถจองได้ค่ะ";
+            statusBox.className = "status-check is-available";
+            statusBox.style.display = "block";
+            infoSection.style.display = "block";
+            document.getElementById('paymentArea').style.display = "block";
         }
     }
 
     document.getElementById('cust_date').setAttribute('min', new Date().toISOString().split('T')[0]);
 
+    const form = document.getElementById('bookingForm');
     form.addEventListener('submit', e => {
         e.preventDefault();
-        if (!confirm("ยืนยันการจองร้านบ้าน265? (ข้อมูลถูกต้องและโอนมัดจำแล้ว)")) return;
+        const btn = document.getElementById('submitBtn');
+        const loading = document.getElementById('loadingText');
         
         btn.disabled = true;
         loading.style.display = 'block';
@@ -167,22 +185,19 @@
             .then(response => {
                 loading.style.display = 'none';
                 if (response.trim() === "Full") {
-                    alert('❌ ขออภัยค่ะ เวลานี้มีลูกค้าจองไปแล้ว รบกวนเปลี่ยนช่วงเวลาหรือวันที่นะคะ');
-                    btn.disabled = false;
+                    alert('❌ คิวนี้เพิ่งถูกจองไป รบกวนเปลี่ยนเวลาหรือวันนะคะ');
+                    location.reload();
                 } else {
-                    // ดึงค่ามาโชว์บนตั๋ว
                     document.getElementById('res_name').innerText = document.getElementById('cust_name').value;
                     document.getElementById('res_date').innerText = document.getElementById('cust_date').value;
                     document.getElementById('res_time').innerText = document.getElementById('cust_time').value;
                     document.getElementById('res_detail').innerText = document.getElementById('cust_detail').value;
-                    
-                    // แสดงตั๋ว
                     document.getElementById('ticketModal').style.display = 'flex';
                 }
             })
             .catch(() => {
                 loading.style.display = 'none';
-                alert('ส่งข้อมูลเรียบร้อยแล้วค่ะ!');
+                alert('จองสำเร็จ! แล้วเจอกันที่ร้านบ้าน265 นะคะ');
                 location.reload();
             });
         };
