@@ -70,8 +70,7 @@
             <div class="payment-area" id="paymentArea">
                 <div class="qr-box">
                     <p><strong>💰 มัดจำ 500 บาท</strong></p>
-                    <img src="att.8Sn_yZRe9NxRT7e82xRROxZGprBrwV_hRbURzB6XKpo.jpeg">
-                    <p style="font-size: 11px; color: #888; margin-top: 5px;">*โปรดโอนเงินแล้วแนบสลิปด้านล่าง*</p>
+                    <img src="https://lh3.googleusercontent.com/d/1X_yZRe9NxRT7e82xRROxZGprBrwV_hRb"> <p style="font-size: 11px; color: #888; margin-top: 5px;">*โปรดโอนเงินแล้วแนบสลิปด้านล่าง*</p>
                 </div>
                 <label>แนบสลิปโอนเงิน</label>
                 <input type="file" id="fileInput" accept="image/*" required>
@@ -96,7 +95,7 @@
 </div>
 
 <script>
-    // ลิงก์ใหม่ที่คุณส่งมา
+    // อัปเดตลิงก์ใหม่ของคุณที่นี่
     const scriptURL = 'https://script.google.com/macros/s/AKfycbyA5FdNBdEXhmyhyxZ4LdOkKZpvQmAcRtqlPjW2MriDwkHxBwyDiU47NHL60dBZglT9iQ/exec';
     let bookedData = [];
 
@@ -105,14 +104,16 @@
             const response = await fetch(scriptURL);
             const resData = await response.json();
             
-            // แยกข้อมูลคิวที่จองแล้ว และ ข้อมูลสต็อก
             bookedData = resData.bookings || [];
             const stockData = resData.stocks || [];
             
             const detailSelect = document.getElementById('cust_detail');
             detailSelect.innerHTML = '<option value="">-- เลือกขนาดและจำนวนมัด --</option>';
             
-            // สร้างรายการตัวเลือกอัตโนมัติจากสต็อกใน Google Sheets
+            if (stockData.length === 0) {
+                detailSelect.innerHTML = '<option value="">❌ ไม่พบข้อมูลสต็อก</option>';
+            }
+
             stockData.forEach(item => {
                 const option = document.createElement('option');
                 option.value = item.name;
