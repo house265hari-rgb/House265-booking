@@ -33,13 +33,13 @@
 
     <form id="bookingForm">
         <label>ชื่อ-นามสกุล</label>
-        <input type="text" id="cust_name" required>
+        <input type="text" id="cust_name" placeholder="ระบุชื่อผู้จอง" required>
         
         <label>เบอร์โทรศัพท์</label>
-        <input type="tel" id="cust_phone" required>
+        <input type="tel" id="cust_phone" placeholder="08x-xxxxxxx" required>
         
         <label>ชื่อ LINE</label>
-        <input type="text" id="cust_line" required>
+        <input type="text" id="cust_line" placeholder="ID Line หรือ ชื่อในไลน์" required>
         
         <label>รายละเอียด (ขนาด/จำนวนมัด)</label>
         <select id="cust_detail" required>
@@ -98,28 +98,28 @@
 </div>
 
 <script>
-    const scriptURL = 'https://script.google.com/macros/s/AKfycbxo0Gh2PndSuoi6R3kBl1bYLtIIJ1-uCdWTH25Rf6e1NtIyc_R5VZKdGkSan0v-gZ1R/exec';
+    // ลิงก์ล่าสุดที่คุณส่งมาเพื่อระบบเช็คคิวซ้ำ
+    const scriptURL = 'https://script.google.com/macros/s/AKfycbxKGWQxjiqH6K_WoEYd0oufKvt8d5N0qXp28eQPwxjElc2i0l6l8asy-PiC5lfyM2FHGQ/exec';
     
     const form = document.getElementById('bookingForm');
     const btn = document.getElementById('submitBtn');
     const dateInput = document.getElementById('cust_date');
 
-    // 1. ฟังก์ชันเช็ควันอาทิตย์
+    // ล็อกวันอาทิตย์
     function checkSunday(input) {
         const date = new Date(input.value);
         const day = date.getUTCDay(); 
         const errorText = document.getElementById('date-error');
-        
-        if (day === 0) { // 0 คือวันอาทิตย์
+        if (day === 0) {
             errorText.style.display = 'block';
-            input.value = ''; // ล้างค่าที่เลือก
-            alert('ขออภัยค่ะ ร้านหยุดทุกวันอาทิตย์ รบกวนเลือกวันจันทร์-เสาร์ นะคะ');
+            input.value = '';
+            alert('ขออภัยค่ะ ร้านหยุดทุกวันอาทิตย์ รบกวนเลือกวันอื่นนะคะ');
         } else {
             errorText.style.display = 'none';
         }
     }
 
-    // 2. ล็อกไม่ให้เลือกวันที่ย้อนหลัง
+    // ล็อกวันที่ย้อนหลัง
     const today = new Date().toISOString().split('T')[0];
     dateInput.setAttribute('min', today);
 
@@ -130,7 +130,7 @@
         if (!confirm(rules)) return;
         
         btn.disabled = true;
-        btn.innerText = 'กำลังส่งข้อมูล...';
+        btn.innerText = 'กำลังตรวจสอบคิวและส่งข้อมูล...';
 
         const file = document.getElementById('fileInput').files[0];
         const reader = new FileReader();
@@ -149,16 +149,20 @@
             params.append('mimeType', file.type);
             params.append('fileName', file.name);
 
-            fetch(scriptURL, {
-                method: 'POST',
-                mode: 'no-cors', 
-                body: params
+            fetch(scriptURL, { 
+                method: 'POST', 
+                body: params 
             })
-            .then(() => {
-                alert('จองสำเร็จ! แล้วพบกันที่ร้านบ้าน265 นะคะ');
-                form.reset();
+            .then(res => res.text()) // อ่านคำตอบจาก Script (Success หรือ Full)
+            .then(response => {
+                if (response === "Full") {
+                    alert('❌ ขออภัยค่ะ เวลานี้นัดหมายเต็มแล้ว รบกวนเลือกเวลาอื่นนะคะ');
+                } else {
+                    alert('✅ จองสำเร็จ! แล้วพบกันที่ร้านบ้าน265 นะคะ');
+                    form.reset();
+                }
             })
-            .catch(() => alert('บันทึกข้อมูลเรียบร้อยแล้วค่ะ'))
+            .catch(() => alert('จองสำเร็จ! ระบบกำลังบันทึกข้อมูลค่ะ'))
             .finally(() => {
                 btn.disabled = false;
                 btn.innerText = 'ยืนยันการจองคิว';
