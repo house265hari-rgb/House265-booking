@@ -106,47 +106,53 @@
             text-transform: uppercase;
             letter-spacing: 2px;
             color: var(--gold);
-            margin-bottom: 10px;
+            margin-bottom: 12px;
             display: block;
             font-weight: 500;
             margin-top: 30px;
         }
 
-        .date-input-wrapper {
-            position: relative;
-        }
-        
+        /* ปรับปรุง Input ให้มีกรอบชัดเจน */
         input[type="date"], input[type="text"], input[type="tel"], select { 
             width: 100%; 
-            padding: 15px 0; 
-            border: none;
-            border-bottom: 1px solid var(--border); 
-            background: transparent;
+            padding: 15px 15px; 
+            border: 1px solid #d0d0d0; /* ใส่กรอบชัดๆ */
+            background: #fff;
             font-size: 16px; 
             font-family: 'Kanit', sans-serif;
             transition: 0.3s;
-            border-radius: 0;
+            border-radius: 4px; /* มนเล็กน้อยให้ดูทันสมัย */
             outline: none;
             color: var(--black);
+            box-sizing: border-box;
+            margin-bottom: 10px;
+            box-shadow: inset 0 1px 3px rgba(0,0,0,0.02);
         }
 
+        /* เน้นพิเศษที่ช่องวันที่ */
         input[type="date"] {
             font-weight: 500;
             cursor: pointer;
+            border: 1.5px solid var(--gold); /* สีทองจางๆ ให้รู้ว่าเป็นจุดเริ่ม */
+            background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="%23c5a059" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>');
+            background-repeat: no-repeat;
+            background-position: calc(100% - 12px) center;
         }
 
         input:focus, select:focus { 
-            border-bottom: 1px solid var(--gold);
+            border-color: var(--black);
+            box-shadow: 0 0 0 3px rgba(197, 160, 89, 0.1);
         }
 
         .status-check { 
             text-align: center; 
             padding: 15px; 
-            margin-top: 20px; 
+            margin: 20px 0; 
             font-size: 13px;
             font-weight: 400; 
             display: none;
             letter-spacing: 1px;
+            border-radius: 4px;
         }
         .is-available { color: #2d6a4f; background: #f0fdf4; border: 1px solid #dcfce7; }
         .is-full { color: #a4161a; background: #fff5f5; border: 1px solid #fee2e2; }
@@ -157,6 +163,7 @@
             margin-bottom: 30px; 
             border: 1px solid var(--border);
             padding: 30px;
+            background: #fff;
         }
         .qr-box p { font-size: 14px; letter-spacing: 1px; margin-bottom: 20px; font-weight: 500; }
         .qr-box img { width: 180px; filter: grayscale(100%); transition: 0.5s; }
@@ -174,7 +181,7 @@
             background: var(--black); 
             color: var(--white); 
             padding: 20px; 
-            border: 1px solid var(--black);
+            border: none;
             cursor: pointer; 
             font-size: 14px; 
             font-weight: 400; 
@@ -182,15 +189,13 @@
             font-family: 'Kanit', sans-serif;
             text-transform: uppercase;
             letter-spacing: 3px;
-            margin-top: 30px;
+            margin-top: 20px;
         }
         button:hover { 
-            background: var(--white); 
-            color: var(--black);
+            background: var(--gold-dark); 
         }
         button:disabled { 
             background: #eee; 
-            border-color: #eee; 
             color: #aaa; 
             cursor: not-allowed; 
         }
@@ -283,10 +288,8 @@
     </div>
 
     <form id="bookingForm">
-        <span class="step-label">01 / เลือกวันจองคิว (หยุดวันอาทิตย์)</span>
-        <div class="date-input-wrapper">
-            <input type="date" id="cust_date" required onchange="checkBookingStatus()">
-        </div>
+        <span class="step-label">01 / เลือกวันที่ต้องการจอง</span>
+        <input type="date" id="cust_date" required onchange="checkBookingStatus()">
         
         <select id="cust_time" required onchange="checkBookingStatus()">
             <option value="">เลือกช่วงเวลา</option>
@@ -316,7 +319,7 @@
                     </div>
                 </div>
                 <span class="step-label">แนบหลักฐานการโอนเงิน</span>
-                <input type="file" id="fileInput" accept="image/*" required>
+                <input type="file" id="fileInput" accept="image/*" required style="border:none; padding:10px 0;">
                 <button type="submit" id="submitBtn">ยืนยันการจองคิว</button>
             </div>
         </div>
@@ -337,11 +340,9 @@
             <p>รายการ: <b id="res_detail"></b></p>
             <p>สถานะ: <b style="color:var(--gold-dark);">ยืนยันแล้ว (มัดจำครบถ้วน)</b></p>
         </div>
-
         <div class="screenshot-reminder">
             กรุณา "บันทึกภาพหน้าจอ" นี้ไว้<br>เพื่อใช้เป็นหลักฐานยืนยันในการเข้าใช้บริการ
         </div>
-
         <div class="contact-info">
             ได้รับคิวแน่นอนค่ะ กรุณามาให้ตรงตามเวลานัดหมาย<br>
             หากติดธุระหรือต้องการเลื่อนคิว ติดต่อเบอร์ <b>096-056-4585</b>
@@ -353,6 +354,7 @@
 </div>
 
 <script>
+    // Script ส่วนเดิมทั้งหมด
     const scriptURL = 'https://script.google.com/macros/s/AKfycbzRdlkvgjQtaZHxgTVpOw59zqW0nS9KpzrBVxj3XrJKt4Aq7SfSQMa5s8-w2FlzuFSusw/exec';
     let bookedData = [];
     let stockData = {};
