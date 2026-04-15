@@ -212,6 +212,23 @@
         }
         .ticket-row span { color: #888; }
         .ticket-row b { color: var(--gold-light); }
+
+        .price-summary {
+            margin-top: 20px;
+            padding: 15px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 8px;
+            border: 1px solid #333;
+        }
+
+        .final-price-box {
+            text-align: center;
+            margin-top: 15px;
+            padding: 15px;
+            background: rgba(212, 175, 55, 0.1);
+            border: 1px solid var(--gold);
+            border-radius: 4px;
+        }
         
         .screenshot-info {
             background: rgba(212, 175, 55, 0.1);
@@ -301,7 +318,18 @@
             <div class="ticket-row"><span>วันที่นัดหมาย</span> <b id="res_date"></b></div>
             <div class="ticket-row"><span>เวลา</span> <b id="res_time"></b></div>
             <div class="ticket-row"><span>รายการ</span> <b id="res_detail"></b></div>
-            <div class="ticket-row"><span>สถานะ</span> <b style="color:#81c784;">ยืนยันการจองเรียบร้อย</b></div>
+
+            <div class="price-summary">
+                <div class="ticket-row"><span>ราคาปกติ</span> <b id="res_full_price"></b></div>
+                <div class="ticket-row"><span>ชำระมัดจำแล้ว</span> <b style="color:#81c784;">- 1,000 THB</b></div>
+                <div class="ticket-row" id="coupon_row" style="display:none;">
+                    <span>คูปองส่วนลดพิเศษ</span> <b style="color:#ff4d4d;" id="res_coupon"></b>
+                </div>
+                <div class="final-price-box">
+                    <span style="font-size: 11px; color: var(--gold-light); display: block; margin-bottom: 5px;">ยอดคงเหลือจ่ายหน้าร้าน</span>
+                    <b style="font-size: 22px; color: #fff;" id="res_final_price"></b>
+                </div>
+            </div>
         </div>
         
         <div class="screenshot-info">
@@ -309,14 +337,25 @@
         </div>
 
         <div class="ticket-footer">
-            หากมีปัญหา/ต้องการเลื่อนคิว/ปรึกษาเพิ่มเติม<br>
-            ติดต่อโดยตรงที่เบอร์ <b style="color:var(--gold);">096-056-4585</b><br><br>
+            รับชำระแบบ: สแกน / เงินสด / บัตรเครดิต / SPayLater<br>
+            หากมีปัญหา/ต้องการเลื่อนคิว ติดต่อ <b style="color:var(--gold);">096-056-4585</b><br><br>
             <button onclick="location.reload()" style="padding: 10px; font-size: 12px;">เสร็จสิ้น</button>
         </div>
     </div>
 </div>
 
 <script>
+    // --- ฐานราคาตามที่คุณกำหนด ---
+    const priceList = {
+        "20นิ้ว": 2600,
+        "25นิ้ว": 2900,
+        "30นิ้ว": 3600,
+        "35นิ้ว": 3990,
+        "40นิ้ว": 4600,
+        "45นิ้ว": 5200,
+        "ขยับปมขนนก": 1500
+    };
+
     const scriptURL = 'https://script.google.com/macros/s/AKfycbz-CPQEWPTRuhHgF-9h9XoViSBKXvF_trswiBvn9zEukI9mhlpfsADyS9la21fOLv0/exec';
     let bookedData = [];
     let stockData = {};
@@ -365,24 +404,17 @@
     function renderStockOptions() {
         const select = document.getElementById('cust_detail');
         select.innerHTML = '<option value="">เลือกขนาดและจำนวนมัด</option>';
-        const sizes = ["20นิ้ว", "25นิ้ว", "30นิ้ว", "35นิ้ว", "40นิ้ว", "45นิ้ว"];
-        const amounts = ["1 มัด", "1.5 มัด", "2 มัด", "2.5 มัด", "3 มัด"];
+        const sizes = Object.keys(priceList).filter(s => s !== "ขยับปมขนนก");
+        const amounts = ["1 มัด", "1.5 มัด", "2 มัด", "3 มัด"];
 
         sizes.forEach(size => {
             const group = document.createElement('optgroup');
             group.label = `PREMIUM FEATHER: ${size}`;
             amounts.forEach(amtText => {
-                const amtValue = parseFloat(amtText);
                 const label = `${size} : ${amtText}`;
-                const currentStock = stockData[size] || 0;
                 const opt = document.createElement('option');
                 opt.value = label;
-                if (currentStock < amtValue) {
-                    opt.innerText = `${label} (OUT OF STOCK)`;
-                    opt.disabled = true;
-                } else {
-                    opt.innerText = label;
-                }
+                opt.innerText = label;
                 group.appendChild(opt);
             });
             select.appendChild(group);
@@ -419,6 +451,29 @@
         btn.disabled = true;
         btn.innerText = "PROCESSING VIP BOOKING...";
 
+        const detail = document.getElementById('cust_detail').value;
+        const time = document.getElementById('cust_time').value;
+
+        // --- ระบบคำนวณราคา & ส่วนลดอัตโนมัติ ---
+        let basePrice = 0, multiplier = 1, coupon = 0, extra = 0;
+
+        if (detail === "ขยับปมขนนก") {
+            basePrice = priceList["ขยับปมขนนก"];
+        } else {
+            const parts = detail.split(" : ");
+            basePrice = priceList[parts[0]];
+            multiplier = parseFloat(parts[1]);
+            // เงื่อนไขส่วนลด
+            if (parts[1] === "1.5 มัด") coupon = 500;
+            if (parts[1] === "2 มัด" || parts[1] === "3 มัด") coupon = 1300;
+        }
+
+        if (time.includes("+400")) extra = 400;
+
+        const totalPrice = (basePrice * multiplier) + extra;
+        const deposit = 1000;
+        const finalPrice = totalPrice - deposit - coupon;
+
         const file = document.getElementById('fileInput').files[0];
         const reader = new FileReader();
         reader.onload = function() {
@@ -427,31 +482,34 @@
             params.append('phone', document.getElementById('cust_phone').value);
             params.append('lineId', document.getElementById('cust_line').value);
             params.append('bookingType', 'ต่อผมขนนก');
-            params.append('detail', document.getElementById('cust_detail').value);
+            params.append('detail', detail);
             params.append('date', document.getElementById('cust_date').value);
-            params.append('time', document.getElementById('cust_time').value);
+            params.append('time', time);
             params.append('fileData', reader.result.split(',')[1]);
             params.append('mimeType', file.type);
             params.append('fileName', file.name);
 
             fetch(scriptURL, { method: 'POST', body: params })
-            .then(res => res.text())
-            .then(result => {
-                if(result === "AlreadyBooked") {
-                    alert("คิวนี้ถูกจองไปแล้วค่ะ");
-                    location.reload();
+            .then(() => {
+                // อัปเดตข้อมูลบน Ticket
+                document.getElementById('res_name').innerText = document.getElementById('cust_name').value;
+                document.getElementById('res_date').innerText = document.getElementById('cust_date').value;
+                document.getElementById('res_time').innerText = time;
+                document.getElementById('res_detail').innerText = detail;
+                
+                document.getElementById('res_full_price').innerText = totalPrice.toLocaleString() + " THB";
+                
+                if(coupon > 0) {
+                    document.getElementById('coupon_row').style.display = 'flex';
+                    document.getElementById('res_coupon').innerText = "- " + coupon.toLocaleString() + " THB";
                 } else {
-                    document.getElementById('res_name').innerText = document.getElementById('cust_name').value;
-                    document.getElementById('res_date').innerText = document.getElementById('cust_date').value;
-                    document.getElementById('res_time').innerText = document.getElementById('cust_time').value;
-                    document.getElementById('res_detail').innerText = document.getElementById('cust_detail').value;
-                    document.getElementById('ticketModal').style.display = 'flex';
+                    document.getElementById('coupon_row').style.display = 'none';
                 }
+
+                document.getElementById('res_final_price').innerText = finalPrice.toLocaleString() + " THB";
+                document.getElementById('ticketModal').style.display = 'flex';
             })
-            .catch(() => {
-                alert('จองสำเร็จแล้ว (ตรวจสอบในชีท)');
-                location.reload();
-            });
+            .catch(() => alert('เกิดข้อผิดพลาดในการจอง'));
         };
         reader.readAsDataURL(file);
     };
