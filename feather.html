@@ -187,57 +187,17 @@
             border-radius: 12px;
             overflow: hidden;
         }
-        .ticket-top {
-            background: linear-gradient(45deg, var(--gold-dark), var(--gold-light));
-            padding: 20px;
-            color: #000;
-        }
+        .ticket-top { background: linear-gradient(45deg, var(--gold-dark), var(--gold-light)); padding: 20px; color: #000; }
         .ticket-top h3 { margin: 0; font-family: 'Playfair Display', serif; letter-spacing: 4px; font-size: 22px; }
         .ticket-content { padding: 40px 30px; text-align: left; }
-        .ticket-row { 
-            display: flex; 
-            justify-content: space-between; 
-            border-bottom: 1px solid #222; 
-            padding: 12px 0; 
-            font-size: 14px;
-        }
+        .ticket-row { display: flex; justify-content: space-between; border-bottom: 1px solid #222; padding: 12px 0; font-size: 14px; }
         .ticket-row span { color: #888; }
         .ticket-row b { color: var(--gold-light); }
 
-        .price-summary {
-            margin-top: 20px;
-            padding: 15px;
-            background: rgba(255, 255, 255, 0.05);
-            border-radius: 8px;
-            border: 1px solid #333;
-        }
-
-        .final-price-box {
-            text-align: center;
-            margin-top: 15px;
-            padding: 15px;
-            background: rgba(212, 175, 55, 0.1);
-            border: 1px solid var(--gold);
-            border-radius: 4px;
-        }
-        
-        .screenshot-info {
-            background: rgba(212, 175, 55, 0.1);
-            color: var(--gold);
-            padding: 15px;
-            font-size: 12px;
-            margin: 20px 30px;
-            border: 1px dashed var(--gold);
-            border-radius: 4px;
-            text-align: center;
-        }
-
-        .ticket-footer {
-            padding: 20px 30px 40px;
-            font-size: 11px;
-            color: #666;
-            text-align: center;
-        }
+        .price-summary { margin-top: 20px; padding: 15px; background: rgba(255, 255, 255, 0.05); border-radius: 8px; border: 1px solid #333; }
+        .final-price-box { text-align: center; margin-top: 15px; padding: 15px; background: rgba(212, 175, 55, 0.1); border: 1px solid var(--gold); border-radius: 4px; }
+        .screenshot-info { background: rgba(212, 175, 55, 0.1); color: var(--gold); padding: 15px; font-size: 12px; margin: 20px 30px; border: 1px dashed var(--gold); border-radius: 4px; text-align: center; }
+        .ticket-footer { padding: 20px 30px 40px; font-size: 11px; color: #666; text-align: center; }
     </style>
 </head>
 <body>
@@ -251,10 +211,9 @@
     <div class="rules-box">
         <strong>TERMS & CONDITIONS</strong>
         <ul class="rules-list">
-            <li>กรุณาแจ้งรายละเอียดให้ครบถ้วนเพื่อความรวดเร็ว</li>
             <li>ยกเลิกคิว จองผิดวัน หรือผิดแบบ ไม่คืนมัดจำทุกกรณี</li>
-            <li>เลื่อนคิวล่วงหน้า 5 วัน ไม่มีค่าธรรมเนียมการเลื่อน</li>
-            <li>มาสายได้ไม่เกิน 15 นาที หากเกินขอสงวนสิทธิ์หักมัดจำ</li>
+            <li>เลื่อนคิวล่วงหน้า 5 วัน ไม่มีค่าธรรมเนียม</li>
+            <li>มาสายได้ไม่เกิน 15 นาที</li>
         </ul>
     </div>
 
@@ -298,15 +257,15 @@
         </div>
         <div class="ticket-content">
             <div class="ticket-row"><span>ชื่อผู้จอง</span> <b id="res_name"></b></div>
-            <div class="ticket-row"><span>วันที่นัดหมาย</span> <b id="res_date"></b></div>
+            <div class="ticket-row"><span>วันที่</span> <b id="res_date"></b></div>
             <div class="ticket-row"><span>เวลา</span> <b id="res_time"></b></div>
             <div class="ticket-row"><span>รายการ</span> <b id="res_detail"></b></div>
 
             <div class="price-summary">
                 <div class="ticket-row"><span>ราคาปกติ</span> <b id="res_full_price"></b></div>
-                <div class="ticket-row"><span>ชำระมัดจำแล้ว</span> <b style="color:#81c784;">- 1,000 THB</b></div>
+                <div class="ticket-row"><span>มัดจำแล้ว</span> <b style="color:#81c784;">- 1,000 THB</b></div>
                 <div class="ticket-row" id="coupon_row" style="display:none;">
-                    <span>คูปองส่วนลดพิเศษ</span> <b style="color:#ff4d4d;" id="res_coupon"></b>
+                    <span>ส่วนลดพิเศษ</span> <b style="color:#ff4d4d;" id="res_coupon"></b>
                 </div>
                 <div class="final-price-box">
                     <span style="font-size: 11px; color: var(--gold-light); display: block;">ยอดคงเหลือจ่ายหน้าร้าน</span>
@@ -323,13 +282,8 @@
 </div>
 
 <script>
-    const scriptURL = 'https://script.google.com/macros/s/AKfycbyaJ7XBDXGU8f00T2NPq-qMef30RA-f8nAwdZGVqTks32ZhJFo9x5F1zm6h47qiaj7/exec';
-    
-    const priceList = {
-        "20นิ้ว": 2600, "25นิ้ว": 2900, "30นิ้ว": 3600,
-        "35นิ้ว": 3990, "40นิ้ว": 4600, "45นิ้ว": 5200, "ขยับปมขนนก": 1500
-    };
-
+    const scriptURL = 'https://script.google.com/macros/s/AKfycbzyaJ7XBDXGU8f00T2NPq-qMef30RA-f8nAwdZGVqTks32ZhJFo9x5F1zm6h47qiaj7/exec';
+    const priceList = { "20นิ้ว": 2600, "25นิ้ว": 2900, "30นิ้ว": 3600, "35นิ้ว": 3990, "40นิ้ว": 4600, "45นิ้ว": 5200, "ขยับปมขนนก": 1500 };
     let bookedData = [], stockData = {};
 
     window.onload = async () => {
@@ -340,7 +294,7 @@
             stockData = res.stocks || {};
             renderStockOptions();
         } catch (e) {
-            document.getElementById('cust_detail').innerHTML = '<option>Connection Error</option>';
+            document.getElementById('cust_detail').innerHTML = '<option>ไม่สามารถดึงข้อมูลได้</option>';
         }
     };
 
@@ -372,17 +326,10 @@
         sizes.forEach(size => {
             const group = document.createElement('optgroup');
             group.label = `PREMIUM FEATHER: ${size}`;
-            const currentStock = parseFloat(stockData[size]) || 0;
             amounts.forEach(amtText => {
-                const amtValue = parseFloat(amtText);
                 const opt = document.createElement('option');
                 opt.value = `${size} : ${amtText}`;
-                if (currentStock < amtValue) {
-                    opt.innerText = `${size} : ${amtText} (ของหมดชั่วคราว)`;
-                    opt.disabled = true;
-                } else {
-                    opt.innerText = `${size} : ${amtText}`;
-                }
+                opt.innerText = `${size} : ${amtText}`;
                 group.appendChild(opt);
             });
             select.appendChild(group);
@@ -413,17 +360,18 @@
     document.getElementById('bookingForm').onsubmit = e => {
         e.preventDefault();
         const btn = document.getElementById('submitBtn');
-        btn.disabled = true; btn.innerText = "PROCESSING...";
+        btn.disabled = true; btn.innerText = "กำลังบันทึกข้อมูล...";
 
         const detail = document.getElementById('cust_detail').value;
         const time = document.getElementById('cust_time').value;
 
         let basePrice = 0, multiplier = 1, coupon = 0, extra = 0;
-        if (detail === "ขยับปมขนนก") { basePrice = priceList["ขยับปมขนนก"]; }
-        else {
+        if (detail === "ขยับปมขนนก") { 
+            basePrice = priceList["ขยับปมขนนก"]; 
+        } else {
             const parts = detail.split(" : ");
             basePrice = priceList[parts[0]];
-            multiplier = parseFloat(parts[1]);
+            multiplier = parseFloat(parts[1]); // ดึงตัวเลขจาก "1 มัด", "1.5 มัด"
             if (parts[1] === "1.5 มัด") coupon = 500;
             if (parts[1] === "2 มัด" || parts[1] === "3 มัด") coupon = 1300;
         }
@@ -450,7 +398,8 @@
             fetch(scriptURL, { method: 'POST', body: params })
             .then(res => res.text())
             .then(result => {
-                if(result === "OutOfStock") { alert("ขออภัย สินค้าหมดกะทันหัน กรุณาเลือกรายการอื่น"); location.reload(); return; }
+                if(result === "AlreadyBooked") { alert("ขออภัย คิวนี้เพิ่งถูกจองไปเมื่อครู่"); location.reload(); return; }
+                if(result === "OutOfStock") { alert("ขออภัย สินค้าในสต็อกไม่เพียงพอ"); location.reload(); return; }
                 
                 document.getElementById('res_name').innerText = document.getElementById('cust_name').value;
                 document.getElementById('res_date').innerText = document.getElementById('cust_date').value;
@@ -464,7 +413,8 @@
                 }
                 document.getElementById('res_final_price').innerText = finalPrice.toLocaleString() + " THB";
                 document.getElementById('ticketModal').style.display = 'flex';
-            });
+            })
+            .catch(err => { alert("เกิดข้อผิดพลาด: " + err); btn.disabled = false; });
         };
         reader.readAsDataURL(file);
     };
