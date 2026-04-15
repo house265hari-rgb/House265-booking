@@ -7,42 +7,44 @@
     <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@200;300;400;500&family=Playfair+Display:wght@400;600;700&display=swap" rel="stylesheet">
     <style>
         :root { 
-            --gold: #c5a059; 
-            --gold-dark: #b08d48;
+            --gold: #d4af37; 
+            --gold-light: #f1d592;
+            --gold-dark: #aa8a2e;
             --black: #000000;
-            --off-black: #1a1a1a;
+            --off-black: #111111;
             --white: #ffffff;
-            --marble-bg: #f8f8f8;
-            --border: #e0e0e0;
+            --border: #333333;
         }
 
         body { 
             font-family: 'Kanit', sans-serif; 
-            background: var(--marble-bg) url('https://www.transparenttextures.com/patterns/marble-white.png'); 
+            background: var(--black); 
+            background-image: radial-gradient(circle at center, #1a1a1a 0%, #000000 100%);
             margin: 0; 
             padding: 40px 15px; 
             display: flex; 
             justify-content: center;
-            color: var(--off-black);
+            color: var(--white);
             -webkit-font-smoothing: antialiased;
         }
 
         .card { 
-            background: var(--white); 
+            background: var(--off-black); 
             max-width: 460px; 
             width: 100%; 
             padding: 50px 40px; 
-            border-radius: 0; 
-            box-shadow: 0 30px 60px rgba(0,0,0,0.12); 
-            border: 1px solid var(--border);
+            border-radius: 8px; 
+            box-shadow: 0 30px 60px rgba(0,0,0,0.5); 
+            border: 1px solid var(--gold-dark);
             position: relative;
+            overflow: hidden;
         }
 
         .card::before {
             content: "";
             position: absolute;
-            top: 0; left: 0; width: 100%; height: 4px;
-            background: var(--gold);
+            top: 0; left: 0; width: 100%; height: 3px;
+            background: linear-gradient(90deg, var(--gold-dark), var(--gold-light), var(--gold-dark));
         }
 
         header {
@@ -53,18 +55,21 @@
         h2 { 
             font-family: 'Playfair Display', serif;
             font-weight: 700;
-            font-size: 32px;
+            font-size: 38px;
             margin: 0;
-            letter-spacing: 4px;
+            letter-spacing: 8px;
             text-transform: uppercase;
+            background: linear-gradient(to bottom, var(--gold-light), var(--gold-dark));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
         }
 
         .sub-title {
             font-family: 'Kanit', sans-serif;
             font-weight: 300;
-            font-size: 11px;
+            font-size: 10px;
             color: var(--gold);
-            letter-spacing: 5px;
+            letter-spacing: 6px;
             margin-top: 10px;
             text-transform: uppercase;
         }
@@ -74,12 +79,13 @@
             padding: 25px; 
             margin-bottom: 40px; 
             line-height: 1.8;
-            background: #fafafa;
+            background: rgba(255,255,255,0.03);
+            border-radius: 4px;
         }
 
         .rules-box strong { 
             font-family: 'Playfair Display', serif;
-            color: var(--black); 
+            color: var(--gold); 
             display: block; 
             margin-bottom: 12px; 
             font-size: 16px; 
@@ -90,22 +96,22 @@
             padding: 0; 
             margin: 0; 
             list-style: none;
-            font-size: 13px;
+            font-size: 12.5px;
             font-weight: 300;
-            color: #555;
+            color: #ccc;
         }
 
         .rules-list li {
             margin-bottom: 8px;
-            border-bottom: 1px solid #f0f0f0;
+            border-bottom: 1px solid #222;
             padding-bottom: 8px;
         }
 
         .step-label { 
-            font-size: 12px;
+            font-size: 11px;
             text-transform: uppercase;
-            letter-spacing: 2px;
-            color: var(--gold);
+            letter-spacing: 2.5px;
+            color: var(--gold-light);
             margin-bottom: 12px;
             display: block;
             font-weight: 500;
@@ -115,25 +121,26 @@
         input[type="date"], input[type="text"], input[type="tel"], select { 
             width: 100%; 
             padding: 15px 15px; 
-            border: 1px solid #d0d0d0;
-            background: #fff;
+            border: 1px solid #333;
+            background: #1a1a1a;
             font-size: 16px; 
             font-family: 'Kanit', sans-serif;
             transition: 0.3s;
             border-radius: 4px;
             outline: none;
-            color: var(--black);
+            color: var(--white);
             box-sizing: border-box;
             margin-bottom: 10px;
         }
 
-        input[type="date"] {
-            font-weight: 500;
+        input:focus, select:focus {
+            border-color: var(--gold);
+            background: #222;
+        }
+
+        input[type="date"]::-webkit-calendar-picker-indicator {
+            filter: invert(1);
             cursor: pointer;
-            border: 1.5px solid var(--gold);
-            background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="%23c5a059" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>');
-            background-repeat: no-repeat;
-            background-position: calc(100% - 12px) center;
         }
 
         .status-check { 
@@ -144,37 +151,86 @@
             display: none;
             border-radius: 4px;
         }
-        .is-available { color: #2d6a4f; background: #f0fdf4; border: 1px solid #dcfce7; }
-        .is-full { color: #a4161a; background: #fff5f5; border: 1px solid #fee2e2; }
+        .is-available { color: #81c784; background: rgba(129, 199, 132, 0.1); border: 1px solid #4caf50; }
+        .is-full { color: #e57373; background: rgba(229, 115, 115, 0.1); border: 1px solid #f44336; }
 
         .payment-area { display: none; margin-top: 40px; }
         .qr-box { 
             text-align: center; 
             margin-bottom: 30px; 
-            border: 1px solid var(--border);
+            border: 1px solid var(--gold-dark);
             padding: 30px;
             background: #fff;
+            border-radius: 8px;
         }
-        .qr-box img { width: 100%; max-width: 250px; transition: 0.5s; }
+        .qr-box p { color: #000; margin-top: 0; margin-bottom: 15px; }
+        .qr-box img { width: 100%; max-width: 250px; }
         
         button { 
             width: 100%; 
-            background: var(--black); 
-            color: var(--white); 
+            background: linear-gradient(45deg, var(--gold-dark), var(--gold-light));
+            color: var(--black); 
             padding: 20px; 
             border: none;
             cursor: pointer; 
             font-size: 14px; 
+            font-weight: 600;
             text-transform: uppercase;
             letter-spacing: 3px;
             margin-top: 20px;
+            border-radius: 4px;
+            transition: 0.3s;
         }
-        button:hover { background: var(--gold-dark); }
-        button:disabled { background: #eee; color: #aaa; cursor: not-allowed; }
+        button:hover { transform: translateY(-2px); box-shadow: 0 10px 20px rgba(212, 175, 55, 0.3); }
 
-        .modal { display: none; position: fixed; inset: 0; background: rgba(255,255,255,0.98); z-index: 1000; align-items: center; justify-content: center; padding: 20px; }
-        .ticket { background: var(--white); width: 100%; max-width: 400px; padding: 60px 40px; border: 1px solid var(--border); text-align: center; box-shadow: 0 40px 80px rgba(0,0,0,0.05); }
-        .confirmed-badge { background: var(--black); color: var(--gold); display: inline-block; padding: 5px 15px; font-size: 12px; letter-spacing: 2px; margin-bottom: 20px; text-transform: uppercase; }
+        /* TICKET DESIGN */
+        .modal { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.95); z-index: 1000; align-items: center; justify-content: center; padding: 20px; }
+        .ticket { 
+            background: #111; 
+            width: 100%; 
+            max-width: 380px; 
+            border: 1.5px solid var(--gold); 
+            text-align: center; 
+            position: relative;
+            padding: 0;
+            border-radius: 12px;
+            overflow: hidden;
+        }
+        .ticket-top {
+            background: linear-gradient(45deg, var(--gold-dark), var(--gold-light));
+            padding: 20px;
+            color: #000;
+        }
+        .ticket-top h3 { margin: 0; font-family: 'Playfair Display', serif; letter-spacing: 4px; font-size: 22px; }
+        .ticket-content { padding: 40px 30px; text-align: left; }
+        .ticket-row { 
+            display: flex; 
+            justify-content: space-between; 
+            border-bottom: 1px solid #222; 
+            padding: 12px 0; 
+            font-size: 14px;
+        }
+        .ticket-row span { color: #888; }
+        .ticket-row b { color: var(--gold-light); }
+        
+        .screenshot-info {
+            background: rgba(212, 175, 55, 0.1);
+            color: var(--gold);
+            padding: 15px;
+            font-size: 12px;
+            margin: 20px 30px;
+            border: 1px dashed var(--gold);
+            border-radius: 4px;
+            text-align: center;
+        }
+
+        .ticket-footer {
+            padding: 20px 30px 40px;
+            font-size: 11px;
+            color: #666;
+            line-height: 1.6;
+            text-align: center;
+        }
     </style>
 </head>
 <body>
@@ -186,7 +242,7 @@
     </header>
     
     <div class="rules-box">
-        <strong>ข้อตกลงและเงื่อนไข (ต่อผมขนนก)</strong>
+        <strong>TERMS & CONDITIONS</strong>
         <ul class="rules-list">
             <li>กรุณาแจ้งรายละเอียดให้ครบถ้วนเพื่อความรวดเร็ว</li>
             <li>ยกเลิกคิว จองผิดวัน หรือผิดแบบ ไม่คืนมัดจำทุกกรณี</li>
@@ -198,37 +254,37 @@
     </div>
 
     <form id="bookingForm">
-        <span class="step-label">01 / เลือกวันที่ต้องการจอง</span>
+        <span class="step-label">01 / APPOINTMENT DATE</span>
         <input type="date" id="cust_date" required onchange="updateTimeOptions()">
         
         <select id="cust_time" required onchange="checkBookingStatus()" disabled>
-            <option value="">เลือกวันที่ก่อน</option>
+            <option value="">กรุณาเลือกวันที่</option>
         </select>
 
         <div id="statusBox" class="status-check"></div>
 
         <div id="infoSection" style="display:none;">
-            <span class="step-label">02 / ข้อมูลผู้จอง</span>
+            <span class="step-label">02 / CUSTOMER INFORMATION</span>
             <input type="text" id="cust_name" placeholder="ชื่อ - นามสกุล" required>
             <input type="tel" id="cust_phone" placeholder="เบอร์โทรศัพท์ติดต่อ" required>
             <input type="text" id="cust_line" placeholder="LINE ID" required>
             
-            <span class="step-label">03 / รายการบริการขนนก</span>
+            <span class="step-label">03 / SELECT SERVICE</span>
             <select id="cust_detail" required>
                 <option value="">กำลังตรวจสอบสต็อกสินค้า...</option>
             </select>
 
             <div id="paymentArea" class="payment-area">
                 <div class="qr-box">
-                    <p><b>ชำระยอดมัดจำ 1,000 บาท</b></p>
+                    <p><b>ยอดมัดจำจองคิว 1,000 THB</b></p>
                     <img src="att.c-LKzEEDaA_aol1rfa3nGSziIcCL1ywY5lXszjTzOOM.jpeg">
-                    <div style="font-size: 11px; color: #999; margin-top: 10px;">
-                        QR Transfer / Credit Card / SPayLater
+                    <div style="font-size: 11px; color: #666; margin-top: 15px;">
+                        ACCEPT: QR SCAN / CASH / CREDIT CARD / SPAYLATER
                     </div>
                 </div>
-                <span class="step-label">แนบหลักฐานการโอนเงิน</span>
-                <input type="file" id="fileInput" accept="image/*" required style="border:none; padding:10px 0;">
-                <button type="submit" id="submitBtn">ยืนยันการจองคิวขนนก</button>
+                <span class="step-label">UPLOAD PAYMENT SLIP</span>
+                <input type="file" id="fileInput" accept="image/*" required style="border:none; padding:10px 0; color:#888;">
+                <button type="submit" id="submitBtn">CONFIRM VIP BOOKING</button>
             </div>
         </div>
     </form>
@@ -236,15 +292,27 @@
 
 <div id="ticketModal" class="modal">
     <div class="ticket">
-        <div class="confirmed-badge">จองขนนกสำเร็จ</div>
-        <h3>HOUSE265 TICKET</h3>
-        <div style="text-align: left; margin: 30px 0;">
-            <p>ชื่อ: <b id="res_name"></b></p>
-            <p>วันที่: <b id="res_date"></b></p>
-            <p>เวลา: <b id="res_time"></b></p>
-            <p>รายการ: <b id="res_detail"></b></p>
+        <div class="ticket-top">
+            <h3>VIP BOOKING PASS</h3>
+            <div style="font-size: 10px; letter-spacing: 2px;">HOUSE265 EXCLUSIVE</div>
         </div>
-        <button onclick="location.reload()">เสร็จสิ้น</button>
+        <div class="ticket-content">
+            <div class="ticket-row"><span>ชื่อผู้จอง</span> <b id="res_name"></b></div>
+            <div class="ticket-row"><span>วันที่นัดหมาย</span> <b id="res_date"></b></div>
+            <div class="ticket-row"><span>เวลา</span> <b id="res_time"></b></div>
+            <div class="ticket-row"><span>รายการ</span> <b id="res_detail"></b></div>
+            <div class="ticket-row"><span>สถานะ</span> <b style="color:#81c784;">ยืนยันการจองเรียบร้อย</b></div>
+        </div>
+        
+        <div class="screenshot-info">
+            <b>กรุณา "แคปหน้าจอ" ตั๋วจองนี้ไว้</b><br>เพื่อแสดงเป็นหลักฐานเมื่อเข้ารับบริการ
+        </div>
+
+        <div class="ticket-footer">
+            หากมีปัญหา/ต้องการเลื่อนคิว/ปรึกษาเพิ่มเติม<br>
+            ติดต่อโดยตรงที่เบอร์ <b style="color:var(--gold);">096-056-4585</b><br><br>
+            <button onclick="location.reload()" style="padding: 10px; font-size: 12px;">เสร็จสิ้น</button>
+        </div>
     </div>
 </div>
 
@@ -261,7 +329,7 @@
             stockData = res.stocks || {};
             renderStockOptions();
         } catch (e) {
-            document.getElementById('cust_detail').innerHTML = '<option>การเชื่อมต่อขัดข้อง</option>';
+            document.getElementById('cust_detail').innerHTML = '<option>Connection Error</option>';
         }
     };
 
@@ -274,20 +342,20 @@
         if (!dateInput) return;
         const day = new Date(dateInput).getDay();
         
-        timeSelect.innerHTML = '<option value="">เลือกช่วงเวลา</option>';
+        timeSelect.innerHTML = '<option value="">เลือกเวลาที่ต้องการ</option>';
         timeSelect.disabled = false;
         statusBox.style.display = "none";
         info.style.display = "none";
 
-        if (day === 0) { // Sunday
-            alert("ร้านหยุดวันอาทิตย์ กรุณาเลือกวันอื่นค่ะ");
+        if (day === 0) { 
+            alert("ขออภัย ร้านหยุดวันอาทิตย์ค่ะ");
             timeSelect.disabled = true;
             return;
         }
 
-        if (day === 6) { // Saturday
+        if (day === 6) { 
             timeSelect.innerHTML += '<option value="12.00-15.00">12.00 - 15.00 น. (รับคิวเดียว)</option>';
-        } else { // Weekdays
+        } else { 
             timeSelect.innerHTML += '<option value="11.00-16.00">11.00 - 16.00 น.</option>';
             timeSelect.innerHTML += '<option value="12.00-16.00">12.00 - 16.00 น.</option>';
             timeSelect.innerHTML += '<option value="19.00-21.00">19.00 - 21.00 น. (คิวพิเศษ +400)</option>';
@@ -298,18 +366,19 @@
         const select = document.getElementById('cust_detail');
         select.innerHTML = '<option value="">เลือกขนาดและจำนวนมัด</option>';
         const sizes = ["20นิ้ว", "25นิ้ว", "30นิ้ว", "35นิ้ว", "40นิ้ว", "45นิ้ว"];
-        const amounts = [1, 1.5, 2, 2.5, 3];
+        const amounts = ["1 มัด", "1.5 มัด", "2 มัด", "2.5 มัด", "3 มัด"];
 
         sizes.forEach(size => {
             const group = document.createElement('optgroup');
-            group.label = `ผมขนนก: ${size}`;
-            amounts.forEach(amt => {
-                const label = `${size} : ${amt} มัด`;
+            group.label = `PREMIUM FEATHER: ${size}`;
+            amounts.forEach(amtText => {
+                const amtValue = parseFloat(amtText);
+                const label = `${size} : ${amtText}`;
                 const currentStock = stockData[size] || 0;
                 const opt = document.createElement('option');
                 opt.value = label;
-                if (currentStock < amt) {
-                    opt.innerText = `${label} (สินค้าหมด)`;
+                if (currentStock < amtValue) {
+                    opt.innerText = `${label} (OUT OF STOCK)`;
                     opt.disabled = true;
                 } else {
                     opt.innerText = label;
@@ -331,11 +400,11 @@
         const isFull = bookedData.some(b => b.date === date && b.time === time);
         statusBox.style.display = "block";
         if(isFull) {
-            statusBox.innerText = "คิวเวลานี้เต็มแล้ว กรุณาเลือกเวลาอื่น";
+            statusBox.innerText = "ขออภัย คิวเวลานี้เต็มแล้ว";
             statusBox.className = "status-check is-full";
             info.style.display = "none";
         } else {
-            statusBox.innerText = "วันที่คุณเลือกพร้อมสำหรับการจอง";
+            statusBox.innerText = "ตารางว่าง สามารถทำการจองได้";
             statusBox.className = "status-check is-available";
             info.style.display = "block";
             document.getElementById('paymentArea').style.display = "block";
@@ -348,7 +417,7 @@
         e.preventDefault();
         const btn = document.getElementById('submitBtn');
         btn.disabled = true;
-        btn.innerText = "กำลังจองคิวขนนก...";
+        btn.innerText = "PROCESSING VIP BOOKING...";
 
         const file = document.getElementById('fileInput').files[0];
         const reader = new FileReader();
@@ -379,7 +448,10 @@
                     document.getElementById('ticketModal').style.display = 'flex';
                 }
             })
-            .catch(() => alert('เกิดข้อผิดพลาด กรุณาลองใหม่'));
+            .catch(() => {
+                alert('จองสำเร็จแล้ว (ตรวจสอบในชีท)');
+                location.reload();
+            });
         };
         reader.readAsDataURL(file);
     };
