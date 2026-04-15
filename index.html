@@ -3,177 +3,258 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Booking - บ้าน265 Hair Salon</title>
-    <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;600&family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
+    <title>Baan 265 - Exclusive Booking</title>
+    <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@200;300;400;500&family=Playfair+Display:wght@400;600;700&display=swap" rel="stylesheet">
     <style>
         :root { 
             --gold: #c5a059; 
-            --gold-dark: #b08d48;
-            --black: #1a1a1a;
+            --gold-light: #d4af37;
+            --black: #000000;
+            --off-black: #1a1a1a;
             --white: #ffffff;
-            --gray: #f4f4f4;
-            --error: #d9534f;
-            --success: #5cb85c;
+            --marble-bg: #f8f8f8;
+            --border: #e0e0e0;
         }
 
         body { 
             font-family: 'Kanit', sans-serif; 
-            background: #e5e5e5 url('https://www.transparenttextures.com/patterns/marble-white.png'); 
+            background: var(--marble-bg) url('https://www.transparenttextures.com/patterns/marble-white.png'); 
             margin: 0; 
-            padding: 20px 15px; 
+            padding: 40px 15px; 
             display: flex; 
             justify-content: center;
-            color: var(--black);
+            color: var(--off-black);
+            -webkit-font-smoothing: antialiased;
         }
 
-        /* Card ดีไซน์หินอ่อนและมีเงา */
         .card { 
             background: var(--white); 
-            max-width: 500px; 
+            max-width: 460px; 
             width: 100%; 
-            padding: 35px 25px; 
-            border-radius: 25px; 
-            box-shadow: 0 20px 40px rgba(0,0,0,0.2); 
-            border: 1px solid rgba(197, 160, 89, 0.3);
+            padding: 50px 40px; 
+            border-radius: 0; /* เปลี่ยนเป็นเหลี่ยมคมเพื่อความหรูแบบ Classic */
+            box-shadow: 0 30px 60px rgba(0,0,0,0.12); 
+            border: 1px solid var(--border);
             position: relative;
-            overflow: hidden;
         }
 
+        /* เส้นขอบทองด้านบนแบบบางเฉียบ */
         .card::before {
             content: "";
             position: absolute;
-            top: 0; left: 0; width: 100%; height: 8px;
-            background: linear-gradient(90deg, var(--black), var(--gold), var(--black));
+            top: 0; left: 0; width: 100%; height: 4px;
+            background: var(--gold);
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 40px;
         }
 
         h2 { 
-            text-align: center; 
             font-family: 'Playfair Display', serif;
-            color: var(--black); 
-            font-size: 32px;
-            margin-bottom: 5px; 
-            letter-spacing: 2px; 
+            font-weight: 700;
+            font-size: 36px;
+            margin: 0;
+            letter-spacing: 5px;
             text-transform: uppercase;
         }
 
         .sub-title {
-            text-align: center;
-            font-size: 12px;
+            font-family: 'Kanit', sans-serif;
+            font-weight: 300;
+            font-size: 11px;
             color: var(--gold);
-            letter-spacing: 4px;
-            margin-bottom: 25px;
-            font-weight: 600;
+            letter-spacing: 6px;
+            margin-top: 10px;
+            text-transform: uppercase;
         }
         
-        /* กฎกติกาใหม่ */
         .rules-box { 
-            background: #fff; 
-            border: 1px solid #ddd; 
-            padding: 15px; 
-            border-radius: 15px; 
-            font-size: 13px; 
-            color: #333; 
-            margin-bottom: 30px; 
-            line-height: 1.7;
-            box-shadow: inset 0 0 10px rgba(0,0,0,0.05);
+            border: 1px solid var(--border);
+            padding: 25px; 
+            margin-bottom: 40px; 
+            line-height: 1.8;
+            background: #fafafa;
         }
-        .rules-box strong { color: var(--error); display: block; margin-bottom: 8px; font-size: 14px; text-decoration: underline; }
-        .rules-list { padding-left: 20px; margin: 0; list-style-type: square; }
 
-        /* Step Indicator */
-        .step-label { 
-            display: flex;
-            align-items: center;
-            margin-top: 25px; 
-            font-weight: 600; 
+        .rules-box strong { 
+            font-family: 'Playfair Display', serif;
             color: var(--black); 
-            font-size: 15px;
-            border-bottom: 1px solid var(--gold);
-            padding-bottom: 5px;
+            display: block; 
+            margin-bottom: 12px; 
+            font-size: 16px; 
+            letter-spacing: 1px;
         }
-        .step-num {
-            background: var(--black);
-            color: var(--gold);
-            width: 22px; height: 22px;
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            border-radius: 50%;
-            margin-right: 10px;
+
+        .rules-list { 
+            padding: 0; 
+            margin: 0; 
+            list-style: none;
+            font-size: 13px;
+            font-weight: 300;
+            color: #555;
+        }
+
+        .rules-list li {
+            margin-bottom: 8px;
+            border-bottom: 1px solid #f0f0f0;
+            padding-bottom: 8px;
+        }
+
+        .step-label { 
             font-size: 12px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            color: var(--gold);
+            margin-bottom: 10px;
+            display: block;
+            font-weight: 500;
+            margin-top: 30px;
         }
 
         input, select { 
-            width: 100%; padding: 14px; margin-top: 10px; 
-            border: 1px solid #ccc; border-radius: 12px; 
-            box-sizing: border-box; font-size: 16px; 
-            transition: 0.3s; background: var(--gray);
+            width: 100%; 
+            padding: 15px 0; 
+            border: none;
+            border-bottom: 1px solid var(--border); 
+            background: transparent;
+            font-size: 16px; 
             font-family: 'Kanit', sans-serif;
+            transition: 0.3s;
+            border-radius: 0;
+            outline: none;
         }
-        input:focus { border-color: var(--gold); background: #fff; outline: none; box-shadow: 0 0 10px rgba(197, 160, 89, 0.2); }
 
-        .status-check { text-align: center; padding: 15px; border-radius: 12px; margin-top: 15px; font-weight: 600; display: none; }
-        .is-available { background: #eef9f0; color: var(--success); border: 1px solid var(--success); }
-        .is-full { background: #fff1f0; color: var(--error); border: 1px solid var(--error); }
+        input:focus, select:focus { 
+            border-bottom: 1px solid var(--gold);
+        }
 
-        .payment-area { display: none; margin-top: 25px; padding-top: 20px; border-top: 1px solid #eee; }
-        .qr-box { background: var(--white); border: 2px solid var(--gold); padding: 25px; text-align: center; border-radius: 20px; margin-bottom: 20px; }
-        .qr-box img { width: 200px; border-radius: 10px; border: 1px solid #eee; margin: 15px 0; }
-        
-        /* Interactive Button */
-        button { 
-            width: 100%; background: var(--black); color: var(--gold); 
-            padding: 18px; border: 1px solid var(--gold); border-radius: 15px; 
-            margin-top: 20px; cursor: pointer; font-size: 18px; font-weight: bold; 
-            transition: 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); 
-            font-family: 'Kanit', sans-serif;
-            text-transform: uppercase;
+        .status-check { 
+            text-align: center; 
+            padding: 15px; 
+            margin-top: 20px; 
+            font-size: 13px;
+            font-weight: 400; 
+            display: none;
             letter-spacing: 1px;
         }
-        button:hover { background: var(--gold); color: var(--black); transform: scale(1.02); box-shadow: 0 10px 20px rgba(0,0,0,0.2); }
-        button:disabled { background: #ccc; border-color: #ccc; color: #fff; cursor: not-allowed; transform: none; }
+        .is-available { color: #2d6a4f; background: #f0fdf4; }
+        .is-full { color: #a4161a; background: #fff5f5; }
 
-        /* Ticket & Modal */
-        .modal { display: none; position: fixed; z-index: 1000; inset: 0; background: rgba(0,0,0,0.9); align-items: center; justify-content: center; padding: 20px; }
-        .ticket { background: #fff; border-radius: 20px; width: 100%; max-width: 360px; overflow: hidden; position: relative; box-shadow: 0 30px 60px rgba(0,0,0,0.5); border: 1px solid var(--gold); }
-        .ticket-header { background: var(--black); color: var(--gold); padding: 25px; text-align: center; border-bottom: 4px solid var(--gold); }
-        .ticket-body { padding: 30px; text-align: left; }
-        .ticket-body p { margin: 12px 0; font-size: 15px; border-bottom: 1px dashed #eee; padding-bottom: 5px; display: flex; justify-content: space-between; }
-        .ticket-body b { color: var(--black); }
-        .ticket-footer { background: #fdfdfd; padding: 20px; text-align: center; border-top: 2px dashed #ccc; }
+        .payment-area { display: none; margin-top: 40px; }
+        .qr-box { 
+            text-align: center; 
+            margin-bottom: 30px; 
+            border: 1px solid var(--border);
+            padding: 30px;
+        }
+        .qr-box p { font-size: 14px; letter-spacing: 1px; margin-bottom: 20px; }
+        .qr-box img { width: 180px; filter: grayscale(100%); transition: 0.5s; }
+        .qr-box img:hover { filter: grayscale(0%); }
         
-        .payment-methods { font-size: 11px; color: #888; margin-top: 15px; display: flex; justify-content: center; gap: 10px; }
+        .payment-note {
+            font-size: 11px;
+            color: #999;
+            margin-top: 15px;
+            letter-spacing: 1px;
+        }
+
+        button { 
+            width: 100%; 
+            background: var(--black); 
+            color: var(--white); 
+            padding: 20px; 
+            border: 1px solid var(--black);
+            cursor: pointer; 
+            font-size: 14px; 
+            font-weight: 400; 
+            transition: 0.4s; 
+            font-family: 'Kanit', sans-serif;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            margin-top: 30px;
+        }
+        button:hover { 
+            background: var(--white); 
+            color: var(--black);
+        }
+        button:disabled { 
+            background: #eee; 
+            border-color: #eee; 
+            color: #aaa; 
+            cursor: not-allowed; 
+        }
+
+        /* Modal & Ticket Luxury */
+        .modal { display: none; position: fixed; inset: 0; background: rgba(255,255,255,0.98); z-index: 1000; align-items: center; justify-content: center; padding: 20px; }
+        .ticket { 
+            background: var(--white); 
+            width: 100%; 
+            max-width: 400px; 
+            padding: 60px 40px;
+            border: 1px solid var(--border);
+            text-align: center;
+            box-shadow: 0 40px 80px rgba(0,0,0,0.05);
+        }
+        .ticket-header h3 { 
+            font-family: 'Playfair Display', serif;
+            font-size: 24px;
+            letter-spacing: 4px;
+            margin-bottom: 10px;
+        }
+        .ticket-body { margin: 40px 0; text-align: left; }
+        .ticket-body p { 
+            display: flex; 
+            justify-content: space-between; 
+            font-size: 14px; 
+            margin: 15px 0;
+            border-bottom: 1px solid #f9f9f9;
+            padding-bottom: 10px;
+            color: #666;
+        }
+        .ticket-body b { color: var(--black); font-weight: 400; }
+        
+        .ticket-footer { margin-top: 40px; }
+        .contact-info {
+            font-size: 12px;
+            line-height: 1.8;
+            color: var(--gold);
+            margin-bottom: 30px;
+        }
 
         @media (max-width: 480px) {
-            .card { padding: 25px 15px; }
-            h2 { font-size: 26px; }
+            .card { padding: 40px 20px; }
+            h2 { font-size: 28px; }
         }
     </style>
 </head>
 <body>
 
 <div class="card">
-    <h2>บ้าน 265</h2>
-    <div class="sub-title">HAIR SALON & EXTENSIONS</div>
+    <header>
+        <h2>Baan 265</h2>
+        <div class="sub-title">Hair Salon & Extensions</div>
+    </header>
     
     <div class="rules-box">
-        <strong>📌 กฎกติกามารยาท:</strong>
+        <strong>Terms and Conditions</strong>
         <ul class="rules-list">
-            <li>แจ้งรายละเอียดให้ครบถ้วน</li>
-            <li>ยกเลิกคิว / จองผิดวัน / ผิดแบบ <b>ไม่คืนมัดจำทุกกรณี</b></li>
-            <li>เลื่อนคิวแจ้งล่วงหน้า 5 วัน <b>เลื่อนฟรี</b></li>
-            <li>เลทไม่เกิน 15 นาที <b>เกินหักมัดจำทุกกรณี</b></li>
-            <li>เลท 30 นาที <b>ตัดคิว ไม่ทำให้</b></li>
-            <li>มีถอดผม มาก่อน 30 นาที <b>ไม่มาหักมัดจำครึ่งนึง</b></li>
+            <li>กรุณาแจ้งรายละเอียดให้ครบถ้วน</li>
+            <li>ยกเลิกคิว จองผิดวัน หรือผิดแบบ ไม่คืนมัดจำทุกกรณี</li>
+            <li>เลื่อนคิวล่วงหน้า 5 วัน ไม่คิดค่าธรรมเนียม</li>
+            <li>มาเลทไม่เกิน 15 นาที หากเกินหักมัดจำทุกกรณี</li>
+            <li>เลท 30 นาที ทางร้านขออนุญาตตัดคิวและไม่คืนมัดจำ</li>
+            <li>กรณีมีงานถอดผม กรุณามาก่อน 30 นาที หากไม่มาหักมัดจำครึ่งนึง</li>
         </ul>
     </div>
 
     <form id="bookingForm">
-        <div class="step-label"><span class="step-num">1</span> เลือกวันและเวลา</div>
+        <span class="step-label">Step 01 / Reservation Date</span>
         <input type="date" id="cust_date" required onchange="checkBookingStatus()">
         
         <select id="cust_time" required onchange="checkBookingStatus()">
-            <option value="">-- เลือกเวลา --</option>
+            <option value="">Select Time</option>
             <option value="13.00-14.59">13.00 - 14.59 น.</option>
             <option value="15.00-17.00">15.00 - 17.00 น.</option>
         </select>
@@ -181,27 +262,27 @@
         <div id="statusBox" class="status-check"></div>
 
         <div id="infoSection" style="display:none;">
-            <div class="step-label"><span class="step-num">2</span> ข้อมูลผู้จอง</div>
-            <input type="text" id="cust_name" placeholder="ชื่อ-นามสกุล" required>
-            <input type="tel" id="cust_phone" placeholder="เบอร์โทรศัพท์" required>
+            <span class="step-label">Step 02 / Client Information</span>
+            <input type="text" id="cust_name" placeholder="Full Name" required>
+            <input type="tel" id="cust_phone" placeholder="Phone Number" required>
             <input type="text" id="cust_line" placeholder="LINE ID" required>
             
-            <div class="step-label"><span class="step-num">3</span> บริการและสต็อกผม</div>
+            <span class="step-label">Step 03 / Service Selection</span>
             <select id="cust_detail" required>
-                <option value="">-- กำลังตรวจสอบสต็อก... --</option>
+                <option value="">Checking Stock...</option>
             </select>
 
             <div id="paymentArea" class="payment-area">
                 <div class="qr-box">
-                    <p style="color: var(--black); font-weight: bold; margin:0;">💰 มัดจำจองคิว 500 บาท</p>
+                    <p>Deposit Payment 500 THB</p>
                     <img src="att.8Sn_yZRe9NxRT7e82xRROxZGprBrwV_hRbURzB6XKpo.jpeg">
-                    <div style="font-size: 11px; color: #666; margin-top: 5px;">
-                        *รองรับการชำระผ่าน <b>SPayLater</b> และ <b>บัตรเครดิต</b>
+                    <div class="payment-note">
+                        Accepted: SPayLater / Credit Card / QR Transfer
                     </div>
                 </div>
-                <label style="font-weight:bold; font-size:14px;">🖼️ แนบสลิปโอนเงิน</label>
+                <span class="step-label">Transfer Slip</span>
                 <input type="file" id="fileInput" accept="image/*" required>
-                <button type="submit" id="submitBtn">ยืนยันการจองคิว</button>
+                <button type="submit" id="submitBtn">Confirm Booking</button>
             </div>
         </div>
     </form>
@@ -210,23 +291,23 @@
 <div id="ticketModal" class="modal">
     <div class="ticket">
         <div class="ticket-header">
-            <h3 style="margin:0; letter-spacing:2px;">BOOKING CONFIRMED</h3>
-            <p style="font-size: 11px; margin:5px 0 0; opacity:0.8;">Baan 265 Hair Salon</p>
+            <h3>BOOKING CONFIRMED</h3>
+            <p style="font-size: 10px; letter-spacing: 2px; color: #999;">BAAN 265 EXCLUSIVE</p>
         </div>
         <div class="ticket-body">
-            <p>คุณ: <b id="res_name"></b></p>
-            <p>วันที่: <b id="res_date"></b></p>
-            <p>เวลา: <b id="res_time"></b></p>
-            <p>รายการ: <b id="res_detail" style="font-size: 13px; color: var(--gold);"></b></p>
-            <p>ยอดมัดจำ: <b>500 THB</b></p>
-            
-            <div class="payment-methods">
-                <span>💳 Credit Card</span> | <span>📱 SPayLater</span> | <span>🏦 QR Payment</span>
-            </div>
+            <p>Client: <b id="res_name"></b></p>
+            <p>Date: <b id="res_date"></b></p>
+            <p>Time: <b id="res_time"></b></p>
+            <p>Service: <b id="res_detail"></b></p>
+            <p>Status: <b style="color:var(--gold);">Confirmed</b></p>
+        </div>
+        <div class="contact-info">
+            ยืนยันคิวเรียบร้อย<br>
+            กรณีมีปัญหา ติดธุระ หรือต้องการเลื่อนคิว<br>
+            กรุณาติดต่อเบอร์ 096-056-4585
         </div>
         <div class="ticket-footer">
-            <p style="color:var(--error); font-weight:bold; font-size:13px; margin-bottom:10px;">⚠️ กรุณาแคปหน้าจอนี้ไว้</p>
-            <button onclick="location.reload()" style="padding: 12px; font-size: 15px; margin:0;">เสร็จสิ้น</button>
+            <button onclick="location.reload()">Close</button>
         </div>
     </div>
 </div>
@@ -246,29 +327,29 @@
             } else { stockData = res.stocks || {}; }
             renderStockOptions();
         } catch (e) {
-            document.getElementById('cust_detail').innerHTML = '<option>โหลดข้อมูลล้มเหลว กรุณารีเฟรช</option>';
+            document.getElementById('cust_detail').innerHTML = '<option>Connection Error. Please refresh.</option>';
         }
     };
 
     function renderStockOptions() {
         const select = document.getElementById('cust_detail');
-        select.innerHTML = '<option value="">-- เลือกบริการ --</option>';
+        select.innerHTML = '<option value="">Select Service</option>';
         const items = ["20นิ้ว", "25นิ้ว", "30นิ้ว", "35นิ้ว"];
         const amounts = [1, 1.5, 2];
 
         items.forEach(name => {
             const group = document.createElement('optgroup');
-            group.label = `ผมยาว ${name}`;
+            group.label = `Length: ${name}`;
             amounts.forEach(amt => {
                 const label = `${name} : ${amt} มัด`;
                 const currentStock = stockData[name] || 0;
                 const opt = document.createElement('option');
                 opt.value = label;
                 if (currentStock < amt) {
-                    opt.innerText = `❌ ${label} (ของหมด)`;
+                    opt.innerText = `${label} (Out of Stock)`;
                     opt.disabled = true;
                 } else {
-                    opt.innerText = `✅ ${label}`;
+                    opt.innerText = label;
                 }
                 group.appendChild(opt);
             });
@@ -277,7 +358,7 @@
         
         const optExtra = document.createElement('option');
         optExtra.value = "ขยับปม";
-        optExtra.innerText = "✅ ขยับปม";
+        optExtra.innerText = "ขยับปม";
         select.appendChild(optExtra);
     }
 
@@ -289,7 +370,7 @@
         if(!date || !time) return;
 
         if (new Date(date).getDay() === 0) {
-            statusBox.innerText = "❌ ร้านหยุดวันอาทิตย์";
+            statusBox.innerText = "Our salon is closed on Sundays.";
             statusBox.className = "status-check is-full";
             statusBox.style.display = "block";
             info.style.display = "none";
@@ -298,12 +379,12 @@
         
         const isFull = bookedData.some(b => b.date === date && b.time === time);
         if(isFull) {
-            statusBox.innerText = "❌ คิวเวลานี้เต็มแล้ว";
+            statusBox.innerText = "This time slot is fully booked.";
             statusBox.className = "status-check is-full";
             statusBox.style.display = "block";
             info.style.display = "none";
         } else {
-            statusBox.innerText = "✨ คิวว่าง สามารถจองได้";
+            statusBox.innerText = "Available for reservation.";
             statusBox.className = "status-check is-available";
             statusBox.style.display = "block";
             info.style.display = "block";
@@ -317,7 +398,7 @@
         e.preventDefault();
         const btn = document.getElementById('submitBtn');
         btn.disabled = true;
-        btn.innerText = "กำลังประมวลผล...";
+        btn.innerText = "Processing...";
 
         const file = document.getElementById('fileInput').files[0];
         const reader = new FileReader();
@@ -338,7 +419,7 @@
             .then(response => response.text())
             .then(result => {
                 if(result === "AlreadyBooked") {
-                    alert("ขออภัย! คิวเพิ่งถูกจองไป กรุณาเลือกเวลาใหม่");
+                    alert("This slot was just booked. Please select another time.");
                     location.reload();
                 } else {
                     document.getElementById('res_name').innerText = document.getElementById('cust_name').value;
@@ -349,7 +430,7 @@
                 }
             })
             .catch(() => {
-                alert('จองสำเร็จ!');
+                alert('Success');
                 location.reload();
             });
         };
