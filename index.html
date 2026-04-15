@@ -112,7 +112,6 @@
             margin-top: 30px;
         }
 
-        /* ปรับปรุง Input ปฏิทินให้ชัดเจน */
         .date-input-wrapper {
             position: relative;
         }
@@ -225,11 +224,23 @@
         }
         .ticket-body b { color: var(--black); font-weight: 500; }
         
-        .ticket-footer { margin-top: 40px; }
+        .ticket-footer { margin-top: 30px; }
+        
         .contact-info {
             font-size: 13px;
             line-height: 1.8;
+            color: #333;
+            margin-bottom: 25px;
+            font-weight: 300;
+        }
+
+        .screenshot-reminder {
+            background: #fbf8f2;
             color: var(--gold-dark);
+            padding: 12px;
+            font-size: 12px;
+            letter-spacing: 1px;
+            border: 1px dashed var(--gold);
             margin-bottom: 30px;
             font-weight: 400;
         }
@@ -326,13 +337,17 @@
             <p>รายการ: <b id="res_detail"></b></p>
             <p>สถานะ: <b style="color:var(--gold-dark);">ยืนยันแล้ว (มัดจำครบถ้วน)</b></p>
         </div>
+
+        <div class="screenshot-reminder">
+            กรุณา "บันทึกภาพหน้าจอ" นี้ไว้<br>เพื่อใช้เป็นหลักฐานยืนยันในการเข้าใช้บริการ
+        </div>
+
         <div class="contact-info">
             ได้รับคิวแน่นอนค่ะ กรุณามาให้ตรงตามเวลานัดหมาย<br>
-            หากต้องการความช่วยเหลือ หรือแจ้งเลื่อนคิว<br>
-            กรุณาติดต่อที่เบอร์ <b>096-056-4585</b>
+            หากติดธุระหรือต้องการเลื่อนคิว ติดต่อเบอร์ <b>096-056-4585</b>
         </div>
         <div class="ticket-footer">
-            <button onclick="location.reload()">ปิดหน้าต่างนี้</button>
+            <button onclick="location.reload()">เสร็จสิ้น</button>
         </div>
     </div>
 </div>
