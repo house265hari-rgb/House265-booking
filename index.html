@@ -44,6 +44,7 @@
             <option value="15.00-17.00">15.00 - 17.00 น.</option>
         </select>
         <div id="statusBox" class="status-check"></div>
+        
         <div id="infoSection" style="display:none;">
             <label>ชื่อผู้จอง</label>
             <input type="text" id="cust_name" placeholder="ระบุชื่อจริง" required>
@@ -51,10 +52,12 @@
             <input type="tel" id="cust_phone" placeholder="08x-xxxxxxx" required>
             <label>ชื่อ LINE</label>
             <input type="text" id="cust_line" placeholder="ID หรือ ชื่อในไลน์" required>
+            
             <label>3. รายละเอียดขนาดและจำนวนมัด</label>
             <select id="cust_detail" required>
                 <option value="">-- กำลังโหลดสต็อกล่าสุด... --</option>
             </select>
+
             <div id="paymentArea" class="payment-area">
                 <div class="qr-box">
                     <p><strong>💰 มัดจำ 500 บาท</strong></p>
@@ -75,13 +78,13 @@
         <p>วันที่: <span id="res_date"></span></p>
         <p>เวลา: <span id="res_time"></span></p>
         <p>บริการ: <span id="res_detail"></span></p>
-        <p style="color:red; font-size:12px; margin-top:10px;">*กรุณาแคปหน้าจอเก็บไว้เป็นหลักฐาน*</p>
         <button onclick="location.reload()">ตกลง</button>
     </div>
 </div>
 
 <script>
-    const scriptURL = 'https://script.google.com/macros/s/AKfycby0faYXg98n_e2UqrJ2S9pWG3xuptMCUIsIlznHwaUWSvVoXgadx4vkRLXk_DSq10LNvQ/exec';
+    // อัปเดตลิงก์ใหม่ที่คุณส่งมา
+    const scriptURL = 'https://script.google.com/macros/s/AKfycbx-P1lM0upBMCRBTFYHGVR1B32bsjT_e5UwYlQXotRlrtCdK583w2KZaeCPPuWI2dpy2w/exec';
     let bookedData = [];
     let stockData = {};
 
@@ -90,9 +93,19 @@
             const response = await fetch(scriptURL);
             const res = await response.json();
             bookedData = res.bookings || [];
-            stockData = res.stocks || {};
+            
+            // แปลงอาร์เรย์สต็อกเป็น Object เพื่อให้เช็คง่ายๆ { "20นิ้ว": 5, "25นิ้ว": 3 }
+            if (Array.isArray(res.stocks)) {
+                res.stocks.forEach(item => {
+                    stockData[item.name.trim()] = parseFloat(item.count);
+                });
+            } else {
+                stockData = res.stocks || {};
+            }
+            
             renderStockOptions();
         } catch (e) {
+            console.error(e);
             document.getElementById('cust_detail').innerHTML = '<option>โหลดข้อมูลล้มเหลว กรุณารีเฟรช</option>';
         }
     };
@@ -100,23 +113,26 @@
     function renderStockOptions() {
         const select = document.getElementById('cust_detail');
         select.innerHTML = '<option value="">-- เลือกบริการ --</option>';
-        const items = ["20นิ้ว", "25นิ้ว", "30นิ้ว", "35นิ้ว", "ขยับปม"];
+        
+        const items = ["20นิ้ว", "25นิ้ว", "30นิ้ว", "35นิ้ว"];
         const amounts = [1, 1.5, 2];
 
         items.forEach(name => {
-            if (name === "ขยับปม") {
-                addOption(select, name, name, 999, 0);
-            } else {
-                const group = document.createElement('optgroup');
-                group.label = `ผมขนาด ${name}`;
-                amounts.forEach(amt => {
-                    const label = `${name} : ${amt} มัด`;
-                    const currentStock = parseFloat(stockData[name]) || 0;
-                    addOption(group, label, label, currentStock, amt);
-                });
-                select.appendChild(group);
-            }
+            const group = document.createElement('optgroup');
+            group.label = `ผมขนาด ${name}`;
+            amounts.forEach(amt => {
+                const label = `${name} : ${amt} มัด`;
+                const currentStock = stockData[name] || 0;
+                addOption(group, label, label, currentStock, amt);
+            });
+            select.appendChild(group);
         });
+
+        // เพิ่มตัวเลือกขยับปม (ไม่ต้องเช็คสต็อก)
+        const optExtra = document.createElement('option');
+        optExtra.value = "ขยับปม";
+        optExtra.innerText = "✅ ขยับปม";
+        select.appendChild(optExtra);
     }
 
     function addOption(parent, label, value, stock, needed) {
@@ -137,6 +153,7 @@
         const statusBox = document.getElementById('statusBox');
         const info = document.getElementById('infoSection');
         if(!date || !time) return;
+
         if (new Date(date).getDay() === 0) {
             statusBox.innerText = "❌ ร้านหยุดวันอาทิตย์ค่ะ";
             statusBox.className = "status-check is-full";
@@ -144,6 +161,7 @@
             info.style.display = "none";
             return;
         }
+        
         const isFull = bookedData.some(b => b.date === date && b.time === time);
         if(isFull) {
             statusBox.innerText = "❌ คิวเวลานี้เต็มแล้วค่ะ";
@@ -190,7 +208,7 @@
                 document.getElementById('ticketModal').style.display = 'flex';
             })
             .catch(() => {
-                alert('จองสำเร็จ!');
+                alert('จองคิวสำเร็จแล้วค่ะ!');
                 location.reload();
             });
         };
