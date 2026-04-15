@@ -3,69 +3,175 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>จองคิวออนไลน์ - บ้าน265</title>
+    <title>Booking - บ้าน265 Hair Salon</title>
+    <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;600&family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
     <style>
-        :root { --main-color: #8d7b68; --bg-color: #fdfaf8; --error-color: #c53030; --success-color: #28a745; --gold: #b8860b; }
-        body { font-family: 'Tahoma', sans-serif; background: var(--bg-color); padding: 15px; display: flex; justify-content: center; }
-        .card { background: #fff; max-width: 500px; width: 100%; padding: 25px; border-radius: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.1); border: 1px solid #eee; }
-        h2 { text-align: center; color: var(--main-color); margin-bottom: 5px; letter-spacing: 1px; }
+        :root { 
+            --gold: #c5a059; 
+            --gold-dark: #b08d48;
+            --black: #1a1a1a;
+            --white: #ffffff;
+            --gray: #f4f4f4;
+            --error: #d9534f;
+            --success: #5cb85c;
+        }
+
+        body { 
+            font-family: 'Kanit', sans-serif; 
+            background: #e5e5e5 url('https://www.transparenttextures.com/patterns/marble-white.png'); 
+            margin: 0; 
+            padding: 20px 15px; 
+            display: flex; 
+            justify-content: center;
+            color: var(--black);
+        }
+
+        /* Card ดีไซน์หินอ่อนและมีเงา */
+        .card { 
+            background: var(--white); 
+            max-width: 500px; 
+            width: 100%; 
+            padding: 35px 25px; 
+            border-radius: 25px; 
+            box-shadow: 0 20px 40px rgba(0,0,0,0.2); 
+            border: 1px solid rgba(197, 160, 89, 0.3);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .card::before {
+            content: "";
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 8px;
+            background: linear-gradient(90deg, var(--black), var(--gold), var(--black));
+        }
+
+        h2 { 
+            text-align: center; 
+            font-family: 'Playfair Display', serif;
+            color: var(--black); 
+            font-size: 32px;
+            margin-bottom: 5px; 
+            letter-spacing: 2px; 
+            text-transform: uppercase;
+        }
+
+        .sub-title {
+            text-align: center;
+            font-size: 12px;
+            color: var(--gold);
+            letter-spacing: 4px;
+            margin-bottom: 25px;
+            font-weight: 600;
+        }
         
         /* กฎกติกาใหม่ */
-        .rules-box { background: #fff5f5; border: 1px solid #feb2b2; padding: 15px; border-radius: 12px; font-size: 13px; color: #444; margin-bottom: 20px; line-height: 1.6; }
-        .rules-box strong { color: var(--error-color); display: block; margin-bottom: 5px; border-bottom: 1px solid #feb2b2; }
-        .rules-list { padding-left: 18px; margin: 0; }
-        .rules-list li { margin-bottom: 3px; }
+        .rules-box { 
+            background: #fff; 
+            border: 1px solid #ddd; 
+            padding: 15px; 
+            border-radius: 15px; 
+            font-size: 13px; 
+            color: #333; 
+            margin-bottom: 30px; 
+            line-height: 1.7;
+            box-shadow: inset 0 0 10px rgba(0,0,0,0.05);
+        }
+        .rules-box strong { color: var(--error); display: block; margin-bottom: 8px; font-size: 14px; text-decoration: underline; }
+        .rules-list { padding-left: 20px; margin: 0; list-style-type: square; }
 
-        label { display: block; margin-top: 15px; font-weight: bold; color: #555; font-size: 14px; }
-        input, select { width: 100%; padding: 12px; margin-top: 5px; border: 1px solid #eaded2; border-radius: 10px; box-sizing: border-box; font-size: 16px; outline: none; transition: 0.3s; }
-        input:focus { border-color: var(--main-color); box-shadow: 0 0 5px rgba(141,123,104,0.2); }
+        /* Step Indicator */
+        .step-label { 
+            display: flex;
+            align-items: center;
+            margin-top: 25px; 
+            font-weight: 600; 
+            color: var(--black); 
+            font-size: 15px;
+            border-bottom: 1px solid var(--gold);
+            padding-bottom: 5px;
+        }
+        .step-num {
+            background: var(--black);
+            color: var(--gold);
+            width: 22px; height: 22px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            margin-right: 10px;
+            font-size: 12px;
+        }
 
-        .status-check { text-align: center; padding: 12px; border-radius: 10px; margin-top: 15px; font-weight: bold; display: none; }
-        .is-available { background: #e6fffa; color: var(--success-color); border: 1px solid #b2f5ea; }
-        .is-full { background: #fff5f5; color: var(--error-color); border: 1px solid #feb2b2; }
+        input, select { 
+            width: 100%; padding: 14px; margin-top: 10px; 
+            border: 1px solid #ccc; border-radius: 12px; 
+            box-sizing: border-box; font-size: 16px; 
+            transition: 0.3s; background: var(--gray);
+            font-family: 'Kanit', sans-serif;
+        }
+        input:focus { border-color: var(--gold); background: #fff; outline: none; box-shadow: 0 0 10px rgba(197, 160, 89, 0.2); }
 
-        .payment-area { display: none; margin-top: 20px; border-top: 2px dashed #eee; padding-top: 20px; }
-        .qr-box { background: #fffaf0; border: 2px solid var(--main-color); padding: 20px; text-align: center; border-radius: 20px; margin-bottom: 20px; }
-        .qr-box img { width: 220px; border-radius: 10px; margin: 10px 0; border: 2px solid #fff; box-shadow: 0 4px 10px rgba(0,0,0,0.1); }
+        .status-check { text-align: center; padding: 15px; border-radius: 12px; margin-top: 15px; font-weight: 600; display: none; }
+        .is-available { background: #eef9f0; color: var(--success); border: 1px solid var(--success); }
+        .is-full { background: #fff1f0; color: var(--error); border: 1px solid var(--error); }
+
+        .payment-area { display: none; margin-top: 25px; padding-top: 20px; border-top: 1px solid #eee; }
+        .qr-box { background: var(--white); border: 2px solid var(--gold); padding: 25px; text-align: center; border-radius: 20px; margin-bottom: 20px; }
+        .qr-box img { width: 200px; border-radius: 10px; border: 1px solid #eee; margin: 15px 0; }
         
-        button { width: 100%; background: var(--main-color); color: #fff; padding: 18px; border: none; border-radius: 12px; margin-top: 20px; cursor: pointer; font-size: 18px; font-weight: bold; transition: 0.3s; }
-        button:hover { background: #7a6a59; transform: translateY(-2px); }
-        button:disabled { background: #ccc; cursor: not-allowed; }
+        /* Interactive Button */
+        button { 
+            width: 100%; background: var(--black); color: var(--gold); 
+            padding: 18px; border: 1px solid var(--gold); border-radius: 15px; 
+            margin-top: 20px; cursor: pointer; font-size: 18px; font-weight: bold; 
+            transition: 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); 
+            font-family: 'Kanit', sans-serif;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        button:hover { background: var(--gold); color: var(--black); transform: scale(1.02); box-shadow: 0 10px 20px rgba(0,0,0,0.2); }
+        button:disabled { background: #ccc; border-color: #ccc; color: #fff; cursor: not-allowed; transform: none; }
 
-        /* Modal ตั๋วจอง */
-        .modal { display: none; position: fixed; z-index: 1000; left: 0; top: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.85); align-items: center; justify-content: center; padding: 20px; }
-        .ticket { background: #fff; border-radius: 15px; width: 100%; max-width: 350px; overflow: hidden; position: relative; box-shadow: 0 20px 40px rgba(0,0,0,0.4); }
-        .ticket-header { background: var(--main-color); color: white; padding: 20px; text-align: center; }
-        .ticket-body { padding: 25px; text-align: left; position: relative; border-bottom: 2px dashed #ddd; }
-        .ticket-body p { margin: 10px 0; font-size: 15px; color: #333; display: flex; justify-content: space-between; }
-        .ticket-body p span { font-weight: bold; color: var(--main-color); }
-        .ticket-footer { background: #f9f9f9; padding: 15px; text-align: center; font-size: 12px; color: #777; }
-        .ticket::before, .ticket::after { content: ''; position: absolute; width: 20px; height: 20px; background: rgba(0,0,0,0.85); border-radius: 50%; top: 68%; }
-        .ticket::before { left: -10px; } .ticket::after { right: -10px; }
+        /* Ticket & Modal */
+        .modal { display: none; position: fixed; z-index: 1000; inset: 0; background: rgba(0,0,0,0.9); align-items: center; justify-content: center; padding: 20px; }
+        .ticket { background: #fff; border-radius: 20px; width: 100%; max-width: 360px; overflow: hidden; position: relative; box-shadow: 0 30px 60px rgba(0,0,0,0.5); border: 1px solid var(--gold); }
+        .ticket-header { background: var(--black); color: var(--gold); padding: 25px; text-align: center; border-bottom: 4px solid var(--gold); }
+        .ticket-body { padding: 30px; text-align: left; }
+        .ticket-body p { margin: 12px 0; font-size: 15px; border-bottom: 1px dashed #eee; padding-bottom: 5px; display: flex; justify-content: space-between; }
+        .ticket-body b { color: var(--black); }
+        .ticket-footer { background: #fdfdfd; padding: 20px; text-align: center; border-top: 2px dashed #ccc; }
+        
+        .payment-methods { font-size: 11px; color: #888; margin-top: 15px; display: flex; justify-content: center; gap: 10px; }
+
+        @media (max-width: 480px) {
+            .card { padding: 25px 15px; }
+            h2 { font-size: 26px; }
+        }
     </style>
 </head>
 <body>
 
 <div class="card">
-    <h2>จองคิวออนไลน์ - บ้าน265</h2>
+    <h2>บ้าน 265</h2>
+    <div class="sub-title">HAIR SALON & EXTENSIONS</div>
     
     <div class="rules-box">
-        <strong>📌 กฎกติกามารยาท (โปรดอ่าน):</strong>
+        <strong>📌 กฎกติกามารยาท:</strong>
         <ul class="rules-list">
             <li>แจ้งรายละเอียดให้ครบถ้วน</li>
             <li>ยกเลิกคิว / จองผิดวัน / ผิดแบบ <b>ไม่คืนมัดจำทุกกรณี</b></li>
-            <li>เลื่อนคิวล่วงหน้า 5 วัน <b>หักมัดจำครึ่งเดียว</b></li>
-            <li>เลทเกิน 15 นาที <b>หักมัดจำทุกกรณี</b></li>
-            <li>เลท 30 นาที <b>ตัดคิวทันที (ไม่ทำให้)</b></li>
-            <li>กรณีมีถอดผม มาก่อน 30 นาที หากไม่มา<b>หักมัดจำครึ่งนึง</b></li>
+            <li>เลื่อนคิวแจ้งล่วงหน้า 5 วัน <b>เลื่อนฟรี</b></li>
+            <li>เลทไม่เกิน 15 นาที <b>เกินหักมัดจำทุกกรณี</b></li>
+            <li>เลท 30 นาที <b>ตัดคิว ไม่ทำให้</b></li>
+            <li>มีถอดผม มาก่อน 30 นาที <b>ไม่มาหักมัดจำครึ่งนึง</b></li>
         </ul>
     </div>
 
     <form id="bookingForm">
-        <label>1. เลือกวันที่นัดหมาย (หยุดวันอาทิตย์)</label>
+        <div class="step-label"><span class="step-num">1</span> เลือกวันและเวลา</div>
         <input type="date" id="cust_date" required onchange="checkBookingStatus()">
         
-        <label>2. เลือกช่วงเวลา</label>
         <select id="cust_time" required onchange="checkBookingStatus()">
             <option value="">-- เลือกเวลา --</option>
             <option value="13.00-14.59">13.00 - 14.59 น.</option>
@@ -75,25 +181,25 @@
         <div id="statusBox" class="status-check"></div>
 
         <div id="infoSection" style="display:none;">
-            <label>ชื่อผู้จอง</label>
-            <input type="text" id="cust_name" placeholder="ระบุชื่อของคุณ" required>
-            <label>เบอร์โทรศัพท์</label>
-            <input type="tel" id="cust_phone" placeholder="08x-xxxxxxx" required>
-            <label>ชื่อ LINE</label>
-            <input type="text" id="cust_line" placeholder="ID หรือ ชื่อในไลน์" required>
+            <div class="step-label"><span class="step-num">2</span> ข้อมูลผู้จอง</div>
+            <input type="text" id="cust_name" placeholder="ชื่อ-นามสกุล" required>
+            <input type="tel" id="cust_phone" placeholder="เบอร์โทรศัพท์" required>
+            <input type="text" id="cust_line" placeholder="LINE ID" required>
             
-            <label>3. รายละเอียดสต็อกผม</label>
+            <div class="step-label"><span class="step-num">3</span> บริการและสต็อกผม</div>
             <select id="cust_detail" required>
                 <option value="">-- กำลังตรวจสอบสต็อก... --</option>
             </select>
 
             <div id="paymentArea" class="payment-area">
                 <div class="qr-box">
-                    <p style="color: var(--gold); font-weight: bold;">💰 ยอดมัดจำ 500 บาท</p>
+                    <p style="color: var(--black); font-weight: bold; margin:0;">💰 มัดจำจองคิว 500 บาท</p>
                     <img src="att.8Sn_yZRe9NxRT7e82xRROxZGprBrwV_hRbURzB6XKpo.jpeg">
-                    <p style="font-size: 12px; color: #666;">โอนแล้วแนบสลิปด้านล่างเพื่อยืนยันคิว</p>
+                    <div style="font-size: 11px; color: #666; margin-top: 5px;">
+                        *รองรับการชำระผ่าน <b>SPayLater</b> และ <b>บัตรเครดิต</b>
+                    </div>
                 </div>
-                <label>แนบรูปสลิปโอนเงิน</label>
+                <label style="font-weight:bold; font-size:14px;">🖼️ แนบสลิปโอนเงิน</label>
                 <input type="file" id="fileInput" accept="image/*" required>
                 <button type="submit" id="submitBtn">ยืนยันการจองคิว</button>
             </div>
@@ -104,20 +210,23 @@
 <div id="ticketModal" class="modal">
     <div class="ticket">
         <div class="ticket-header">
-            <h3 style="margin:0;">BOOKING TICKET</h3>
-            <p style="font-size: 12px; margin:5px 0 0;">บ้าน265 Hair Salon</p>
+            <h3 style="margin:0; letter-spacing:2px;">BOOKING CONFIRMED</h3>
+            <p style="font-size: 11px; margin:5px 0 0; opacity:0.8;">Baan 265 Hair Salon</p>
         </div>
         <div class="ticket-body">
-            <p>ชื่อผู้จอง: <span id="res_name"></span></p>
-            <p>วันที่นัด: <span id="res_date"></span></p>
-            <p>เวลา: <span id="res_time"></span></p>
-            <p>รายการ: <span id="res_detail" style="font-size: 13px;"></span></p>
-            <p>สถานะ: <span style="color: var(--success-color);">ยืนยันมัดจำแล้ว</span></p>
+            <p>คุณ: <b id="res_name"></b></p>
+            <p>วันที่: <b id="res_date"></b></p>
+            <p>เวลา: <b id="res_time"></b></p>
+            <p>รายการ: <b id="res_detail" style="font-size: 13px; color: var(--gold);"></b></p>
+            <p>ยอดมัดจำ: <b>500 THB</b></p>
+            
+            <div class="payment-methods">
+                <span>💳 Credit Card</span> | <span>📱 SPayLater</span> | <span>🏦 QR Payment</span>
+            </div>
         </div>
         <div class="ticket-footer">
-            <p style="color:red; font-weight:bold; margin-bottom: 5px;">*กรุณาแคปหน้าจอนี้ไว้*</p>
-            <p>ขอบคุณที่ใช้บริการค่ะ</p>
-            <button onclick="location.reload()" style="padding: 10px; font-size: 14px; margin-top: 10px;">ปิดหน้าต่างนี้</button>
+            <p style="color:var(--error); font-weight:bold; font-size:13px; margin-bottom:10px;">⚠️ กรุณาแคปหน้าจอนี้ไว้</p>
+            <button onclick="location.reload()" style="padding: 12px; font-size: 15px; margin:0;">เสร็จสิ้น</button>
         </div>
     </div>
 </div>
@@ -149,7 +258,7 @@
 
         items.forEach(name => {
             const group = document.createElement('optgroup');
-            group.label = `ผมขนาด ${name}`;
+            group.label = `ผมยาว ${name}`;
             amounts.forEach(amt => {
                 const label = `${name} : ${amt} มัด`;
                 const currentStock = stockData[name] || 0;
@@ -180,7 +289,7 @@
         if(!date || !time) return;
 
         if (new Date(date).getDay() === 0) {
-            statusBox.innerText = "❌ ร้านหยุดวันอาทิตย์ค่ะ";
+            statusBox.innerText = "❌ ร้านหยุดวันอาทิตย์";
             statusBox.className = "status-check is-full";
             statusBox.style.display = "block";
             info.style.display = "none";
@@ -189,12 +298,12 @@
         
         const isFull = bookedData.some(b => b.date === date && b.time === time);
         if(isFull) {
-            statusBox.innerText = "❌ คิวเวลานี้เต็มแล้วค่ะ";
+            statusBox.innerText = "❌ คิวเวลานี้เต็มแล้ว";
             statusBox.className = "status-check is-full";
             statusBox.style.display = "block";
             info.style.display = "none";
         } else {
-            statusBox.innerText = "✅ คิวว่าง สามารถจองได้ค่ะ";
+            statusBox.innerText = "✨ คิวว่าง สามารถจองได้";
             statusBox.className = "status-check is-available";
             statusBox.style.display = "block";
             info.style.display = "block";
@@ -208,7 +317,7 @@
         e.preventDefault();
         const btn = document.getElementById('submitBtn');
         btn.disabled = true;
-        btn.innerText = "กำลังตรวจสอบและส่งข้อมูล...";
+        btn.innerText = "กำลังประมวลผล...";
 
         const file = document.getElementById('fileInput').files[0];
         const reader = new FileReader();
@@ -229,7 +338,7 @@
             .then(response => response.text())
             .then(result => {
                 if(result === "AlreadyBooked") {
-                    alert("ขออภัยค่ะ! มีคนจองเวลานี้ตัดหน้าไปเมื่อครู่ กรุณาเลือกเวลาใหม่นะคะ");
+                    alert("ขออภัย! คิวเพิ่งถูกจองไป กรุณาเลือกเวลาใหม่");
                     location.reload();
                 } else {
                     document.getElementById('res_name').innerText = document.getElementById('cust_name').value;
@@ -239,8 +348,8 @@
                     document.getElementById('ticketModal').style.display = 'flex';
                 }
             })
-            .catch(err => {
-                alert('จองสำเร็จ! (อาจมีการหน่วงของระบบเล็กน้อย)');
+            .catch(() => {
+                alert('จองสำเร็จ!');
                 location.reload();
             });
         };
