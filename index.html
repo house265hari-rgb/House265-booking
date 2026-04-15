@@ -5,65 +5,95 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>จองคิวออนไลน์ - บ้าน265</title>
     <style>
-        :root { --main-color: #8d7b68; --bg-color: #fdfaf8; --error-color: #c53030; --success-color: #28a745; }
+        :root { --main-color: #8d7b68; --bg-color: #fdfaf8; --error-color: #c53030; --success-color: #28a745; --gold: #b8860b; }
         body { font-family: 'Tahoma', sans-serif; background: var(--bg-color); padding: 15px; display: flex; justify-content: center; }
-        .card { background: #fff; max-width: 500px; width: 100%; padding: 25px; border-radius: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.1); }
-        h2 { text-align: center; color: var(--main-color); margin-bottom: 5px; }
-        .rules-box { background: #fff5f5; border: 1px solid #feb2b2; padding: 15px; border-radius: 12px; font-size: 13px; color: var(--error-color); margin-bottom: 20px; line-height: 1.6; }
+        .card { background: #fff; max-width: 500px; width: 100%; padding: 25px; border-radius: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.1); border: 1px solid #eee; }
+        h2 { text-align: center; color: var(--main-color); margin-bottom: 5px; letter-spacing: 1px; }
+        
+        /* กฎกติกาใหม่ */
+        .rules-box { background: #fff5f5; border: 1px solid #feb2b2; padding: 15px; border-radius: 12px; font-size: 13px; color: #444; margin-bottom: 20px; line-height: 1.6; }
+        .rules-box strong { color: var(--error-color); display: block; margin-bottom: 5px; border-bottom: 1px solid #feb2b2; }
+        .rules-list { padding-left: 18px; margin: 0; }
+        .rules-list li { margin-bottom: 3px; }
+
         label { display: block; margin-top: 15px; font-weight: bold; color: #555; font-size: 14px; }
-        input, select { width: 100%; padding: 12px; margin-top: 5px; border: 1px solid #eaded2; border-radius: 10px; box-sizing: border-box; font-size: 16px; outline: none; }
+        input, select { width: 100%; padding: 12px; margin-top: 5px; border: 1px solid #eaded2; border-radius: 10px; box-sizing: border-box; font-size: 16px; outline: none; transition: 0.3s; }
+        input:focus { border-color: var(--main-color); box-shadow: 0 0 5px rgba(141,123,104,0.2); }
+
         .status-check { text-align: center; padding: 12px; border-radius: 10px; margin-top: 15px; font-weight: bold; display: none; }
         .is-available { background: #e6fffa; color: var(--success-color); border: 1px solid #b2f5ea; }
         .is-full { background: #fff5f5; color: var(--error-color); border: 1px solid #feb2b2; }
-        .payment-area { display: none; margin-top: 10px; }
-        .qr-box { background: #fffaf0; border: 2px dashed var(--main-color); padding: 20px; text-align: center; border-radius: 20px; margin: 20px 0; }
-        .qr-box img { width: 200px; border-radius: 10px; margin-top: 10px; }
-        button { width: 100%; background: var(--main-color); color: #fff; padding: 18px; border: none; border-radius: 12px; margin-top: 25px; cursor: pointer; font-size: 18px; font-weight: bold; }
-        .modal { display: none; position: fixed; z-index: 1000; left: 0; top: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.85); align-items: center; justify-content: center; }
-        .modal-content { background: #fff; padding: 30px; border-radius: 25px; width: 85%; max-width: 380px; text-align: center; border: 6px solid var(--main-color); }
+
+        .payment-area { display: none; margin-top: 20px; border-top: 2px dashed #eee; padding-top: 20px; }
+        .qr-box { background: #fffaf0; border: 2px solid var(--main-color); padding: 20px; text-align: center; border-radius: 20px; margin-bottom: 20px; }
+        .qr-box img { width: 220px; border-radius: 10px; margin: 10px 0; border: 2px solid #fff; box-shadow: 0 4px 10px rgba(0,0,0,0.1); }
+        
+        button { width: 100%; background: var(--main-color); color: #fff; padding: 18px; border: none; border-radius: 12px; margin-top: 20px; cursor: pointer; font-size: 18px; font-weight: bold; transition: 0.3s; }
+        button:hover { background: #7a6a59; transform: translateY(-2px); }
+        button:disabled { background: #ccc; cursor: not-allowed; }
+
+        /* Modal ตั๋วจอง */
+        .modal { display: none; position: fixed; z-index: 1000; left: 0; top: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.85); align-items: center; justify-content: center; padding: 20px; }
+        .ticket { background: #fff; border-radius: 15px; width: 100%; max-width: 350px; overflow: hidden; position: relative; box-shadow: 0 20px 40px rgba(0,0,0,0.4); }
+        .ticket-header { background: var(--main-color); color: white; padding: 20px; text-align: center; }
+        .ticket-body { padding: 25px; text-align: left; position: relative; border-bottom: 2px dashed #ddd; }
+        .ticket-body p { margin: 10px 0; font-size: 15px; color: #333; display: flex; justify-content: space-between; }
+        .ticket-body p span { font-weight: bold; color: var(--main-color); }
+        .ticket-footer { background: #f9f9f9; padding: 15px; text-align: center; font-size: 12px; color: #777; }
+        .ticket::before, .ticket::after { content: ''; position: absolute; width: 20px; height: 20px; background: rgba(0,0,0,0.85); border-radius: 50%; top: 68%; }
+        .ticket::before { left: -10px; } .ticket::after { right: -10px; }
     </style>
 </head>
 <body>
 
 <div class="card">
     <h2>จองคิวออนไลน์ - บ้าน265</h2>
+    
     <div class="rules-box">
-        <strong>⚠️ กฎกติกามารยาท:</strong><br>
-        • หยุดทุกวันอาทิตย์<br>
-        • มาสายเกิน 15 นาที ขออนุญาตหักมัดจำ<br>
-        • หากจองผิดวัน ทางร้านไม่คืนมัดจำทุกกรณี
+        <strong>📌 กฎกติกามารยาท (โปรดอ่าน):</strong>
+        <ul class="rules-list">
+            <li>แจ้งรายละเอียดให้ครบถ้วน</li>
+            <li>ยกเลิกคิว / จองผิดวัน / ผิดแบบ <b>ไม่คืนมัดจำทุกกรณี</b></li>
+            <li>เลื่อนคิวล่วงหน้า 5 วัน <b>หักมัดจำครึ่งเดียว</b></li>
+            <li>เลทเกิน 15 นาที <b>หักมัดจำทุกกรณี</b></li>
+            <li>เลท 30 นาที <b>ตัดคิวทันที (ไม่ทำให้)</b></li>
+            <li>กรณีมีถอดผม มาก่อน 30 นาที หากไม่มา<b>หักมัดจำครึ่งนึง</b></li>
+        </ul>
     </div>
 
     <form id="bookingForm">
-        <label>1. เลือกวันที่นัดหมาย</label>
+        <label>1. เลือกวันที่นัดหมาย (หยุดวันอาทิตย์)</label>
         <input type="date" id="cust_date" required onchange="checkBookingStatus()">
+        
         <label>2. เลือกช่วงเวลา</label>
         <select id="cust_time" required onchange="checkBookingStatus()">
             <option value="">-- เลือกเวลา --</option>
             <option value="13.00-14.59">13.00 - 14.59 น.</option>
             <option value="15.00-17.00">15.00 - 17.00 น.</option>
         </select>
+
         <div id="statusBox" class="status-check"></div>
-        
+
         <div id="infoSection" style="display:none;">
             <label>ชื่อผู้จอง</label>
-            <input type="text" id="cust_name" placeholder="ระบุชื่อจริง" required>
+            <input type="text" id="cust_name" placeholder="ระบุชื่อของคุณ" required>
             <label>เบอร์โทรศัพท์</label>
             <input type="tel" id="cust_phone" placeholder="08x-xxxxxxx" required>
             <label>ชื่อ LINE</label>
             <input type="text" id="cust_line" placeholder="ID หรือ ชื่อในไลน์" required>
             
-            <label>3. รายละเอียดขนาดและจำนวนมัด</label>
+            <label>3. รายละเอียดสต็อกผม</label>
             <select id="cust_detail" required>
-                <option value="">-- กำลังโหลดสต็อกล่าสุด... --</option>
+                <option value="">-- กำลังตรวจสอบสต็อก... --</option>
             </select>
 
             <div id="paymentArea" class="payment-area">
                 <div class="qr-box">
-                    <p><strong>💰 มัดจำ 500 บาท</strong></p>
+                    <p style="color: var(--gold); font-weight: bold;">💰 ยอดมัดจำ 500 บาท</p>
                     <img src="att.8Sn_yZRe9NxRT7e82xRROxZGprBrwV_hRbURzB6XKpo.jpeg">
+                    <p style="font-size: 12px; color: #666;">โอนแล้วแนบสลิปด้านล่างเพื่อยืนยันคิว</p>
                 </div>
-                <label>แนบสลิปโอนเงิน</label>
+                <label>แนบรูปสลิปโอนเงิน</label>
                 <input type="file" id="fileInput" accept="image/*" required>
                 <button type="submit" id="submitBtn">ยืนยันการจองคิว</button>
             </div>
@@ -72,19 +102,28 @@
 </div>
 
 <div id="ticketModal" class="modal">
-    <div class="modal-content">
-        <h3>🎟️ จองคิวสำเร็จ</h3>
-        <p>ชื่อ: <span id="res_name"></span></p>
-        <p>วันที่: <span id="res_date"></span></p>
-        <p>เวลา: <span id="res_time"></span></p>
-        <p>บริการ: <span id="res_detail"></span></p>
-        <button onclick="location.reload()">ตกลง</button>
+    <div class="ticket">
+        <div class="ticket-header">
+            <h3 style="margin:0;">BOOKING TICKET</h3>
+            <p style="font-size: 12px; margin:5px 0 0;">บ้าน265 Hair Salon</p>
+        </div>
+        <div class="ticket-body">
+            <p>ชื่อผู้จอง: <span id="res_name"></span></p>
+            <p>วันที่นัด: <span id="res_date"></span></p>
+            <p>เวลา: <span id="res_time"></span></p>
+            <p>รายการ: <span id="res_detail" style="font-size: 13px;"></span></p>
+            <p>สถานะ: <span style="color: var(--success-color);">ยืนยันมัดจำแล้ว</span></p>
+        </div>
+        <div class="ticket-footer">
+            <p style="color:red; font-weight:bold; margin-bottom: 5px;">*กรุณาแคปหน้าจอนี้ไว้*</p>
+            <p>ขอบคุณที่ใช้บริการค่ะ</p>
+            <button onclick="location.reload()" style="padding: 10px; font-size: 14px; margin-top: 10px;">ปิดหน้าต่างนี้</button>
+        </div>
     </div>
 </div>
 
 <script>
-    // อัปเดตลิงก์ใหม่ที่คุณส่งมา
-    const scriptURL = 'https://script.google.com/macros/s/AKfycbx-P1lM0upBMCRBTFYHGVR1B32bsjT_e5UwYlQXotRlrtCdK583w2KZaeCPPuWI2dpy2w/exec';
+    const scriptURL = 'https://script.google.com/macros/s/AKfycbzRdlkvgjQtaZHxgTVpOw59zqW0nS9KpzrBVxj3XrJKt4Aq7SfSQMa5s8-w2FlzuFSusw/exec';
     let bookedData = [];
     let stockData = {};
 
@@ -93,19 +132,11 @@
             const response = await fetch(scriptURL);
             const res = await response.json();
             bookedData = res.bookings || [];
-            
-            // แปลงอาร์เรย์สต็อกเป็น Object เพื่อให้เช็คง่ายๆ { "20นิ้ว": 5, "25นิ้ว": 3 }
             if (Array.isArray(res.stocks)) {
-                res.stocks.forEach(item => {
-                    stockData[item.name.trim()] = parseFloat(item.count);
-                });
-            } else {
-                stockData = res.stocks || {};
-            }
-            
+                res.stocks.forEach(item => { stockData[item.name.trim()] = parseFloat(item.count); });
+            } else { stockData = res.stocks || {}; }
             renderStockOptions();
         } catch (e) {
-            console.error(e);
             document.getElementById('cust_detail').innerHTML = '<option>โหลดข้อมูลล้มเหลว กรุณารีเฟรช</option>';
         }
     };
@@ -113,7 +144,6 @@
     function renderStockOptions() {
         const select = document.getElementById('cust_detail');
         select.innerHTML = '<option value="">-- เลือกบริการ --</option>';
-        
         const items = ["20นิ้ว", "25นิ้ว", "30นิ้ว", "35นิ้ว"];
         const amounts = [1, 1.5, 2];
 
@@ -123,28 +153,23 @@
             amounts.forEach(amt => {
                 const label = `${name} : ${amt} มัด`;
                 const currentStock = stockData[name] || 0;
-                addOption(group, label, label, currentStock, amt);
+                const opt = document.createElement('option');
+                opt.value = label;
+                if (currentStock < amt) {
+                    opt.innerText = `❌ ${label} (ของหมด)`;
+                    opt.disabled = true;
+                } else {
+                    opt.innerText = `✅ ${label}`;
+                }
+                group.appendChild(opt);
             });
             select.appendChild(group);
         });
-
-        // เพิ่มตัวเลือกขยับปม (ไม่ต้องเช็คสต็อก)
+        
         const optExtra = document.createElement('option');
         optExtra.value = "ขยับปม";
         optExtra.innerText = "✅ ขยับปม";
         select.appendChild(optExtra);
-    }
-
-    function addOption(parent, label, value, stock, needed) {
-        const opt = document.createElement('option');
-        opt.value = value;
-        if (stock < needed) {
-            opt.innerText = `❌ ${label} (ของหมด ติดต่อร้านนะคะ)`;
-            opt.disabled = true;
-        } else {
-            opt.innerText = `✅ ${label}`;
-        }
-        parent.appendChild(opt);
     }
 
     function checkBookingStatus() {
@@ -183,7 +208,8 @@
         e.preventDefault();
         const btn = document.getElementById('submitBtn');
         btn.disabled = true;
-        btn.innerText = "กำลังส่งข้อมูล...";
+        btn.innerText = "กำลังตรวจสอบและส่งข้อมูล...";
+
         const file = document.getElementById('fileInput').files[0];
         const reader = new FileReader();
         reader.onload = function() {
@@ -200,15 +226,21 @@
             params.append('fileName', file.name);
 
             fetch(scriptURL, { method: 'POST', body: params })
-            .then(() => {
-                document.getElementById('res_name').innerText = document.getElementById('cust_name').value;
-                document.getElementById('res_date').innerText = document.getElementById('cust_date').value;
-                document.getElementById('res_time').innerText = document.getElementById('cust_time').value;
-                document.getElementById('res_detail').innerText = document.getElementById('cust_detail').value;
-                document.getElementById('ticketModal').style.display = 'flex';
+            .then(response => response.text())
+            .then(result => {
+                if(result === "AlreadyBooked") {
+                    alert("ขออภัยค่ะ! มีคนจองเวลานี้ตัดหน้าไปเมื่อครู่ กรุณาเลือกเวลาใหม่นะคะ");
+                    location.reload();
+                } else {
+                    document.getElementById('res_name').innerText = document.getElementById('cust_name').value;
+                    document.getElementById('res_date').innerText = document.getElementById('cust_date').value;
+                    document.getElementById('res_time').innerText = document.getElementById('cust_time').value;
+                    document.getElementById('res_detail').innerText = document.getElementById('cust_detail').value;
+                    document.getElementById('ticketModal').style.display = 'flex';
+                }
             })
-            .catch(() => {
-                alert('จองคิวสำเร็จแล้วค่ะ!');
+            .catch(err => {
+                alert('จองสำเร็จ! (อาจมีการหน่วงของระบบเล็กน้อย)');
                 location.reload();
             });
         };
