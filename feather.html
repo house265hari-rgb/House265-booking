@@ -138,11 +138,6 @@
             background: #222;
         }
 
-        input[type="date"]::-webkit-calendar-picker-indicator {
-            filter: invert(1);
-            cursor: pointer;
-        }
-
         .status-check { 
             text-align: center; 
             padding: 15px; 
@@ -181,9 +176,7 @@
             border-radius: 4px;
             transition: 0.3s;
         }
-        button:hover { transform: translateY(-2px); box-shadow: 0 10px 20px rgba(212, 175, 55, 0.3); }
 
-        /* TICKET DESIGN */
         .modal { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.95); z-index: 1000; align-items: center; justify-content: center; padding: 20px; }
         .ticket { 
             background: #111; 
@@ -191,8 +184,6 @@
             max-width: 380px; 
             border: 1.5px solid var(--gold); 
             text-align: center; 
-            position: relative;
-            padding: 0;
             border-radius: 12px;
             overflow: hidden;
         }
@@ -245,7 +236,6 @@
             padding: 20px 30px 40px;
             font-size: 11px;
             color: #666;
-            line-height: 1.6;
             text-align: center;
         }
     </style>
@@ -265,19 +255,15 @@
             <li>ยกเลิกคิว จองผิดวัน หรือผิดแบบ ไม่คืนมัดจำทุกกรณี</li>
             <li>เลื่อนคิวล่วงหน้า 5 วัน ไม่มีค่าธรรมเนียมการเลื่อน</li>
             <li>มาสายได้ไม่เกิน 15 นาที หากเกินขอสงวนสิทธิ์หักมัดจำ</li>
-            <li>สายเกิน 30 นาที ทางร้านขออนุญาตตัดคิวและไม่คืนมัดจำ</li>
-            <li><b>กรณีมีงานถอดผม กรุณามาก่อนเวลา 1 ชั่วโมง</b></li>
         </ul>
     </div>
 
     <form id="bookingForm">
         <span class="step-label">01 / APPOINTMENT DATE</span>
         <input type="date" id="cust_date" required onchange="updateTimeOptions()">
-        
         <select id="cust_time" required onchange="checkBookingStatus()" disabled>
             <option value="">กรุณาเลือกวันที่</option>
         </select>
-
         <div id="statusBox" class="status-check"></div>
 
         <div id="infoSection" style="display:none;">
@@ -295,9 +281,6 @@
                 <div class="qr-box">
                     <p><b>ยอดมัดจำจองคิว 1,000 THB</b></p>
                     <img src="att.c-LKzEEDaA_aol1rfa3nGSziIcCL1ywY5lXszjTzOOM.jpeg">
-                    <div style="font-size: 11px; color: #666; margin-top: 15px;">
-                        ACCEPT: QR SCAN / CASH / CREDIT CARD / SPAYLATER
-                    </div>
                 </div>
                 <span class="step-label">UPLOAD PAYMENT SLIP</span>
                 <input type="file" id="fileInput" accept="image/*" required style="border:none; padding:10px 0; color:#888;">
@@ -326,39 +309,28 @@
                     <span>คูปองส่วนลดพิเศษ</span> <b style="color:#ff4d4d;" id="res_coupon"></b>
                 </div>
                 <div class="final-price-box">
-                    <span style="font-size: 11px; color: var(--gold-light); display: block; margin-bottom: 5px;">ยอดคงเหลือจ่ายหน้าร้าน</span>
+                    <span style="font-size: 11px; color: var(--gold-light); display: block;">ยอดคงเหลือจ่ายหน้าร้าน</span>
                     <b style="font-size: 22px; color: #fff;" id="res_final_price"></b>
                 </div>
             </div>
         </div>
-        
-        <div class="screenshot-info">
-            <b>กรุณา "แคปหน้าจอ" ตั๋วจองนี้ไว้</b><br>เพื่อแสดงเป็นหลักฐานเมื่อเข้ารับบริการ
-        </div>
-
+        <div class="screenshot-info"><b>กรุณา "แคปหน้าจอ" ตั๋วจองนี้ไว้</b></div>
         <div class="ticket-footer">
-            รับชำระแบบ: สแกน / เงินสด / บัตรเครดิต / SPayLater<br>
-            หากมีปัญหา/ต้องการเลื่อนคิว ติดต่อ <b style="color:var(--gold);">096-056-4585</b><br><br>
+            ติดต่อสอบถาม <b style="color:var(--gold);">096-056-4585</b><br><br>
             <button onclick="location.reload()" style="padding: 10px; font-size: 12px;">เสร็จสิ้น</button>
         </div>
     </div>
 </div>
 
 <script>
-    // --- ฐานราคาตามที่คุณกำหนด ---
+    const scriptURL = 'https://script.google.com/macros/s/AKfycbyaJ7XBDXGU8f00T2NPq-qMef30RA-f8nAwdZGVqTks32ZhJFo9x5F1zm6h47qiaj7/exec';
+    
     const priceList = {
-        "20นิ้ว": 2600,
-        "25นิ้ว": 2900,
-        "30นิ้ว": 3600,
-        "35นิ้ว": 3990,
-        "40นิ้ว": 4600,
-        "45นิ้ว": 5200,
-        "ขยับปมขนนก": 1500
+        "20นิ้ว": 2600, "25นิ้ว": 2900, "30นิ้ว": 3600,
+        "35นิ้ว": 3990, "40นิ้ว": 4600, "45นิ้ว": 5200, "ขยับปมขนนก": 1500
     };
 
-    const scriptURL = 'https://script.google.com/macros/s/AKfycbz-CPQEWPTRuhHgF-9h9XoViSBKXvF_trswiBvn9zEukI9mhlpfsADyS9la21fOLv0/exec';
-    let bookedData = [];
-    let stockData = {};
+    let bookedData = [], stockData = {};
 
     window.onload = async () => {
         try {
@@ -375,26 +347,16 @@
     function updateTimeOptions() {
         const dateInput = document.getElementById('cust_date').value;
         const timeSelect = document.getElementById('cust_time');
-        const statusBox = document.getElementById('statusBox');
-        const info = document.getElementById('infoSection');
-        
         if (!dateInput) return;
         const day = new Date(dateInput).getDay();
-        
         timeSelect.innerHTML = '<option value="">เลือกเวลาที่ต้องการ</option>';
         timeSelect.disabled = false;
-        statusBox.style.display = "none";
-        info.style.display = "none";
+        document.getElementById('statusBox').style.display = "none";
+        document.getElementById('infoSection').style.display = "none";
 
-        if (day === 0) { 
-            alert("ขออภัย ร้านหยุดวันอาทิตย์ค่ะ");
-            timeSelect.disabled = true;
-            return;
-        }
-
-        if (day === 6) { 
-            timeSelect.innerHTML += '<option value="12.00-15.00">12.00 - 15.00 น. (รับคิวเดียว)</option>';
-        } else { 
+        if (day === 0) { alert("ร้านหยุดวันอาทิตย์ค่ะ"); timeSelect.disabled = true; return; }
+        if (day === 6) { timeSelect.innerHTML += '<option value="12.00-15.00">12.00 - 15.00 น.</option>'; }
+        else { 
             timeSelect.innerHTML += '<option value="11.00-16.00">11.00 - 16.00 น.</option>';
             timeSelect.innerHTML += '<option value="12.00-16.00">12.00 - 16.00 น.</option>';
             timeSelect.innerHTML += '<option value="19.00-21.00">19.00 - 21.00 น. (คิวพิเศษ +400)</option>';
@@ -410,11 +372,17 @@
         sizes.forEach(size => {
             const group = document.createElement('optgroup');
             group.label = `PREMIUM FEATHER: ${size}`;
+            const currentStock = parseFloat(stockData[size]) || 0;
             amounts.forEach(amtText => {
-                const label = `${size} : ${amtText}`;
+                const amtValue = parseFloat(amtText);
                 const opt = document.createElement('option');
-                opt.value = label;
-                opt.innerText = label;
+                opt.value = `${size} : ${amtText}`;
+                if (currentStock < amtValue) {
+                    opt.innerText = `${size} : ${amtText} (ของหมดชั่วคราว)`;
+                    opt.disabled = true;
+                } else {
+                    opt.innerText = `${size} : ${amtText}`;
+                }
                 group.appendChild(opt);
             });
             select.appendChild(group);
@@ -425,20 +393,17 @@
     function checkBookingStatus() {
         const date = document.getElementById('cust_date').value;
         const time = document.getElementById('cust_time').value;
-        const statusBox = document.getElementById('statusBox');
-        const info = document.getElementById('infoSection');
-        if(!date || !time) return;
-
         const isFull = bookedData.some(b => b.date === date && b.time === time);
+        const statusBox = document.getElementById('statusBox');
         statusBox.style.display = "block";
         if(isFull) {
             statusBox.innerText = "ขออภัย คิวเวลานี้เต็มแล้ว";
             statusBox.className = "status-check is-full";
-            info.style.display = "none";
+            document.getElementById('infoSection').style.display = "none";
         } else {
             statusBox.innerText = "ตารางว่าง สามารถทำการจองได้";
             statusBox.className = "status-check is-available";
-            info.style.display = "block";
+            document.getElementById('infoSection').style.display = "block";
             document.getElementById('paymentArea').style.display = "block";
         }
     }
@@ -448,31 +413,24 @@
     document.getElementById('bookingForm').onsubmit = e => {
         e.preventDefault();
         const btn = document.getElementById('submitBtn');
-        btn.disabled = true;
-        btn.innerText = "PROCESSING VIP BOOKING...";
+        btn.disabled = true; btn.innerText = "PROCESSING...";
 
         const detail = document.getElementById('cust_detail').value;
         const time = document.getElementById('cust_time').value;
 
-        // --- ระบบคำนวณราคา & ส่วนลดอัตโนมัติ ---
         let basePrice = 0, multiplier = 1, coupon = 0, extra = 0;
-
-        if (detail === "ขยับปมขนนก") {
-            basePrice = priceList["ขยับปมขนนก"];
-        } else {
+        if (detail === "ขยับปมขนนก") { basePrice = priceList["ขยับปมขนนก"]; }
+        else {
             const parts = detail.split(" : ");
             basePrice = priceList[parts[0]];
             multiplier = parseFloat(parts[1]);
-            // เงื่อนไขส่วนลด
             if (parts[1] === "1.5 มัด") coupon = 500;
             if (parts[1] === "2 มัด" || parts[1] === "3 มัด") coupon = 1300;
         }
-
         if (time.includes("+400")) extra = 400;
 
         const totalPrice = (basePrice * multiplier) + extra;
-        const deposit = 1000;
-        const finalPrice = totalPrice - deposit - coupon;
+        const finalPrice = totalPrice - 1000 - coupon;
 
         const file = document.getElementById('fileInput').files[0];
         const reader = new FileReader();
@@ -490,26 +448,23 @@
             params.append('fileName', file.name);
 
             fetch(scriptURL, { method: 'POST', body: params })
-            .then(() => {
-                // อัปเดตข้อมูลบน Ticket
+            .then(res => res.text())
+            .then(result => {
+                if(result === "OutOfStock") { alert("ขออภัย สินค้าหมดกะทันหัน กรุณาเลือกรายการอื่น"); location.reload(); return; }
+                
                 document.getElementById('res_name').innerText = document.getElementById('cust_name').value;
                 document.getElementById('res_date').innerText = document.getElementById('cust_date').value;
                 document.getElementById('res_time').innerText = time;
                 document.getElementById('res_detail').innerText = detail;
-                
                 document.getElementById('res_full_price').innerText = totalPrice.toLocaleString() + " THB";
                 
                 if(coupon > 0) {
                     document.getElementById('coupon_row').style.display = 'flex';
                     document.getElementById('res_coupon').innerText = "- " + coupon.toLocaleString() + " THB";
-                } else {
-                    document.getElementById('coupon_row').style.display = 'none';
                 }
-
                 document.getElementById('res_final_price').innerText = finalPrice.toLocaleString() + " THB";
                 document.getElementById('ticketModal').style.display = 'flex';
-            })
-            .catch(() => alert('เกิดข้อผิดพลาดในการจอง'));
+            });
         };
         reader.readAsDataURL(file);
     };
