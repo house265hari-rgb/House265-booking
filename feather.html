@@ -14,6 +14,7 @@
             --off-black: #111111;
             --white: #ffffff;
             --border: #333333;
+            --error: #ff4d4d;
         }
 
         body { 
@@ -47,157 +48,72 @@
             background: linear-gradient(90deg, var(--gold-dark), var(--gold-light), var(--gold-dark));
         }
 
-        header {
-            text-align: center;
-            margin-bottom: 40px;
-        }
-
+        header { text-align: center; margin-bottom: 40px; }
         h2 { 
             font-family: 'Playfair Display', serif;
-            font-weight: 700;
-            font-size: 38px;
-            margin: 0;
-            letter-spacing: 8px;
+            font-weight: 700; font-size: 38px; margin: 0; letter-spacing: 8px;
             text-transform: uppercase;
             background: linear-gradient(to bottom, var(--gold-light), var(--gold-dark));
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
         }
 
-        .sub-title {
-            font-family: 'Kanit', sans-serif;
-            font-weight: 300;
-            font-size: 10px;
-            color: var(--gold);
-            letter-spacing: 6px;
-            margin-top: 10px;
-            text-transform: uppercase;
-        }
+        .sub-title { font-size: 10px; color: var(--gold); letter-spacing: 6px; margin-top: 10px; text-transform: uppercase; }
         
-        .rules-box { 
-            border: 1px solid var(--border);
-            padding: 25px; 
-            margin-bottom: 40px; 
-            line-height: 1.8;
-            background: rgba(255,255,255,0.03);
-            border-radius: 4px;
-        }
-
-        .rules-box strong { 
-            font-family: 'Playfair Display', serif;
-            color: var(--gold); 
-            display: block; 
-            margin-bottom: 12px; 
-            font-size: 16px; 
-            letter-spacing: 1px;
-        }
-
-        .rules-list { 
-            padding: 0; 
-            margin: 0; 
-            list-style: none;
-            font-size: 12.5px;
-            font-weight: 300;
-            color: #ccc;
-        }
-
-        .rules-list li {
-            margin-bottom: 8px;
-            border-bottom: 1px solid #222;
-            padding-bottom: 8px;
-        }
-
         .step-label { 
-            font-size: 11px;
-            text-transform: uppercase;
-            letter-spacing: 2.5px;
-            color: var(--gold-light);
-            margin-bottom: 12px;
-            display: block;
-            font-weight: 500;
-            margin-top: 30px;
+            font-size: 11px; text-transform: uppercase; letter-spacing: 2.5px;
+            color: var(--gold-light); margin-bottom: 12px; display: block;
+            font-weight: 500; margin-top: 30px;
         }
 
-        input[type="date"], input[type="text"], input[type="tel"], select { 
-            width: 100%; 
-            padding: 15px 15px; 
-            border: 1px solid #333;
-            background: #1a1a1a;
-            font-size: 16px; 
-            font-family: 'Kanit', sans-serif;
-            transition: 0.3s;
-            border-radius: 4px;
-            outline: none;
-            color: var(--white);
-            box-sizing: border-box;
-            margin-bottom: 10px;
+        input, select { 
+            width: 100%; padding: 15px; border: 1px solid #333;
+            background: #1a1a1a; font-size: 16px; font-family: 'Kanit', sans-serif;
+            border-radius: 4px; outline: none; color: var(--white); box-sizing: border-box; margin-bottom: 10px;
         }
 
-        input:focus, select:focus {
-            border-color: var(--gold);
-            background: #222;
-        }
+        input:focus, select:focus { border-color: var(--gold); background: #222; }
 
         .status-check { 
-            text-align: center; 
-            padding: 15px; 
-            margin: 20px 0; 
-            font-size: 13px;
-            display: none;
-            border-radius: 4px;
+            text-align: center; padding: 15px; margin: 20px 0; font-size: 13px;
+            display: none; border-radius: 4px;
         }
         .is-available { color: #81c784; background: rgba(129, 199, 132, 0.1); border: 1px solid #4caf50; }
         .is-full { color: #e57373; background: rgba(229, 115, 115, 0.1); border: 1px solid #f44336; }
 
-        .payment-area { display: none; margin-top: 40px; }
-        .qr-box { 
-            text-align: center; 
-            margin-bottom: 30px; 
-            border: 1px solid var(--gold-dark);
-            padding: 30px;
-            background: #fff;
-            border-radius: 8px;
+        .stock-warning {
+            color: var(--error);
+            background: rgba(255, 77, 77, 0.1);
+            border: 1px solid var(--error);
+            padding: 10px;
+            font-size: 13px;
+            border-radius: 4px;
+            margin-bottom: 15px;
+            display: none;
+            text-align: center;
         }
-        .qr-box p { color: #000; margin-top: 0; margin-bottom: 15px; }
+
+        .payment-area { display: none; margin-top: 30px; }
+        .qr-box { 
+            text-align: center; margin-bottom: 30px; border: 1px solid var(--gold-dark);
+            padding: 30px; background: #fff; border-radius: 8px;
+        }
+        .qr-box p { color: #000; margin-bottom: 15px; }
         .qr-box img { width: 100%; max-width: 250px; }
         
         button { 
-            width: 100%; 
-            background: linear-gradient(45deg, var(--gold-dark), var(--gold-light));
-            color: var(--black); 
-            padding: 20px; 
-            border: none;
-            cursor: pointer; 
-            font-size: 14px; 
-            font-weight: 600;
-            text-transform: uppercase;
-            letter-spacing: 3px;
-            margin-top: 20px;
-            border-radius: 4px;
-            transition: 0.3s;
+            width: 100%; background: linear-gradient(45deg, var(--gold-dark), var(--gold-light));
+            color: var(--black); padding: 20px; border: none; cursor: pointer; 
+            font-size: 14px; font-weight: 600; text-transform: uppercase;
+            letter-spacing: 3px; margin-top: 20px; border-radius: 4px;
         }
+        button:disabled { background: #444; color: #888; cursor: not-allowed; }
 
         .modal { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.95); z-index: 1000; align-items: center; justify-content: center; padding: 20px; }
-        .ticket { 
-            background: #111; 
-            width: 100%; 
-            max-width: 380px; 
-            border: 1.5px solid var(--gold); 
-            text-align: center; 
-            border-radius: 12px;
-            overflow: hidden;
-        }
-        .ticket-top { background: linear-gradient(45deg, var(--gold-dark), var(--gold-light)); padding: 20px; color: #000; }
-        .ticket-top h3 { margin: 0; font-family: 'Playfair Display', serif; letter-spacing: 4px; font-size: 22px; }
-        .ticket-content { padding: 40px 30px; text-align: left; }
+        .ticket { background: #111; width: 100%; max-width: 380px; border: 1.5px solid var(--gold); border-radius: 12px; overflow: hidden; }
+        .ticket-top { background: linear-gradient(45deg, var(--gold-dark), var(--gold-light)); padding: 20px; color: #000; text-align: center; }
+        .ticket-content { padding: 40px 30px; }
         .ticket-row { display: flex; justify-content: space-between; border-bottom: 1px solid #222; padding: 12px 0; font-size: 14px; }
-        .ticket-row span { color: #888; }
-        .ticket-row b { color: var(--gold-light); }
-
-        .price-summary { margin-top: 20px; padding: 15px; background: rgba(255, 255, 255, 0.05); border-radius: 8px; border: 1px solid #333; }
-        .final-price-box { text-align: center; margin-top: 15px; padding: 15px; background: rgba(212, 175, 55, 0.1); border: 1px solid var(--gold); border-radius: 4px; }
-        .screenshot-info { background: rgba(212, 175, 55, 0.1); color: var(--gold); padding: 15px; font-size: 12px; margin: 20px 30px; border: 1px dashed var(--gold); border-radius: 4px; text-align: center; }
-        .ticket-footer { padding: 20px 30px 40px; font-size: 11px; color: #666; text-align: center; }
+        .final-price-box { text-align: center; margin-top: 15px; padding: 15px; background: rgba(212, 175, 55, 0.1); border: 1px solid var(--gold); }
     </style>
 </head>
 <body>
@@ -208,15 +124,6 @@
         <div class="sub-title">Exclusive Feather Hair</div>
     </header>
     
-    <div class="rules-box">
-        <strong>TERMS & CONDITIONS</strong>
-        <ul class="rules-list">
-            <li>ยกเลิกคิว จองผิดวัน หรือผิดแบบ ไม่คืนมัดจำทุกกรณี</li>
-            <li>เลื่อนคิวล่วงหน้า 5 วัน ไม่มีค่าธรรมเนียม</li>
-            <li>มาสายได้ไม่เกิน 15 นาที</li>
-        </ul>
-    </div>
-
     <form id="bookingForm">
         <span class="step-label">01 / APPOINTMENT DATE</span>
         <input type="date" id="cust_date" required onchange="updateTimeOptions()">
@@ -232,9 +139,11 @@
             <input type="text" id="cust_line" placeholder="LINE ID" required>
             
             <span class="step-label">03 / SELECT SERVICE</span>
-            <select id="cust_detail" required>
-                <option value="">กำลังตรวจสอบสต็อกสินค้า...</option>
+            <select id="cust_detail" required onchange="validateStockBeforePayment()">
+                <option value="">กำลังโหลดข้อมูล...</option>
             </select>
+
+            <div id="stockWarning" class="stock-warning">⚠️ ขออภัย สินค้าในสต็อกไม่เพียงพอ กรุณาเลือกขนาดอื่น</div>
 
             <div id="paymentArea" class="payment-area">
                 <div class="qr-box">
@@ -242,7 +151,7 @@
                     <img src="att.c-LKzEEDaA_aol1rfa3nGSziIcCL1ywY5lXszjTzOOM.jpeg">
                 </div>
                 <span class="step-label">UPLOAD PAYMENT SLIP</span>
-                <input type="file" id="fileInput" accept="image/*" required style="border:none; padding:10px 0; color:#888;">
+                <input type="file" id="fileInput" accept="image/*" required style="border:none; padding:10px 0;">
                 <button type="submit" id="submitBtn">CONFIRM VIP BOOKING</button>
             </div>
         </div>
@@ -251,33 +160,18 @@
 
 <div id="ticketModal" class="modal">
     <div class="ticket">
-        <div class="ticket-top">
-            <h3>VIP BOOKING PASS</h3>
-            <div style="font-size: 10px; letter-spacing: 2px;">HOUSE265 EXCLUSIVE</div>
-        </div>
+        <div class="ticket-top"><h3>VIP BOOKING PASS</h3></div>
         <div class="ticket-content">
             <div class="ticket-row"><span>ชื่อผู้จอง</span> <b id="res_name"></b></div>
             <div class="ticket-row"><span>วันที่</span> <b id="res_date"></b></div>
             <div class="ticket-row"><span>เวลา</span> <b id="res_time"></b></div>
             <div class="ticket-row"><span>รายการ</span> <b id="res_detail"></b></div>
-
-            <div class="price-summary">
-                <div class="ticket-row"><span>ราคาปกติ</span> <b id="res_full_price"></b></div>
-                <div class="ticket-row"><span>มัดจำแล้ว</span> <b style="color:#81c784;">- 1,000 THB</b></div>
-                <div class="ticket-row" id="coupon_row" style="display:none;">
-                    <span>ส่วนลดพิเศษ</span> <b style="color:#ff4d4d;" id="res_coupon"></b>
-                </div>
-                <div class="final-price-box">
-                    <span style="font-size: 11px; color: var(--gold-light); display: block;">ยอดคงเหลือจ่ายหน้าร้าน</span>
-                    <b style="font-size: 22px; color: #fff;" id="res_final_price"></b>
-                </div>
+            <div class="final-price-box">
+                <span style="font-size: 11px; color: var(--gold-light);">ยอดคงเหลือจ่ายหน้าร้าน</span><br>
+                <b style="font-size: 24px;" id="res_final_price"></b>
             </div>
         </div>
-        <div class="screenshot-info"><b>กรุณา "แคปหน้าจอ" ตั๋วจองนี้ไว้</b></div>
-        <div class="ticket-footer">
-            ติดต่อสอบถาม <b style="color:var(--gold);">096-056-4585</b><br><br>
-            <button onclick="location.reload()" style="padding: 10px; font-size: 12px;">เสร็จสิ้น</button>
-        </div>
+        <button onclick="location.reload()" style="margin: 0; border-radius: 0;">เสร็จสิ้น</button>
     </div>
 </div>
 
@@ -294,9 +188,66 @@
             stockData = res.stocks || {};
             renderStockOptions();
         } catch (e) {
-            document.getElementById('cust_detail').innerHTML = '<option>ไม่สามารถดึงข้อมูลได้</option>';
+            document.getElementById('cust_detail').innerHTML = '<option>Connection Error</option>';
         }
     };
+
+    function renderStockOptions() {
+        const select = document.getElementById('cust_detail');
+        select.innerHTML = '<option value="">เลือกขนาดและจำนวนมัด</option>';
+        const sizes = Object.keys(priceList).filter(s => s !== "ขยับปมขนนก");
+        const amounts = ["1 มัด", "1.5 มัด", "2 มัด", "3 มัด"];
+
+        sizes.forEach(size => {
+            const group = document.createElement('optgroup');
+            group.label = `PREMIUM FEATHER: ${size}`;
+            amounts.forEach(amtText => {
+                const opt = document.createElement('option');
+                const currentStock = parseFloat(stockData[size]) || 0;
+                const requiredAmt = parseFloat(amtText);
+                
+                opt.value = `${size} : ${amtText}`;
+                if (currentStock < requiredAmt) {
+                    opt.innerText = `${size} : ${amtText} (ของหมด)`;
+                    opt.disabled = true;
+                } else {
+                    opt.innerText = `${size} : ${amtText}`;
+                }
+                group.appendChild(opt);
+            });
+            select.appendChild(group);
+        });
+        select.innerHTML += '<option value="ขยับปมขนนก">ขยับปมขนนก</option>';
+    }
+
+    // ฟังก์ชันหัวใจสำคัญ: เช็กสต็อกก่อนให้โอนเงิน
+    function validateStockBeforePayment() {
+        const detail = document.getElementById('cust_detail').value;
+        const warning = document.getElementById('stockWarning');
+        const paymentArea = document.getElementById('paymentArea');
+        const submitBtn = document.getElementById('submitBtn');
+
+        if (!detail || detail === "ขยับปมขนนก") {
+            warning.style.display = "none";
+            paymentArea.style.display = "block";
+            submitBtn.disabled = false;
+            return;
+        }
+
+        const [size, amtText] = detail.split(" : ");
+        const currentStock = parseFloat(stockData[size]) || 0;
+        const requiredAmt = parseFloat(amtText);
+
+        if (currentStock < requiredAmt) {
+            warning.style.display = "block"; // ขึ้นเตือน
+            paymentArea.style.display = "none"; // ซ่อน QR Code ทันที
+            submitBtn.disabled = true; // ล็อกปุ่ม
+        } else {
+            warning.style.display = "none";
+            paymentArea.style.display = "block";
+            submitBtn.disabled = false;
+        }
+    }
 
     function updateTimeOptions() {
         const dateInput = document.getElementById('cust_date').value;
@@ -317,26 +268,6 @@
         }
     }
 
-    function renderStockOptions() {
-        const select = document.getElementById('cust_detail');
-        select.innerHTML = '<option value="">เลือกขนาดและจำนวนมัด</option>';
-        const sizes = Object.keys(priceList).filter(s => s !== "ขยับปมขนนก");
-        const amounts = ["1 มัด", "1.5 มัด", "2 มัด", "3 มัด"];
-
-        sizes.forEach(size => {
-            const group = document.createElement('optgroup');
-            group.label = `PREMIUM FEATHER: ${size}`;
-            amounts.forEach(amtText => {
-                const opt = document.createElement('option');
-                opt.value = `${size} : ${amtText}`;
-                opt.innerText = `${size} : ${amtText}`;
-                group.appendChild(opt);
-            });
-            select.appendChild(group);
-        });
-        select.innerHTML += '<option value="ขยับปมขนนก">ขยับปมขนนก</option>';
-    }
-
     function checkBookingStatus() {
         const date = document.getElementById('cust_date').value;
         const time = document.getElementById('cust_time').value;
@@ -351,7 +282,6 @@
             statusBox.innerText = "ตารางว่าง สามารถทำการจองได้";
             statusBox.className = "status-check is-available";
             document.getElementById('infoSection').style.display = "block";
-            document.getElementById('paymentArea').style.display = "block";
         }
     }
 
@@ -360,25 +290,23 @@
     document.getElementById('bookingForm').onsubmit = e => {
         e.preventDefault();
         const btn = document.getElementById('submitBtn');
-        btn.disabled = true; btn.innerText = "กำลังบันทึกข้อมูล...";
+        btn.disabled = true; btn.innerText = "SAVING...";
 
         const detail = document.getElementById('cust_detail').value;
         const time = document.getElementById('cust_time').value;
 
         let basePrice = 0, multiplier = 1, coupon = 0, extra = 0;
-        if (detail === "ขยับปมขนนก") { 
-            basePrice = priceList["ขยับปมขนนก"]; 
-        } else {
+        if (detail === "ขยับปมขนนก") { basePrice = 1500; } 
+        else {
             const parts = detail.split(" : ");
             basePrice = priceList[parts[0]];
-            multiplier = parseFloat(parts[1]); // ดึงตัวเลขจาก "1 มัด", "1.5 มัด"
+            multiplier = parseFloat(parts[1]);
             if (parts[1] === "1.5 มัด") coupon = 500;
             if (parts[1] === "2 มัด" || parts[1] === "3 มัด") coupon = 1300;
         }
         if (time.includes("+400")) extra = 400;
 
-        const totalPrice = (basePrice * multiplier) + extra;
-        const finalPrice = totalPrice - 1000 - coupon;
+        const finalPrice = (basePrice * multiplier) + extra - 1000 - coupon;
 
         const file = document.getElementById('fileInput').files[0];
         const reader = new FileReader();
@@ -398,23 +326,14 @@
             fetch(scriptURL, { method: 'POST', body: params })
             .then(res => res.text())
             .then(result => {
-                if(result === "AlreadyBooked") { alert("ขออภัย คิวนี้เพิ่งถูกจองไปเมื่อครู่"); location.reload(); return; }
-                if(result === "OutOfStock") { alert("ขออภัย สินค้าในสต็อกไม่เพียงพอ"); location.reload(); return; }
-                
+                if(result === "OutOfStock") { alert("ขออภัย สินค้าเพิ่งหมดไป กรุณาติดต่อแอดมิน"); location.reload(); return; }
                 document.getElementById('res_name').innerText = document.getElementById('cust_name').value;
                 document.getElementById('res_date').innerText = document.getElementById('cust_date').value;
                 document.getElementById('res_time').innerText = time;
                 document.getElementById('res_detail').innerText = detail;
-                document.getElementById('res_full_price').innerText = totalPrice.toLocaleString() + " THB";
-                
-                if(coupon > 0) {
-                    document.getElementById('coupon_row').style.display = 'flex';
-                    document.getElementById('res_coupon').innerText = "- " + coupon.toLocaleString() + " THB";
-                }
                 document.getElementById('res_final_price').innerText = finalPrice.toLocaleString() + " THB";
                 document.getElementById('ticketModal').style.display = 'flex';
-            })
-            .catch(err => { alert("เกิดข้อผิดพลาด: " + err); btn.disabled = false; });
+            });
         };
         reader.readAsDataURL(file);
     };
