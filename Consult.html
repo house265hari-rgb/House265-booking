@@ -7,95 +7,139 @@
     <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@200;300;400;500&family=Playfair+Display:wght@400;600;700&display=swap" rel="stylesheet">
     <style>
         :root { 
-            --gold: #d4af37; 
-            --gold-light: #f1d592;
-            --gold-dark: #aa8a2e;
-            --black: #000000;
-            --off-black: #111111;
+            --gold: #c5a059; 
+            --gold-light: #e2c275;
+            --gold-dark: #8e6d2f;
+            --cream: #f9f6f2; /* สีครีมพื้นหลัง */
+            --brown-dark: #4a3728; /* น้ำตาลเข้มสำหรับตัวอักษร */
+            --brown-light: #8d7765; /* น้ำตาลอ่อน */
             --white: #ffffff;
+            --shadow: rgba(74, 55, 40, 0.1);
         }
 
         body { 
             font-family: 'Kanit', sans-serif; 
-            background: var(--black); 
-            background-image: radial-gradient(circle at center, #1a1a1a 0%, #000000 100%);
+            background-color: var(--cream);
+            background-image: 
+                radial-gradient(circle at 0% 0%, rgba(226, 194, 117, 0.1) 0%, transparent 50%),
+                radial-gradient(circle at 100% 100%, rgba(142, 109, 47, 0.05) 0%, transparent 50%);
             margin: 0; padding: 40px 15px; 
             display: flex; justify-content: center;
-            color: var(--white);
+            color: var(--brown-dark);
             -webkit-font-smoothing: antialiased;
         }
 
         .container { 
-            background: var(--off-black); 
+            background: var(--white); 
             max-width: 500px; width: 100%; 
             padding: 50px 40px; 
-            border-radius: 12px; 
-            border: 1px solid var(--gold-dark);
-            box-shadow: 0 30px 60px rgba(0,0,0,0.8);
+            border-radius: 20px; 
+            border: 1px solid rgba(197, 160, 89, 0.3);
+            box-shadow: 0 20px 40px var(--shadow);
         }
 
         header { text-align: center; margin-bottom: 40px; }
         h2 { 
             font-family: 'Playfair Display', serif;
-            font-size: 30px; letter-spacing: 5px; margin: 0;
-            background: linear-gradient(to bottom, var(--gold-light), var(--gold-dark));
-            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+            font-size: 32px; letter-spacing: 4px; margin: 0;
+            color: var(--gold-dark);
             text-transform: uppercase;
         }
-        .sub-title { font-size: 11px; color: var(--gold); letter-spacing: 3px; margin-top: 10px; text-transform: uppercase; }
+        .sub-title { 
+            font-size: 11px; 
+            color: var(--brown-light); 
+            letter-spacing: 3px; 
+            margin-top: 10px; 
+            text-transform: uppercase; 
+            font-weight: 500;
+        }
 
         .question-group { margin-bottom: 25px; }
         .label { 
-            display: block; font-size: 14px; color: var(--gold-light); 
-            margin-bottom: 12px; letter-spacing: 0.5px; font-weight: 400;
+            display: block; font-size: 15px; 
+            color: var(--brown-dark); 
+            margin-bottom: 15px; 
+            letter-spacing: 0.5px; 
+            font-weight: 500;
+            border-left: 3px solid var(--gold);
+            padding-left: 10px;
         }
 
         /* Option Items */
-        .options-grid { display: grid; gap: 8px; }
+        .options-grid { display: grid; gap: 10px; }
         .option-item { position: relative; }
         .option-item input { display: none; }
         .option-item label {
-            display: block; padding: 14px; background: #1a1a1a;
-            border: 1px solid #333; border-radius: 6px; cursor: pointer;
-            font-size: 14px; transition: 0.3s; color: #bbb;
+            display: block; padding: 15px; 
+            background: var(--white);
+            border: 1px solid #e0d7cf; 
+            border-radius: 10px; cursor: pointer;
+            font-size: 14px; transition: 0.3s; 
+            color: var(--brown-light);
+            text-align: center;
         }
         .option-item input:checked + label {
-            border-color: var(--gold); background: rgba(212, 175, 55, 0.15);
-            color: var(--white);
+            border-color: var(--gold); 
+            background: #fffcf5;
+            color: var(--gold-dark);
+            box-shadow: 0 4px 12px rgba(197, 160, 89, 0.15);
+            font-weight: 500;
         }
 
         .analyze-btn { 
-            width: 100%; background: linear-gradient(45deg, var(--gold-dark), var(--gold-light));
-            color: var(--black); padding: 20px; border: none; cursor: pointer; 
-            font-size: 15px; font-weight: 600; text-transform: uppercase;
-            letter-spacing: 3px; border-radius: 4px; margin-top: 25px;
+            width: 100%; 
+            background: linear-gradient(45deg, var(--gold-dark), var(--gold-light));
+            color: var(--white); 
+            padding: 20px; border: none; cursor: pointer; 
+            font-size: 16px; font-weight: 500; text-transform: uppercase;
+            letter-spacing: 2px; border-radius: 10px; margin-top: 25px;
+            box-shadow: 0 10px 20px rgba(142, 109, 47, 0.2);
+            transition: 0.3s;
+        }
+        .analyze-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 15px 25px rgba(142, 109, 47, 0.3);
         }
 
         /* Result Area */
         #resultArea {
             display: none; margin-top: 35px; padding-top: 30px;
-            border-top: 1px dashed var(--gold-dark);
+            border-top: 1px dashed var(--gold);
         }
         .result-box {
-            background: rgba(255,255,255,0.03);
-            border: 1px solid var(--gold);
-            padding: 25px; border-radius: 8px;
+            background: #fffcf5;
+            border: 1px solid var(--gold-light);
+            padding: 30px; border-radius: 15px;
             position: relative;
         }
         .result-header {
             font-family: 'Playfair Display', serif;
-            color: var(--gold); font-size: 20px; text-align: center;
-            margin-bottom: 20px; letter-spacing: 2px;
+            color: var(--gold-dark); font-size: 22px; text-align: center;
+            margin-bottom: 25px; letter-spacing: 2px; font-weight: 700;
         }
-        .result-row { margin-bottom: 15px; font-size: 14px; line-height: 1.6; border-bottom: 1px solid #222; padding-bottom: 10px;}
+        .result-row { 
+            margin-bottom: 20px; font-size: 14px; line-height: 1.6; 
+            border-bottom: 1px solid rgba(197, 160, 89, 0.1); 
+            padding-bottom: 15px;
+        }
         .result-row:last-child { border: none; }
-        .res-val { color: var(--gold-light); font-weight: 500; display: block; margin-top: 4px; font-size: 16px; }
+        .res-val { 
+            color: var(--brown-dark); 
+            font-weight: 500; display: block; 
+            margin-top: 6px; font-size: 17px; 
+            padding: 10px; background: white;
+            border-radius: 8px; border-left: 4px solid var(--gold);
+        }
         
         .reset-btn {
-            background: none; border: 1px solid #444; color: #666;
+            background: none; border: 1px solid var(--brown-light); 
+            color: var(--brown-light);
             width: 100%; padding: 12px; margin-top: 20px; cursor: pointer;
-            border-radius: 4px; font-size: 12px;
+            border-radius: 8px; font-size: 13px; font-weight: 400;
+            transition: 0.3s;
         }
+        .reset-btn:hover { background: rgba(141, 119, 101, 0.05); }
+
     </style>
 </head>
 <body>
@@ -117,7 +161,7 @@
         </div>
 
         <div class="question-group">
-            <span class="label">2. ความหนาผมเดิม? (กำผมวัดดู)</span>
+            <span class="label">2. ความหนาผมเดิม? (ลองกำผมวัดดูค่ะ)</span>
             <div class="options-grid">
                 <div class="option-item"><input type="radio" name="q2" value="thin" id="q2a"><label for="q2a">บาง</label></div>
                 <div class="option-item"><input type="radio" name="q2" value="damaged" id="q2b"><label for="q2b">แหว่ง / ขาด</label></div>
@@ -148,16 +192,18 @@
 
     <div id="resultArea">
         <div class="result-box">
-            <div class="result-header">CONSULTATION</div>
+            <div class="result-header">Your Consultation</div>
             <div class="result-row">
-                ปริมาณที่แนะนำ:
+                <span style="color: var(--brown-light); font-weight: 500;">ปริมาณที่แนะนำ:</span>
                 <span id="resAmount" class="res-val"></span>
             </div>
             <div class="result-row">
-                เทคนิคที่แนะนำ:
+                <span style="color: var(--brown-light); font-weight: 500;">เทคนิคที่แนะนำ:</span>
                 <span id="resTech" class="res-val"></span>
             </div>
-            <p style="font-size: 11px; color: #888; text-align: center; margin-top: 15px;">*ผลประเมินนี้เป็นเพียงการแนะนำเบื้องต้น<br>ช่างจะประเมินหน้างานอย่างละเอียดอีกครั้งค่ะ</p>
+            <p style="font-size: 11px; color: var(--brown-light); text-align: center; margin-top: 15px; font-style: italic;">
+                *ผลประเมินนี้เป็นเพียงการแนะนำเบื้องต้น<br>ช่างจะประเมินหน้างานอย่างละเอียดอีกครั้งค่ะ
+            </p>
         </div>
         <button class="reset-btn" onclick="location.reload()">ทำแบบประเมินใหม่</button>
     </div>
@@ -178,7 +224,6 @@
         let amountText = "";
         let techText = "";
 
-        // คำนวณปริมาณมัด
         if (q4 === "volume") {
             amountText = "แนะนำใช้ 1 มัด (เน้นเสริมความหนา)";
         } else if (q2 === "damaged") {
@@ -193,20 +238,19 @@
             amountText = "แนะนำใช้ 1 - 1.5 มัด (ตามความชอบ)";
         }
 
-        // คำนวณเทคนิค
         if (q5 === "feather") {
-            techText = "แนะนำเทคนิค 'ขนนก' (Feather) เพื่อถนอมผมและลดการร่วง";
+            techText = "เทคนิค 'ขนนก' (Feather) เพื่อถนอมผมและลดการร่วง";
         } else if (q5 === "nano") {
-            techText = "แนะนำเทคนิค 'นาโนริง' (Nano Ring) ได้ค่ะ";
+            techText = "เทคนิค 'นาโนริง' (Nano Ring) หรือ 'ขนนก' ได้ค่ะ";
         } else {
-            techText = "สามารถใช้ได้ทั้ง 'นาโนริง' หรือ 'ขนนก' (แนะนำขนนกจะเบาสบายกว่า)";
+            techText = "แนะนำ 'ขนนก' หรือ 'นาโนริง' (ขนนกจะเบาสบายกว่า)";
         }
 
-        // แสดงผล
         document.getElementById('resAmount').innerText = amountText;
         document.getElementById('resTech').innerText = techText;
         document.getElementById('quizForm').style.display = 'none';
         document.getElementById('resultArea').style.display = 'block';
+        window.scrollTo(0, 0);
     }
 </script>
 
