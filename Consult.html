@@ -10,9 +10,9 @@
             --gold: #c5a059; 
             --gold-light: #e2c275;
             --gold-dark: #8e6d2f;
-            --cream: #f9f6f2; /* สีครีมพื้นหลัง */
-            --brown-dark: #4a3728; /* น้ำตาลเข้มสำหรับตัวอักษร */
-            --brown-light: #8d7765; /* น้ำตาลอ่อน */
+            --cream: #f9f6f2; 
+            --brown-dark: #4a3728; 
+            --brown-light: #8d7765; 
             --white: #ffffff;
             --shadow: rgba(74, 55, 40, 0.1);
         }
@@ -46,100 +46,48 @@
             text-transform: uppercase;
         }
         .sub-title { 
-            font-size: 11px; 
-            color: var(--brown-light); 
-            letter-spacing: 3px; 
-            margin-top: 10px; 
-            text-transform: uppercase; 
-            font-weight: 500;
+            font-size: 11px; color: var(--brown-light); letter-spacing: 3px; 
+            margin-top: 10px; text-transform: uppercase; font-weight: 500;
         }
 
-        .question-group { margin-bottom: 25px; }
+        .question-group { margin-bottom: 30px; }
         .label { 
-            display: block; font-size: 15px; 
-            color: var(--brown-dark); 
-            margin-bottom: 15px; 
-            letter-spacing: 0.5px; 
-            font-weight: 500;
-            border-left: 3px solid var(--gold);
-            padding-left: 10px;
+            display: block; font-size: 15px; color: var(--brown-dark); 
+            margin-bottom: 15px; letter-spacing: 0.5px; font-weight: 500;
+            border-left: 3px solid var(--gold); padding-left: 10px;
         }
 
-        /* Option Items */
         .options-grid { display: grid; gap: 10px; }
         .option-item { position: relative; }
         .option-item input { display: none; }
         .option-item label {
-            display: block; padding: 15px; 
-            background: var(--white);
-            border: 1px solid #e0d7cf; 
-            border-radius: 10px; cursor: pointer;
-            font-size: 14px; transition: 0.3s; 
-            color: var(--brown-light);
+            display: block; padding: 14px; background: var(--white);
+            border: 1px solid #e0d7cf; border-radius: 10px; cursor: pointer;
+            font-size: 14px; transition: 0.3s; color: var(--brown-light);
             text-align: center;
         }
         .option-item input:checked + label {
-            border-color: var(--gold); 
-            background: #fffcf5;
-            color: var(--gold-dark);
-            box-shadow: 0 4px 12px rgba(197, 160, 89, 0.15);
+            border-color: var(--gold); background: #fffcf5;
+            color: var(--gold-dark); box-shadow: 0 4px 12px rgba(197, 160, 89, 0.15);
             font-weight: 500;
         }
 
         .analyze-btn { 
-            width: 100%; 
-            background: linear-gradient(45deg, var(--gold-dark), var(--gold-light));
-            color: var(--white); 
-            padding: 20px; border: none; cursor: pointer; 
+            width: 100%; background: linear-gradient(45deg, var(--gold-dark), var(--gold-light));
+            color: var(--white); padding: 20px; border: none; cursor: pointer; 
             font-size: 16px; font-weight: 500; text-transform: uppercase;
-            letter-spacing: 2px; border-radius: 10px; margin-top: 25px;
-            box-shadow: 0 10px 20px rgba(142, 109, 47, 0.2);
-            transition: 0.3s;
+            letter-spacing: 2px; border-radius: 10px; margin-top: 10px;
+            box-shadow: 0 10px 20px rgba(142, 109, 47, 0.2); transition: 0.3s;
         }
-        .analyze-btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 15px 25px rgba(142, 109, 47, 0.3);
-        }
+        .analyze-btn:hover { transform: translateY(-2px); box-shadow: 0 15px 25px rgba(142, 109, 47, 0.3); }
 
-        /* Result Area */
-        #resultArea {
-            display: none; margin-top: 35px; padding-top: 30px;
-            border-top: 1px dashed var(--gold);
-        }
-        .result-box {
-            background: #fffcf5;
-            border: 1px solid var(--gold-light);
-            padding: 30px; border-radius: 15px;
-            position: relative;
-        }
-        .result-header {
-            font-family: 'Playfair Display', serif;
-            color: var(--gold-dark); font-size: 22px; text-align: center;
-            margin-bottom: 25px; letter-spacing: 2px; font-weight: 700;
-        }
-        .result-row { 
-            margin-bottom: 20px; font-size: 14px; line-height: 1.6; 
-            border-bottom: 1px solid rgba(197, 160, 89, 0.1); 
-            padding-bottom: 15px;
-        }
+        #resultArea { display: none; margin-top: 35px; padding-top: 30px; border-top: 1px dashed var(--gold); }
+        .result-box { background: #fffcf5; border: 1px solid var(--gold-light); padding: 30px; border-radius: 15px; }
+        .result-header { font-family: 'Playfair Display', serif; color: var(--gold-dark); font-size: 22px; text-align: center; margin-bottom: 25px; letter-spacing: 2px; font-weight: 700; }
+        .result-row { margin-bottom: 20px; font-size: 14px; line-height: 1.6; border-bottom: 1px solid rgba(197, 160, 89, 0.1); padding-bottom: 15px; }
         .result-row:last-child { border: none; }
-        .res-val { 
-            color: var(--brown-dark); 
-            font-weight: 500; display: block; 
-            margin-top: 6px; font-size: 17px; 
-            padding: 10px; background: white;
-            border-radius: 8px; border-left: 4px solid var(--gold);
-        }
-        
-        .reset-btn {
-            background: none; border: 1px solid var(--brown-light); 
-            color: var(--brown-light);
-            width: 100%; padding: 12px; margin-top: 20px; cursor: pointer;
-            border-radius: 8px; font-size: 13px; font-weight: 400;
-            transition: 0.3s;
-        }
-        .reset-btn:hover { background: rgba(141, 119, 101, 0.05); }
-
+        .res-val { color: var(--brown-dark); font-weight: 500; display: block; margin-top: 6px; font-size: 17px; padding: 10px; background: white; border-radius: 8px; border-left: 4px solid var(--gold); }
+        .reset-btn { background: none; border: 1px solid var(--brown-light); color: var(--brown-light); width: 100%; padding: 12px; margin-top: 20px; cursor: pointer; border-radius: 8px; font-size: 13px; }
     </style>
 </head>
 <body>
@@ -182,8 +130,23 @@
             <span class="label">4. ประเมินสภาพผมเบื้องต้น?</span>
             <div class="options-grid">
                 <div class="option-item"><input type="radio" name="q5" value="feather" id="q5a"><label for="q5a">เส้นเล็ก บาง หลุดร่วงเยอะ ขาด</label></div>
-                <div class="option-item"><input type="radio" name="q5" value="nano" id="q5b"><label for="q5b">เส้นเล็ก ไม่ค่อยร่วง</label></div>
+                <div class="option-item"><input type="radio" name="q5" value="nano-small" id="q5b"><label for="q5b">เส้นเล็ก ไม่ค่อยร่วง</label></div>
                 <div class="option-item"><input type="radio" name="q5" value="both" id="q5c"><label for="q5c">ค่อนข้างเส้นใหญ่ แต่หลุดร่วง ขาด</label></div>
+                <div class="option-item"><input type="radio" name="q5" value="nano-big" id="q5d"><label for="q5d">ค่อนข้างเส้นใหญ่ ไม่ค่อยร่วง</label></div>
+                <div class="option-item"><input type="radio" name="q5" value="chemical" id="q5e"><label for="q5e">ผมทำสี ผ่านเคมีเยอะ</label></div>
+            </div>
+        </div>
+
+        <div class="question-group">
+            <span class="label">5. ความต้องการเพิ่มเติม? (เลือกได้มากกว่า 1)</span>
+            <div class="options-grid">
+                <div class="option-item"><input type="checkbox" name="q6" value="first" id="q6a"><label for="q6a">ต่อครั้งแรก</label></div>
+                <div class="option-item"><input type="checkbox" name="q6" value="feather-req" id="q6b"><label for="q6b">เบาสบาย / ถนอมผม</label></div>
+                <div class="checkbox-group" style="display:contents">
+                    <div class="option-item"><input type="checkbox" name="q6" value="feather-req" id="q6c"><label for="q6c">ต้องการต่อเลี้ยงผม</label></div>
+                    <div class="option-item"><input type="checkbox" name="q6" value="feather-req" id="q6d"><label for="q6d">ดูแลง่าย</label></div>
+                    <div class="option-item"><input type="checkbox" name="q6" value="feather-req" id="q6e"><label for="q6e">ใช้งานผมหนัก (หนีบ/ม้วนบ่อย)</label></div>
+                </div>
             </div>
         </div>
 
@@ -215,6 +178,9 @@
         const q2 = document.querySelector('input[name="q2"]:checked')?.value;
         const q4 = document.querySelector('input[name="q4"]:checked')?.value;
         const q5 = document.querySelector('input[name="q5"]:checked')?.value;
+        
+        // สำหรับ Checkbox ข้อ 5
+        const q6Checks = Array.from(document.querySelectorAll('input[name="q6"]:checked')).map(cb => cb.value);
 
         if (!q1 || !q2 || !q4 || !q5) {
             alert("กรุณาตอบคำถามให้ครบทุกข้อค่ะ");
@@ -224,6 +190,7 @@
         let amountText = "";
         let techText = "";
 
+        // คำนวณปริมาณมัด
         if (q4 === "volume") {
             amountText = "แนะนำใช้ 1 มัด (เน้นเสริมความหนา)";
         } else if (q2 === "damaged") {
@@ -238,12 +205,15 @@
             amountText = "แนะนำใช้ 1 - 1.5 มัด (ตามความชอบ)";
         }
 
-        if (q5 === "feather") {
-            techText = "เทคนิค 'ขนนก' (Feather) เพื่อถนอมผมและลดการร่วง";
-        } else if (q5 === "nano") {
-            techText = "เทคนิค 'นาโนริง' (Nano Ring) หรือ 'ขนนก' ได้ค่ะ";
+        // คำนวณเทคนิค (อัปเดตใหม่)
+        if (q5 === "feather" || q5 === "chemical" || q6Checks.includes("feather-req")) {
+            techText = "แนะนำเทคนิค 'ขนนก' (Exclusive Feather) เพื่อความเบาสบายและถนอมเส้นผมที่สุดค่ะ";
+        } else if (q5 === "nano-big" || (q6Checks.includes("first") && q6Checks.length === 1)) {
+            techText = "แนะนำเทคนิค 'นาโนริง' (Nano Ring) สำหรับการต่อครั้งแรกหรือผมเส้นใหญ่ค่ะ";
+        } else if (q5 === "nano-small" || q5 === "both") {
+            techText = "สามารถต่อได้ทั้ง 'นาโนริง' และ 'ขนนก' (แนะนำขนนกหากต้องการความเบาสบาย)";
         } else {
-            techText = "แนะนำ 'ขนนก' หรือ 'นาโนริง' (ขนนกจะเบาสบายกว่า)";
+            techText = "แนะนำปรึกษาช่างเพื่อเลือกเทคนิคที่เหมาะกับไลฟ์สไตล์ที่สุดค่ะ";
         }
 
         document.getElementById('resAmount').innerText = amountText;
