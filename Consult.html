@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>House265 - Hair Consultation</title>
+    <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@200;300;400;500&family=Playfair+Display:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root { 
+            --gold: #d4af37; 
+            --gold-light: #f1d592;
+            --gold-dark: #aa8a2e;
+            --black: #000000;
+            --off-black: #111111;
+            --white: #ffffff;
+        }
+
+        body { 
+            font-family: 'Kanit', sans-serif; 
+            background: var(--black); 
+            background-image: radial-gradient(circle at center, #1a1a1a 0%, #000000 100%);
+            margin: 0; padding: 40px 15px; 
+            display: flex; justify-content: center;
+            color: var(--white);
+            -webkit-font-smoothing: antialiased;
+        }
+
+        .container { 
+            background: var(--off-black); 
+            max-width: 500px; width: 100%; 
+            padding: 50px 40px; 
+            border-radius: 12px; 
+            border: 1px solid var(--gold-dark);
+            box-shadow: 0 30px 60px rgba(0,0,0,0.8);
+        }
+
+        header { text-align: center; margin-bottom: 40px; }
+        h2 { 
+            font-family: 'Playfair Display', serif;
+            font-size: 30px; letter-spacing: 5px; margin: 0;
+            background: linear-gradient(to bottom, var(--gold-light), var(--gold-dark));
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+            text-transform: uppercase;
+        }
+        .sub-title { font-size: 11px; color: var(--gold); letter-spacing: 3px; margin-top: 10px; text-transform: uppercase; }
+
+        .question-group { margin-bottom: 25px; }
+        .label { 
+            display: block; font-size: 14px; color: var(--gold-light); 
+            margin-bottom: 12px; letter-spacing: 0.5px; font-weight: 400;
+        }
+
+        /* Option Items */
+        .options-grid { display: grid; gap: 8px; }
+        .option-item { position: relative; }
+        .option-item input { display: none; }
+        .option-item label {
+            display: block; padding: 14px; background: #1a1a1a;
+            border: 1px solid #333; border-radius: 6px; cursor: pointer;
+            font-size: 14px; transition: 0.3s; color: #bbb;
+        }
+        .option-item input:checked + label {
+            border-color: var(--gold); background: rgba(212, 175, 55, 0.15);
+            color: var(--white);
+        }
+
+        .analyze-btn { 
+            width: 100%; background: linear-gradient(45deg, var(--gold-dark), var(--gold-light));
+            color: var(--black); padding: 20px; border: none; cursor: pointer; 
+            font-size: 15px; font-weight: 600; text-transform: uppercase;
+            letter-spacing: 3px; border-radius: 4px; margin-top: 25px;
+        }
+
+        /* Result Area */
+        #resultArea {
+            display: none; margin-top: 35px; padding-top: 30px;
+            border-top: 1px dashed var(--gold-dark);
+        }
+        .result-box {
+            background: rgba(255,255,255,0.03);
+            border: 1px solid var(--gold);
+            padding: 25px; border-radius: 8px;
+            position: relative;
+        }
+        .result-header {
+            font-family: 'Playfair Display', serif;
+            color: var(--gold); font-size: 20px; text-align: center;
+            margin-bottom: 20px; letter-spacing: 2px;
+        }
+        .result-row { margin-bottom: 15px; font-size: 14px; line-height: 1.6; border-bottom: 1px solid #222; padding-bottom: 10px;}
+        .result-row:last-child { border: none; }
+        .res-val { color: var(--gold-light); font-weight: 500; display: block; margin-top: 4px; font-size: 16px; }
+        
+        .reset-btn {
+            background: none; border: 1px solid #444; color: #666;
+            width: 100%; padding: 12px; margin-top: 20px; cursor: pointer;
+            border-radius: 4px; font-size: 12px;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <header>
+        <h2>House265</h2>
+        <div class="sub-title">Hair Evaluation Tool</div>
+    </header>
+
+    <div id="quizForm">
+        <div class="question-group">
+            <span class="label">1. ผมเดิมยาวเท่าไหร่?</span>
+            <div class="options-grid">
+                <div class="option-item"><input type="radio" name="q1" value="short" id="q1a"><label for="q1a">สั้นเลยหูนิดหน่อย - ประบ่า</label></div>
+                <div class="option-item"><input type="radio" name="q1" value="medium" id="q1b"><label for="q1b">เลยบ่าแต่ไม่ถึงเสื้อใน</label></div>
+                <div class="option-item"><input type="radio" name="q1" value="long" id="q1c"><label for="q1c">กลางหลัง - เอว</label></div>
+            </div>
+        </div>
+
+        <div class="question-group">
+            <span class="label">2. ความหนาผมเดิม? (กำผมวัดดู)</span>
+            <div class="options-grid">
+                <div class="option-item"><input type="radio" name="q2" value="thin" id="q2a"><label for="q2a">บาง</label></div>
+                <div class="option-item"><input type="radio" name="q2" value="damaged" id="q2b"><label for="q2b">แหว่ง / ขาด</label></div>
+                <div class="option-item"><input type="radio" name="q2" value="thick" id="q2c"><label for="q2c">หนามาก / พอประมาณ</label></div>
+            </div>
+        </div>
+
+        <div class="question-group">
+            <span class="label">3. ความหนาที่ต้องการ?</span>
+            <div class="options-grid">
+                <div class="option-item"><input type="radio" name="q4" value="volume" id="q4a"><label for="q4a">เสริมหนาจากเดิม</label></div>
+                <div class="option-item"><input type="radio" name="q4" value="natural" id="q4b"><label for="q4b">เพิ่มยาว และหนาแบบกำลังดี</label></div>
+                <div class="option-item"><input type="radio" name="q4" value="farm" id="q4c"><label for="q4c">เพิ่มยาว และหนามาก (ฟาร์มผม)</label></div>
+            </div>
+        </div>
+
+        <div class="question-group">
+            <span class="label">4. ประเมินสภาพผมเบื้องต้น?</span>
+            <div class="options-grid">
+                <div class="option-item"><input type="radio" name="q5" value="feather" id="q5a"><label for="q5a">เส้นเล็ก บาง หลุดร่วงเยอะ ขาด</label></div>
+                <div class="option-item"><input type="radio" name="q5" value="nano" id="q5b"><label for="q5b">เส้นเล็ก ไม่ค่อยร่วง</label></div>
+                <div class="option-item"><input type="radio" name="q5" value="both" id="q5c"><label for="q5c">ค่อนข้างเส้นใหญ่ แต่หลุดร่วง ขาด</label></div>
+            </div>
+        </div>
+
+        <button class="analyze-btn" onclick="analyzeHair()">วิเคราะห์ผลทันที</button>
+    </div>
+
+    <div id="resultArea">
+        <div class="result-box">
+            <div class="result-header">CONSULTATION</div>
+            <div class="result-row">
+                ปริมาณที่แนะนำ:
+                <span id="resAmount" class="res-val"></span>
+            </div>
+            <div class="result-row">
+                เทคนิคที่แนะนำ:
+                <span id="resTech" class="res-val"></span>
+            </div>
+            <p style="font-size: 11px; color: #888; text-align: center; margin-top: 15px;">*ผลประเมินนี้เป็นเพียงการแนะนำเบื้องต้น<br>ช่างจะประเมินหน้างานอย่างละเอียดอีกครั้งค่ะ</p>
+        </div>
+        <button class="reset-btn" onclick="location.reload()">ทำแบบประเมินใหม่</button>
+    </div>
+</div>
+
+<script>
+    function analyzeHair() {
+        const q1 = document.querySelector('input[name="q1"]:checked')?.value;
+        const q2 = document.querySelector('input[name="q2"]:checked')?.value;
+        const q4 = document.querySelector('input[name="q4"]:checked')?.value;
+        const q5 = document.querySelector('input[name="q5"]:checked')?.value;
+
+        if (!q1 || !q2 || !q4 || !q5) {
+            alert("กรุณาตอบคำถามให้ครบทุกข้อค่ะ");
+            return;
+        }
+
+        let amountText = "";
+        let techText = "";
+
+        // คำนวณปริมาณมัด
+        if (q4 === "volume") {
+            amountText = "แนะนำใช้ 1 มัด (เน้นเสริมความหนา)";
+        } else if (q2 === "damaged") {
+            amountText = "แนะนำใช้ 1 มัด (เพื่อเติมเต็มส่วนที่แหว่ง/ขาด)";
+        } else if (q1 === "short") {
+            amountText = "แนะนำใช้ 2 มัด (เพื่อให้รอยต่อผมสั้นเนียนสวยที่สุด)";
+        } else if (q1 === "medium") {
+            amountText = "แนะนำใช้ 1.5 มัด (ความหนากำลังดี ไม่บาง)";
+        } else if (q1 === "long" && q2 === "thick") {
+            amountText = "แนะนำใช้ 1 มัด (เน้นเพิ่มความหนาให้ดูเป็นแพสวย)";
+        } else {
+            amountText = "แนะนำใช้ 1 - 1.5 มัด (ตามความชอบ)";
+        }
+
+        // คำนวณเทคนิค
+        if (q5 === "feather") {
+            techText = "แนะนำเทคนิค 'ขนนก' (Feather) เพื่อถนอมผมและลดการร่วง";
+        } else if (q5 === "nano") {
+            techText = "แนะนำเทคนิค 'นาโนริง' (Nano Ring) ได้ค่ะ";
+        } else {
+            techText = "สามารถใช้ได้ทั้ง 'นาโนริง' หรือ 'ขนนก' (แนะนำขนนกจะเบาสบายกว่า)";
+        }
+
+        // แสดงผล
+        document.getElementById('resAmount').innerText = amountText;
+        document.getElementById('resTech').innerText = techText;
+        document.getElementById('quizForm').style.display = 'none';
+        document.getElementById('resultArea').style.display = 'block';
+    }
+</script>
+
+</body>
+</html>
