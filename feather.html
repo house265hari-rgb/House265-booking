@@ -107,6 +107,8 @@
 
         input:focus, select:focus { border-color: var(--gold); background: #222; }
 
+        select:disabled { background: #111; color: #555; border-color: #222; cursor: not-allowed; }
+
         .status-check { 
             text-align: center; padding: 15px; margin: 15px 0; font-size: 13px;
             display: none; border-radius: 4px;
@@ -229,9 +231,17 @@
             </select>
 
             <span class="step-label">05 / SELECT SERVICE</span>
-            <select id="cust_detail" required onchange="validateStockBeforePayment()">
+            <select id="cust_detail" required onchange="handleServiceChange()">
                 <option value="">กำลังโหลดข้อมูล...</option>
             </select>
+
+            <!-- ตัวเลือกเสริมกรณีเลือกขยับปมขนนก -->
+            <div id="addHairSection" style="display: none;">
+                <span class="step-label">05.1 / ADD EXTRA HAIR (สำหรับงานขยับปม)</span>
+                <select id="cust_add_hair" onchange="validateStockBeforePayment()">
+                    <option value="none">ไม่เพิ่มผม</option>
+                </select>
+            </div>
 
             <div id="stockWarning" class="stock-warning">⚠️ ขออภัย สินค้าในสต็อกไม่เพียงพอ กรุณาเลือกขนาดอื่น</div>
 
@@ -299,6 +309,7 @@
             bookedData = res.bookings || [];
             stockData = res.stocks || {};
             renderStockOptions();
+            renderAddHairOptions();
         } catch (e) {
             document.getElementById('cust_detail').innerHTML = '<option>Connection Error</option>';
         }
@@ -332,20 +343,107 @@
         select.innerHTML += '<option value="ขยับปมขนนก">ขยับปมขนนก</option>';
     }
 
+    // สร้างตัวเลือกเพิ่มผมสำหรับงานขยับปมโดยดึงจากสต็อกจริง
+    function renderAddHairOptions() {
+        const addHairSelect = document.getElementById('cust_add_hair');
+        addHairSelect.innerHTML = '<option value="none">ไม่เพิ่มผม</option>';
+        const sizes = Object.keys(priceList).filter(s => s !== "ขยับปมขนนก");
+        const amounts = ["1 มัด", "1.5 มัด", "2 มัด", "3 มัด"];
+
+        sizes.forEach(size => {
+            amounts.forEach(amtText => {
+                const opt = document.createElement('option');
+                const currentStock = parseFloat(stockData[size]) || 0;
+                const requiredAmt = parseFloat(amtText);
+                
+                opt.value = `${size} : ${amtText}`;
+                if (currentStock < requiredAmt) {
+                    opt.innerText = `เพิ่มผม ${size} : ${amtText} (ของหมด)`;
+                    opt.disabled = true;
+                } else {
+                    opt.innerText = `เพิ่มผม ${size} : ${amtText}`;
+                }
+                addHairSelect.appendChild(opt);
+            });
+        });
+    }
+
+    // จัดการเมื่อเปลี่ยนตัวเลือกบริการหลัก
+    function handleServiceChange() {
+        const detail = document.getElementById('cust_detail').value;
+        const hairColorSelect = document.getElementById('cust_hair_color');
+        const removalSelect = document.getElementById('cust_removal');
+        const addHairSection = document.getElementById('addHairSection');
+        const addHairSelect = document.getElementById('cust_add_hair');
+
+        if (detail === "ขยับปมขนนก") {
+            // ถ้าเลือกขยับปม -> ปิดตัวเลือกอื่น
+            hairColorSelect.disabled = true;
+            hairColorSelect.required = false;
+            hairColorSelect.value = "";
+            
+            removalSelect.disabled = true;
+            removalSelect.required = false;
+            removalSelect.value = "";
+
+            // แสดงช่องเลือกเพิ่มผม
+            addHairSection.style.display = "block";
+            addHairSelect.required = true;
+        } else {
+            // บริการปกติ -> เปิดตัวเลือกทั้งหมด
+            hairColorSelect.disabled = false;
+            hairColorSelect.required = true;
+            
+            removalSelect.disabled = false;
+            removalSelect.required = true;
+
+            // ซ่อนช่องเลือกเพิ่มผม
+            addHairSection.style.display = "none";
+            addHairSelect.required = false;
+            addHairSelect.value = "none";
+        }
+
+        validateStockBeforePayment();
+    }
+
     function validateStockBeforePayment() {
         const detail = document.getElementById('cust_detail').value;
+        const addHairValue = document.getElementById('cust_add_hair').value;
         const warning = document.getElementById('stockWarning');
         const paymentArea = document.getElementById('paymentArea');
         const submitBtn = document.getElementById('submitBtn');
 
-        if (!detail) return;
-        if (detail === "ขยับปมขนนก") {
-            warning.style.display = "none";
-            paymentArea.style.display = "block";
-            submitBtn.disabled = false;
+        if (!detail) {
+            paymentArea.style.display = "none";
             return;
         }
 
+        // กรณีขยับปมขนนก
+        if (detail === "ขยับปมขนนก") {
+            if (addHairValue === "none") {
+                warning.style.display = "none";
+                paymentArea.style.display = "block";
+                submitBtn.disabled = false;
+            } else {
+                // เช็กสต็อกกรณีสั่งเพิ่มผมในงานขยับปม
+                const [size, amtText] = addHairValue.split(" : ");
+                const currentStock = parseFloat(stockData[size]) || 0;
+                const requiredAmt = parseFloat(amtText);
+
+                if (currentStock < requiredAmt) {
+                    warning.style.display = "block";
+                    paymentArea.style.display = "none";
+                    submitBtn.disabled = true;
+                } else {
+                    warning.style.display = "none";
+                    paymentArea.style.display = "block";
+                    submitBtn.disabled = false;
+                }
+            }
+            return;
+        }
+
+        // กรณีต่อผมใหม่ปกติ
         const [size, amtText] = detail.split(" : ");
         const currentStock = parseFloat(stockData[size]) || 0;
         const requiredAmt = parseFloat(amtText);
@@ -409,20 +507,31 @@
         const time = document.getElementById('cust_time').value;
         const removalPrice = parseFloat(document.getElementById('cust_removal').value) || 0;
         const hairColor = document.getElementById('cust_hair_color').value;
+        const addHairValue = document.getElementById('cust_add_hair').value;
 
-        let basePrice = 0, multiplier = 1, coupon = 0, extra = 0;
+        let basePrice = 0, multiplier = 1, coupon = 0, extra = 0, addHairPrice = 0;
+        let finalDetailText = detail;
+
         if (detail === "ขยับปมขนนก") { 
             basePrice = priceList["ขยับปมขนนก"]; 
+            if (addHairValue !== "none") {
+                const parts = addHairValue.split(" : ");
+                addHairPrice = priceList[parts[0]] * parseFloat(parts[1]);
+                finalDetailText = `ขยับปมขนนก + เพิ่มผม ${addHairValue}`;
+            } else {
+                finalDetailText = "ขยับปมขนนก (ไม่เพิ่มผม)";
+            }
         } else {
             const parts = detail.split(" : ");
             basePrice = priceList[parts[0]];
             multiplier = parseFloat(parts[1]);
             if (parts[1] === "1.5 มัด") coupon = 500;
             if (parts[1] === "2 มัด" || parts[1] === "3 มัด") coupon = 1300;
+            finalDetailText = `${detail} (${hairColor})`;
         }
         if (time.includes("+400")) extra = 400;
 
-        const totalPrice = (basePrice * multiplier) + extra + removalPrice;
+        const totalPrice = (basePrice * multiplier) + extra + removalPrice + addHairPrice;
         const finalPrice = totalPrice - 1000 - coupon;
 
         const file = document.getElementById('fileInput').files[0];
@@ -433,8 +542,7 @@
             params.append('phone', document.getElementById('cust_phone').value);
             params.append('lineId', document.getElementById('cust_line').value);
             params.append('bookingType', 'ต่อผมขนนก');
-            // ส่งข้อมูลรายละเอียดควบสีผมไปด้วยในตัวแปรเดิมเพื่อไม่ให้หลังบ้านเอ๋อ
-            params.append('detail', `${detail} (สี:${hairColor})`);
+            params.append('detail', finalDetailText);
             params.append('date', document.getElementById('cust_date').value);
             params.append('time', time);
             params.append('fileData', reader.result.split(',')[1]);
@@ -449,7 +557,7 @@
                 document.getElementById('res_name').innerText = document.getElementById('cust_name').value;
                 document.getElementById('res_date').innerText = document.getElementById('cust_date').value;
                 document.getElementById('res_time').innerText = time;
-                document.getElementById('res_detail').innerText = `${detail} (${hairColor})`;
+                document.getElementById('res_detail').innerText = finalDetailText;
                 document.getElementById('res_full_price').innerText = totalPrice.toLocaleString() + " THB";
                 
                 if(coupon > 0) {
