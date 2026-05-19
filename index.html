@@ -156,7 +156,7 @@
         .is-available { color: #2d6a4f; background: #f0fdf4; border: 1px solid #dcfce7; }
         .is-full { color: #a4161a; background: #fff5f5; border: 1px solid #fee2e2; }
 
-        /* ส่วนสไตล์กล่องแจ้งเตือน */
+        /* กล่องแจ้งเตือนงานถอดผมมาก่อนเวลา 30 นาที */
         .removal-warning {
             display: none;
             background: #fff5f5;
@@ -170,43 +170,13 @@
             font-weight: 400;
             animation: pulse 2s infinite;
         }
-
-        .shaping-notice {
-            display: none;
-            background: #fff5f5;
-            color: var(--danger);
-            border: 2px solid var(--danger);
-            padding: 15px;
-            font-size: 13px;
-            margin-top: 5px;
-            margin-bottom: 15px;
-            border-radius: 4px;
-            font-weight: 400;
-            line-height: 1.6;
-        }
-
-        .refit-notice {
-            display: none;
-            background: #fffdf5;
-            color: #b08d48;
-            border: 1px dashed #b08d48;
-            padding: 12px;
-            font-size: 13px;
-            margin-top: 5px;
-            margin-bottom: 15px;
-            border-radius: 4px;
-            font-weight: 400;
-            line-height: 1.6;
-        }
-
         @keyframes pulse {
             0% { opacity: 0.9; }
             50% { opacity: 1; border-color: #ff0000; }
             100% { opacity: 0.9; }
         }
 
-        /* เปิดส่วนนี้ไว้เป็นดีฟอลต์เพื่อให้ระบบดึงข้อมูลได้สมบูรณ์ */
-        .payment-area { margin-top: 40px; }
+        .payment-area { display: none; margin-top: 40px; }
         .qr-box { 
             text-align: center; 
             margin-bottom: 30px; 
@@ -288,6 +258,7 @@
             font-weight: 300;
         }
 
+        /* ปรับกรอบแจ้งเตือนสีแดงให้แคปส่งไลน์ทันทีเด่นชัดขึ้น */
         .screenshot-reminder {
             background: #fff5f5;
             color: var(--danger);
@@ -355,21 +326,23 @@
             <input type="text" id="cust_line" placeholder="LINE ID" required>
             
             <span class="step-label">03 / รายการบริการหลัก</span>
-            <select id="cust_detail" required onchange="toggleRefitWarning()">
+            <select id="cust_detail" required>
                 <option value="">กำลังตรวจสอบสต็อกสินค้า...</option>
             </select>
 
-            <div id="refitWarning" class="refit-notice">
-                ⚠️ ขยับปมต้องรอปั้นในวันถัดไป ไม่สามารถทำวันเดียวได้ แนะนำถอดมาก่อนแล้วส่งปั้น
-            </div>
-
+            <!-- ส่วนเสริมที่เพิ่มใหม่ตามบรีฟค่ะ -->
             <span class="step-label">04 / รายละเอียดเพิ่มเติม</span>
             <select id="extra_removal" required onchange="toggleRemovalWarning()">
                 <option value="ไม่ถอด">1. ถอดผม : ไม่ถอด</option>
                 <option value="ถอดนาโน">1. ถอดผม : ถอดนาโน</option>
                 <option value="ถอดเคราติน">1. ถอดผม : ถอดเคราติน</option>
+                <!-- เพิ่มตัวเลือกถอดตามเงื่อนไขที่ต้องการ -->
+                <option value="ถอดนาโนใหม่">ถอดนาโน</option>
+                <option value="ถอดเคราตินใหม่">ถอดเคราติน</option>
+                <option value="ไม่มีถอด">ไม่มีถอด</option>
             </select>
             
+            <!-- กล่องเตือนซ่อนอยู่ จะเด้งขึ้นมาเมื่อเลือกถอดนาโน/เคราติน -->
             <div id="removalWarning" class="removal-warning">
                 ⚠️ กรณีมีงานถอดผม กรุณามาก่อนเวลานัดหมาย 30 นาทีนะคะ
             </div>
@@ -379,18 +352,20 @@
                 <option value="นำผมมาเอง 1 มัด">2. นำผมมาเอง : 1 มัด</option>
                 <option value="นำผมมาเอง 2 มัด">2. นำผมมาเอง : 2 มัด</option>
                 <option value="นำผมมาเอง 3 มัด">2. นำผมมาเอง : 3 มัด</option>
+                <!-- เพิ่มตัวเลือกผมมาเองตามเงื่อนไขที่ต้องการ -->
+                <option value="มีผมมาเอง">มีผมมาเอง</option>
+                <option value="ไม่มี">ไม่มี</option>
+                <option value="1มัด">1มัด</option>
+                <option value="1.5มัด">1.5มัด</option>
+                <option value="2มัด">2มัด</option>
             </select>
 
-            <select id="extra_shaping" required onchange="toggleShapingWarning()">
+            <select id="extra_shaping" required>
                 <option value="ไม่มี">3. ปั้นปม : ไม่มี</option>
                 <option value="มี">3. ปั้นปม : มี</option>
+                <!-- เพิ่มตัวเลือกเพื่อรองรับระบบและคำนวณเงื่อนไขปั้นผมเพิ่มเติม -->
+                <option value="ปั้นผม">ปั้นผม</option>
             </select>
-
-            <div id="shapingWarning" class="shaping-notice">
-                <b>🚨 เงื่อนไขสำคัญสำหรับงานปั้นปม:</b><br>
-                ได้คิวแล้ว ไม่ต้องรอร้านคอนเฟิร์ม มาให้ตรงเวลา เลท15นาทีหักมัดจำ ไม่ฟังข้ออ้างอะไรทั้งนั้น เลท30นาทีหักมัดจำ เลี้ยวกลับได้เลยไม่ต้องมา มีถอดมาก่อน30นาที ไม่มาก็หักมัดจำ มีปั้นส่งมาก่อน ไม่ส่ง=ไม่ทำปั้นไม่ทัน<br><br>
-                <b>📌 ส่งมาที่:</b> 56/265เพนท์วิล อ.คลองหลวง อ.คลองหลวง จ.ปทุมธานี 12120 0960564585 น้ำ
-            </div>
 
             <div id="paymentArea" class="payment-area">
                 <div class="qr-box">
@@ -423,10 +398,13 @@
             <p>บริการเพิ่มเติม: <b id="res_extra"></b></p>
             <p>สถานะ: <b style="color:var(--gold-dark);">ยืนยันแล้ว (มัดจำครบถ้วน)</b></p>
         </div>
+        <div class="screenshot-reminder" id="custom_warning_alert" style="background:#fff5f5; color:var(--danger); padding:15px; font-size:14px; letter-spacing:1px; border:2px dashed var(--danger); margin-bottom:25px; font-weight:500;">
+            <!-- พื้นที่สำหรับแสดงข้อความเตือนเพิ่มเติมตามเงื่อนไขที่ส่งเข้ามา -->
+        </div>
         <div class="screenshot-reminder">
             🚨 กรุณา "แคปใบจอง" หน้าจอนี้<br>ส่งกลับมาทาง LINE ของร้านทันที!
         </div>
-        <div class="contact-info">
+        <div class="contact-info" id="ticket_main_notice">
             ได้รับคิวแน่นอนค่ะ กรุณามาให้ตรงตามเวลานัดหมาย<br>
             หากติดธุระหรือต้องการเลื่อนคิว ติดต่อเบอร์ <b>096-056-4585</b>
         </div>
@@ -486,33 +464,14 @@
         select.appendChild(optExtra);
     }
 
+    // ฟังก์ชันเช็กตัวเลือกถอดผม เพื่อแสดง/ซ่อนกล่องเตือน
     function toggleRemovalWarning() {
         const removalVal = document.getElementById('extra_removal').value;
         const warningBox = document.getElementById('removalWarning');
-        if (removalVal === 'ถอดนาโน' || removalVal === 'ถอดเคราติน') {
+        if (removalVal === 'ถอดนาโน' || removalVal === 'ถอดเคราติน' || removalVal === 'ถอดนาโนใหม่' || removalVal === 'ถอดเคราตินใหม่') {
             warningBox.style.display = 'block';
         } else {
             warningBox.style.display = 'none';
-        }
-    }
-
-    function toggleShapingWarning() {
-        const shapingVal = document.getElementById('extra_shaping').value;
-        const shapingBox = document.getElementById('shapingWarning');
-        if (shapingVal === 'มี') {
-            shapingBox.style.display = 'block';
-        } else {
-            shapingBox.style.display = 'none';
-        }
-    }
-
-    function toggleRefitWarning() {
-        const detailVal = document.getElementById('cust_detail').value;
-        const refitBox = document.getElementById('refitWarning');
-        if (detailVal === 'ขยับปม') {
-            refitBox.style.display = 'block';
-        } else {
-            refitBox.style.display = 'none';
         }
     }
 
@@ -541,7 +500,8 @@
             statusBox.innerText = "วันที่คุณเลือกพร้อมสำหรับการจอง";
             statusBox.className = "status-check is-available";
             statusBox.style.display = "block";
-            info.style.display = "block"; /* แก้กลับมาใช้สั่งเปิด infoSection ตัวหลักแล้วค่ะ */
+            info.style.display = "block";
+            document.getElementById('paymentArea').style.display = "block";
         }
     }
 
@@ -553,6 +513,7 @@
         btn.disabled = true;
         btn.innerText = "กำลังประมวลผลข้อมูล...";
 
+        // ดึงค่าทั้งหมดมาสร้างเป็นข้อความส่งเข้า Google Sheet
         const mainDetail = document.getElementById('cust_detail').value;
         const rVal = document.getElementById('extra_removal').value;
         const oVal = document.getElementById('extra_ownhair').value;
@@ -567,6 +528,7 @@
             params.append('phone', document.getElementById('cust_phone').value);
             params.append('lineId', document.getElementById('cust_line').value);
             params.append('bookingType', 'ต่อผมนาโน');
+            // รวมทุกข้อมูลส่งไปในฟิลด์ detail ตัวเดิมเพื่อให้ระบบบันทึกค่าครบถ้วน
             params.append('detail', `${mainDetail} (${fullExtraText})`);
             params.append('date', document.getElementById('cust_date').value);
             params.append('time', document.getElementById('cust_time').value);
@@ -586,6 +548,21 @@
                     document.getElementById('res_time').innerText = document.getElementById('cust_time').value;
                     document.getElementById('res_detail').innerText = mainDetail;
                     document.getElementById('res_extra').innerText = `ถอด: ${rVal} | นำผม: ${oVal} | ปั้นปม: ${sVal}`;
+                    
+                    // ส่วนประมวลผลข้อความแจ้งเตือนหน้าตั๋วตามเงื่อนไขบรีฟใหม่
+                    let alertMsg = "ได้คิวเรียบร้อยแล้ว คอนเฟิร์มค่ะ กรุณามาตามเวลา เลท15นาทีหักมัดจำ ไม่ฟังอะไรทั้งนั้นนะคะ เลทคือเลท เลท30นาที เลี้ยวรถกลับได้เลยค่ะไม่ทำ มาไกลก็ควรเผื่อเวลานะคะ🙏🏻";
+                    
+                    if (sVal === "ปั้นผม") {
+                        alertMsg += "<br><br>⚠️ ส่งผมมาก่อนวันทำ2วันนะคะ ไม่ส่ง=ไม่ทำ ที่อยู่ดูในไลน์ ตรงสอบถามค่ะ";
+                    }
+                    
+                    if (mainDetail === "ขยับปม") {
+                        alertMsg += "<br><br>⚠️ ไม่สามารถถอดแล้วต่อได้เลย แนะนำถอดมาก่อน ไม่งั้นจะได้มาวันต่อไป";
+                    }
+                    
+                    document.getElementById('custom_warning_alert').innerHTML = alertMsg;
+                    document.getElementById('ticket_main_notice').style.display = 'none'; // ซ่อนข้อความแจ้งเตือนเก่าเพื่อไม่ให้ซ้ำซ้อน
+                    
                     document.getElementById('ticketModal').style.display = 'flex';
                 }
             })
