@@ -1,7 +1,6 @@
 <!DOCTYPE html>
 <html lang="th">
 <head>
-อย่าลืมอิงข้อมูลในสต็อกตลอด ลบจำนวนตามตัวเลือก ไม่ต้องเปลี่ยนอะไร แค่เพิ่มตามที่สั่ง
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>House265 - Exclusive Booking</title>
@@ -157,7 +156,6 @@
         .is-available { color: #2d6a4f; background: #f0fdf4; border: 1px solid #dcfce7; }
         .is-full { color: #a4161a; background: #fff5f5; border: 1px solid #fee2e2; }
 
-        /* กล่องแจ้งเตือนงานถอดผมมาก่อนเวลา 30 นาที */
         .removal-warning {
             display: none;
             background: #fff5f5;
@@ -172,7 +170,6 @@
             animation: pulse 2s infinite;
         }
 
-        /* กล่องแจ้งเตือนเพิ่มเติมสำหรับงานปั้น และงานขยับปม */
         .shaping-notice {
             display: none;
             background: #fff5f5;
@@ -289,7 +286,6 @@
             font-weight: 300;
         }
 
-        /* ปรับกรอบแจ้งเตือนสีแดงให้แคปส่งไลน์ทันทีเด่นชัดขึ้น */
         .screenshot-reminder {
             background: #fff5f5;
             color: var(--danger);
@@ -356,260 +352,4 @@
             <input type="tel" id="cust_phone" placeholder="เบอร์โทรศัพท์ติดต่อ" required>
             <input type="text" id="cust_line" placeholder="LINE ID" required>
             
-            <span class="step-label">03 / รายการบริการหลัก</span>
-            <select id="cust_detail" required onchange="toggleRefitWarning()">
-                <option value="">กำลังตรวจสอบสต็อกสินค้า...</option>
-            </select>
-
-            <!-- กล่องเตือนงานขยับปม จะเด้งขึ้นมาเมื่อเลือก ขยับปม -->
-            <div id="refitWarning" class="refit-notice">
-                ⚠️ ขยับปมต้องรอปั้นในวันถัดไป ไม่สามารถทำวันเดียวได้ แนะนำถอดมาก่อนแล้วส่งปั้น
-            </div>
-
-            <!-- ส่วนเสริมที่เพิ่มใหม่ตามบรีฟค่ะ -->
-            <span class="step-label">04 / รายละเอียดเพิ่มเติม</span>
-            <select id="extra_removal" required onchange="toggleRemovalWarning()">
-                <option value="ไม่ถอด">1. ถอดผม : ไม่ถอด</option>
-                <option value="ถอดนาโน">1. ถอดผม : ถอดนาโน</option>
-                <option value="ถอดเคราติน">1. ถอดผม : ถอดเคราติน</option>
-            </select>
-            
-            <!-- กล่องเตือนซ่อนอยู่ จะเด้งขึ้นมาเมื่อเลือกถอดนาโน/เคราติน -->
-            <div id="removalWarning" class="removal-warning">
-                ⚠️ กรณีมีงานถอดผม กรุณามาก่อนเวลานัดหมาย 30 นาทีนะคะ
-            </div>
-
-            <select id="extra_ownhair" required>
-                <option value="ไม่ได้นำมาเอง">2. นำผมมาเอง : ไม่ได้นำมาเอง</option>
-                <option value="นำผมมาเอง 1 มัด">2. นำผมมาเอง : 1 มัด</option>
-                <option value="นำผมมาเอง 2 มัด">2. นำผมมาเอง : 2 มัด</option>
-                <option value="นำผมมาเอง 3 มัด">2. นำผมมาเอง : 3 มัด</option>
-            </select>
-
-            <select id="extra_shaping" required onchange="toggleShapingWarning()">
-                <option value="ไม่มี">3. ปั้นปม : ไม่มี</option>
-                <option value="มี">3. ปั้นปม : มี</option>
-            </select>
-
-            <!-- กล่องเตือนเงื่อนไขการปั้นปม จะเด้งขึ้นมาเมื่อเลือกปั้นปม: มี -->
-            <div id="shapingWarning" class="shaping-notice">
-                <b>🚨 เงื่อนไขสำคัญสำหรับงานปั้นปม:</b><br>
-                ได้คิวแล้ว ไม่ต้องรอร้านคอนเฟิร์ม มาให้ตรงเวลา เลท15นาทีหักมัดจำ ไม่ฟังข้ออ้างอะไรทั้งนั้น เลท30นาทีหักมัดจำ เลี้ยวกลับได้เลยไม่ต้องมา มีถอดมาก่อน30นาที ไม่มาก็หักมัดจำ มีปั้นส่งมาก่อน ไม่ส่ง=ไม่ทำปั้นไม่ทัน<br><br>
-                <b>📌 ที่อยู่จัดส่งปั้นปม:</b><br>
-                56/265เพนท์วิล อ.คลองหลวง อ.คลองหลวง จ.ปทุมธานี 12120<br>
-                📞 โทร. 0960564585 (น้ำ)
-            </div>
-
-            <div id="paymentArea" class="payment-area">
-                <div class="qr-box">
-                    <p>ชำระยอดมัดจำ 500 บาท</p>
-                    <img src="att.8Sn_yZRe9NxRT7e82xRROxZGprBrwV_hRbURzB6XKpo.jpeg">
-                    <div class="payment-note">
-                        ช่องทาง: QR Transfer / Credit Card / SPayLater
-                    </div>
-                </div>
-                <span class="step-label">แนบหลักฐานการโอนเงิน</span>
-                <input type="file" id="fileInput" accept="image/*" required style="border:none; padding:10px 0;">
-                <button type="submit" id="submitBtn">ยืนยันการจองคิว</button>
-            </div>
-        </div>
-    </form>
-</div>
-
-<div id="ticketModal" class="modal">
-    <div class="ticket">
-        <div class="confirmed-badge">ได้รับคิวเรียบร้อย</div>
-        <div class="ticket-header">
-            <h3>HOUSE265 TICKET</h3>
-            <p style="font-size: 10px; letter-spacing: 2px; color: #999; text-transform: uppercase;">Official Booking Confirmation</p>
-        </div>
-        <div class="ticket-body">
-            <p>ชื่อผู้จอง: <b id="res_name"></b></p>
-            <p>วันที่นัดหมาย: <b id="res_date"></b></p>
-            <p>เวลา: <b id="res_time"></b></p>
-            <p>รายการ: <b id="res_detail"></b></p>
-            <p>บริการเพิ่มเติม: <b id="res_extra"></b></p>
-            <p>สถานะ: <b style="color:var(--gold-dark);">ยืนยันแล้ว (มัดจำครบถ้วน)</b></p>
-        </div>
-        <div class="screenshot-reminder">
-            🚨 กรุณา "แคปใบจอง" หน้าจอนี้<br>ส่งกลับมาทาง LINE ของร้านทันที!
-        </div>
-        <div class="contact-info">
-            ได้รับคิวแน่นอนค่ะ กรุณามาให้ตรงตามเวลานัดหมาย<br>
-            หากติดธุระหรือต้องการเลื่อนคิว ติดต่อเบอร์ <b>096-056-4585</b>
-        </div>
-        <div class="ticket-footer">
-            <button onclick="location.reload()">เสร็จสิ้น</button>
-        </div>
-    </div>
-</div>
-
-<script>
-    const scriptURL = 'https://script.google.com/macros/s/AKfycbzRdlkvgjQtaZHxgTVpOw59zqW0nS9KpzrBVxj3XrJKt4Aq7SfSQMa5s8-w2FlzuFSusw/exec';
-    let bookedData = [];
-    let stockData = {};
-
-    window.onload = async () => {
-        try {
-            const response = await fetch(scriptURL);
-            const res = await response.json();
-            bookedData = res.bookings || [];
-            if (Array.isArray(res.stocks)) {
-                res.stocks.forEach(item => { stockData[item.name.trim()] = parseFloat(item.count); });
-            } else { stockData = res.stocks || {}; }
-            renderStockOptions();
-        } catch (e) {
-            document.getElementById('cust_detail').innerHTML = '<option>การเชื่อมต่อขัดข้อง กรุณารีเฟรชหน้าเว็บ</option>';
-        }
-    };
-
-    function renderStockOptions() {
-        const select = document.getElementById('cust_detail');
-        select.innerHTML = '<option value="">เลือกความยาวและจำนวนมัด</option>';
-        const items = ["20นิ้ว", "25นิ้ว", "30นิ้ว", "35นิ้ว"];
-        const amounts = [1, 1.5, 2];
-
-        items.forEach(name => {
-            const group = document.createElement('optgroup');
-            group.label = `ผมแท้ความยาว: ${name}`;
-            amounts.forEach(amt => {
-                const label = `${name} : ${amt} มัด`;
-                const currentStock = stockData[name] || 0;
-                const opt = document.createElement('option');
-                opt.value = label;
-                if (currentStock < amt) {
-                    opt.innerText = `${label} (สินค้าหมด)`;
-                    opt.disabled = true;
-                } else {
-                    opt.innerText = label;
-                }
-                group.appendChild(opt);
-            });
-            select.appendChild(group);
-        });
-        
-        const optExtra = document.createElement('option');
-        optExtra.value = "ขยับปม";
-        optExtra.innerText = "ขยับปม";
-        select.appendChild(optExtra);
-    }
-
-    // ฟังก์ชันเช็กตัวเลือกถอดผม เพื่อแสดง/ซ่อนกล่องเตือน
-    function toggleRemovalWarning() {
-        const removalVal = document.getElementById('extra_removal').value;
-        const warningBox = document.getElementById('removalWarning');
-        if (removalVal === 'ถอดนาโน' || removalVal === 'ถอดเคราติน') {
-            warningBox.style.display = 'block';
-        } else {
-            warningBox.style.display = 'none';
-        }
-    }
-
-    // ฟังก์ชันเช็กตัวเลือกปั้นปม เพื่อแสดง/ซ่อนกฎเหล็กและที่อยู่ส่งของ
-    function toggleShapingWarning() {
-        const shapingVal = document.getElementById('extra_shaping').value;
-        const shapingBox = document.getElementById('shapingWarning');
-        if (shapingVal === 'มี') {
-            shapingBox.style.display = 'block';
-        } else {
-            shapingBox.style.display = 'none';
-        }
-    }
-
-    // ฟังก์ชันเช็กรายการหลักเพื่อแสดงคำเตือนเมื่อเลือก "ขยับปม"
-    function toggleRefitWarning() {
-        const detailVal = document.getElementById('cust_detail').value;
-        const refitBox = document.getElementById('refitWarning');
-        if (detailVal === 'ขยับปม') {
-            refitBox.style.display = 'block';
-        } else {
-            refitBox.style.display = 'none';
-        }
-    }
-
-    function checkBookingStatus() {
-        const date = document.getElementById('cust_date').value;
-        const time = document.getElementById('cust_time').value;
-        const statusBox = document.getElementById('statusBox');
-        const info = document.getElementById('infoSection');
-        if(!date || !time) return;
-
-        if (new Date(date).getDay() === 0) {
-            statusBox.innerText = "ขออภัย ร้านหยุดให้บริการในวันอาทิตย์";
-            statusBox.className = "status-check is-full";
-            statusBox.style.display = "block";
-            info.style.display = "none";
-            return;
-        }
-        
-        const isFull = bookedData.some(b => b.date === date && b.time === time);
-        if(isFull) {
-            statusBox.innerText = "ช่วงเวลาที่คุณเลือกคิวเต็มแล้ว กรุณาเลือกเวลาอื่น";
-            statusBox.className = "status-check is-full";
-            statusBox.style.display = "block";
-            info.style.display = "none";
-        } else {
-            statusBox.innerText = "วันที่คุณเลือกพร้อมสำหรับการจอง";
-            statusBox.className = "status-check is-available";
-            statusBox.style.display = "block";
-            info.style.display = "block";
-            document.getElementById('paymentArea').style.display = "block";
-        }
-    }
-
-    document.getElementById('cust_date').setAttribute('min', new Date().toISOString().split('T')[0]);
-
-    document.getElementById('bookingForm').onsubmit = e => {
-        e.preventDefault();
-        const btn = document.getElementById('submitBtn');
-        btn.disabled = true;
-        btn.innerText = "กำลังประมวลผลข้อมูล...";
-
-        // ดึงค่าทั้งหมดมาสร้างเป็นข้อความส่งเข้า Google Sheet
-        const mainDetail = document.getElementById('cust_detail').value;
-        const rVal = document.getElementById('extra_removal').value;
-        const oVal = document.getElementById('extra_ownhair').value;
-        const sVal = document.getElementById('extra_shaping').value;
-        const fullExtraText = `ถอด: ${rVal} / นำผมมาเอง: ${oVal} / ปั้นปม: ${sVal}`;
-
-        const file = document.getElementById('fileInput').files[0];
-        const reader = new FileReader();
-        reader.onload = function() {
-            const params = new URLSearchParams();
-            params.append('name', document.getElementById('cust_name').value);
-            params.append('phone', document.getElementById('cust_phone').value);
-            params.append('lineId', document.getElementById('cust_line').value);
-            params.append('bookingType', 'ต่อผมนาโน');
-            // รวมทุกข้อมูลส่งไปในฟิลด์ detail ตัวเดิมเพื่อให้ระบบบันทึกค่าครบถ้วน
-            params.append('detail', `${mainDetail} (${fullExtraText})`);
-            params.append('date', document.getElementById('cust_date').value);
-            params.append('time', document.getElementById('cust_time').value);
-            params.append('fileData', reader.result.split(',')[1]);
-            params.append('mimeType', file.type);
-            params.append('fileName', file.name);
-
-            fetch(scriptURL, { method: 'POST', body: params })
-            .then(response => response.text())
-            .then(result => {
-                if(result === "AlreadyBooked") {
-                    alert("ขออภัย คิวเวลานี้ถูกจองไปเมื่อสักครู่ กรุณาเลือกเวลาใหม่");
-                    location.reload();
-                } else {
-                    document.getElementById('res_name').innerText = document.getElementById('cust_name').value;
-                    document.getElementById('res_date').innerText = document.getElementById('cust_date').value;
-                    document.getElementById('res_time').innerText = document.getElementById('cust_time').value;
-                    document.getElementById('res_detail').innerText = mainDetail;
-                    document.getElementById('res_extra').innerText = `ถอด: ${rVal} | นำผม: ${oVal} | ปั้นปม: ${sVal}`;
-                    document.getElementById('ticketModal').style.display = 'flex';
-                }
-            })
-            .catch(() => {
-                alert('จองสำเร็จแล้ว');
-                location.reload();
-            });
-        };
-        reader.readAsDataURL(file);
-    };
-</script>
-</body>
-</html>
+            <span class="step-label
