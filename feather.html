@@ -212,7 +212,23 @@
             <input type="tel" id="cust_phone" placeholder="เบอร์โทรศัพท์ติดต่อ" required>
             <input type="text" id="cust_line" placeholder="LINE ID" required>
             
-            <span class="step-label">03 / SELECT SERVICE</span>
+            <span class="step-label">03 / SELECT HAIR COLOR</span>
+            <select id="cust_hair_color" required>
+                <option value="">เลือกสีผมที่ต้องการ</option>
+                <option value="สีดำ">สีดำ (มีของ)</option>
+                <option value="สีน้ำตาล" disabled>สีน้ำตาล (ของหมด)</option>
+            </select>
+
+            <span class="step-label">04 / REMOVAL SERVICE</span>
+            <select id="cust_removal" required>
+                <option value="">เลือกบริการงานถอดผม</option>
+                <option value="0">ไม่มีถอด</option>
+                <option value="500">ถอดนาโน 500 บาท</option>
+                <option value="800">ถอดเคราติน 800 บาท</option>
+                <option value="900">ถอดขนนก 900 บาท</option>
+            </select>
+
+            <span class="step-label">05 / SELECT SERVICE</span>
             <select id="cust_detail" required onchange="validateStockBeforePayment()">
                 <option value="">กำลังโหลดข้อมูล...</option>
             </select>
@@ -391,6 +407,8 @@
 
         const detail = document.getElementById('cust_detail').value;
         const time = document.getElementById('cust_time').value;
+        const removalPrice = parseFloat(document.getElementById('cust_removal').value) || 0;
+        const hairColor = document.getElementById('cust_hair_color').value;
 
         let basePrice = 0, multiplier = 1, coupon = 0, extra = 0;
         if (detail === "ขยับปมขนนก") { 
@@ -404,7 +422,7 @@
         }
         if (time.includes("+400")) extra = 400;
 
-        const totalPrice = (basePrice * multiplier) + extra;
+        const totalPrice = (basePrice * multiplier) + extra + removalPrice;
         const finalPrice = totalPrice - 1000 - coupon;
 
         const file = document.getElementById('fileInput').files[0];
@@ -415,7 +433,8 @@
             params.append('phone', document.getElementById('cust_phone').value);
             params.append('lineId', document.getElementById('cust_line').value);
             params.append('bookingType', 'ต่อผมขนนก');
-            params.append('detail', detail);
+            // ส่งข้อมูลรายละเอียดควบสีผมไปด้วยในตัวแปรเดิมเพื่อไม่ให้หลังบ้านเอ๋อ
+            params.append('detail', `${detail} (สี:${hairColor})`);
             params.append('date', document.getElementById('cust_date').value);
             params.append('time', time);
             params.append('fileData', reader.result.split(',')[1]);
@@ -430,7 +449,7 @@
                 document.getElementById('res_name').innerText = document.getElementById('cust_name').value;
                 document.getElementById('res_date').innerText = document.getElementById('cust_date').value;
                 document.getElementById('res_time').innerText = time;
-                document.getElementById('res_detail').innerText = detail;
+                document.getElementById('res_detail').innerText = `${detail} (${hairColor})`;
                 document.getElementById('res_full_price').innerText = totalPrice.toLocaleString() + " THB";
                 
                 if(coupon > 0) {
