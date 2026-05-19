@@ -133,7 +133,7 @@
             font-weight: 500;
             cursor: pointer;
             border: 1.5px solid var(--gold); 
-            background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="%23c5a059" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>');
+            background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="%23c5a059" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>');
             background-repeat: no-repeat;
             background-position: calc(100% - 12px) center;
         }
@@ -156,7 +156,7 @@
         .is-available { color: #2d6a4f; background: #f0fdf4; border: 1px solid #dcfce7; }
         .is-full { color: #a4161a; background: #fff5f5; border: 1px solid #fee2e2; }
 
-        /* กล่องแจ้งเตือนงานถอดผมมาก่อนเวลา 30 นาที */
+        /* ส่วนสไตล์กล่องแจ้งเตือน */
         .removal-warning {
             display: none;
             background: #fff5f5;
@@ -171,7 +171,6 @@
             animation: pulse 2s infinite;
         }
 
-        /* กล่องแจ้งเตือนปั้นปม */
         .shaping-notice {
             display: none;
             background: #fff5f5;
@@ -186,7 +185,6 @@
             line-height: 1.6;
         }
 
-        /* กล่องแจ้งเตือนขยับปม */
         .refit-notice {
             display: none;
             background: #fffdf5;
@@ -207,7 +205,8 @@
             100% { opacity: 0.9; }
         }
 
-        .payment-area { display: none; margin-top: 40px; }
+        /* เปิดส่วนนี้ไว้เป็นดีฟอลต์เพื่อให้ระบบดึงข้อมูลได้สมบูรณ์ */
+        .payment-area { margin-top: 40px; }
         .qr-box { 
             text-align: center; 
             margin-bottom: 30px; 
@@ -438,4 +437,165 @@
 </div>
 
 <script>
-    const scriptURL = '
+    const scriptURL = 'https://script.google.com/macros/s/AKfycbzRdlkvgjQtaZHxgTVpOw59zqW0nS9KpzrBVxj3XrJKt4Aq7SfSQMa5s8-w2FlzuFSusw/exec';
+    let bookedData = [];
+    let stockData = {};
+
+    window.onload = async () => {
+        try {
+            const response = await fetch(scriptURL);
+            const res = await response.json();
+            bookedData = res.bookings || [];
+            if (Array.isArray(res.stocks)) {
+                res.stocks.forEach(item => { stockData[item.name.trim()] = parseFloat(item.count); });
+            } else { stockData = res.stocks || {}; }
+            renderStockOptions();
+        } catch (e) {
+            document.getElementById('cust_detail').innerHTML = '<option>การเชื่อมต่อขัดข้อง กรุณารีเฟรชหน้าเว็บ</option>';
+        }
+    };
+
+    function renderStockOptions() {
+        const select = document.getElementById('cust_detail');
+        select.innerHTML = '<option value="">เลือกความยาวและจำนวนมัด</option>';
+        const items = ["20นิ้ว", "25นิ้ว", "30นิ้ว", "35นิ้ว"];
+        const amounts = [1, 1.5, 2];
+
+        items.forEach(name => {
+            const group = document.createElement('optgroup');
+            group.label = `ผมแท้ความยาว: ${name}`;
+            amounts.forEach(amt => {
+                const label = `${name} : ${amt} มัด`;
+                const currentStock = stockData[name] || 0;
+                const opt = document.createElement('option');
+                opt.value = label;
+                if (currentStock < amt) {
+                    opt.innerText = `${label} (สินค้าหมด)`;
+                    opt.disabled = true;
+                } else {
+                    opt.innerText = label;
+                }
+                group.appendChild(opt);
+            });
+            select.appendChild(group);
+        });
+        
+        const optExtra = document.createElement('option');
+        optExtra.value = "ขยับปม";
+        optExtra.innerText = "ขยับปม";
+        select.appendChild(optExtra);
+    }
+
+    function toggleRemovalWarning() {
+        const removalVal = document.getElementById('extra_removal').value;
+        const warningBox = document.getElementById('removalWarning');
+        if (removalVal === 'ถอดนาโน' || removalVal === 'ถอดเคราติน') {
+            warningBox.style.display = 'block';
+        } else {
+            warningBox.style.display = 'none';
+        }
+    }
+
+    function toggleShapingWarning() {
+        const shapingVal = document.getElementById('extra_shaping').value;
+        const shapingBox = document.getElementById('shapingWarning');
+        if (shapingVal === 'มี') {
+            shapingBox.style.display = 'block';
+        } else {
+            shapingBox.style.display = 'none';
+        }
+    }
+
+    function toggleRefitWarning() {
+        const detailVal = document.getElementById('cust_detail').value;
+        const refitBox = document.getElementById('refitWarning');
+        if (detailVal === 'ขยับปม') {
+            refitBox.style.display = 'block';
+        } else {
+            refitBox.style.display = 'none';
+        }
+    }
+
+    function checkBookingStatus() {
+        const date = document.getElementById('cust_date').value;
+        const time = document.getElementById('cust_time').value;
+        const statusBox = document.getElementById('statusBox');
+        const info = document.getElementById('infoSection');
+        if(!date || !time) return;
+
+        if (new Date(date).getDay() === 0) {
+            statusBox.innerText = "ขออภัย ร้านหยุดให้บริการในวันอาทิตย์";
+            statusBox.className = "status-check is-full";
+            statusBox.style.display = "block";
+            info.style.display = "none";
+            return;
+        }
+        
+        const isFull = bookedData.some(b => b.date === date && b.time === time);
+        if(isFull) {
+            statusBox.innerText = "ช่วงเวลาที่คุณเลือกคิวเต็มแล้ว กรุณาเลือกเวลาอื่น";
+            statusBox.className = "status-check is-full";
+            statusBox.style.display = "block";
+            info.style.display = "none";
+        } else {
+            statusBox.innerText = "วันที่คุณเลือกพร้อมสำหรับการจอง";
+            statusBox.className = "status-check is-available";
+            statusBox.style.display = "block";
+            info.style.display = "block"; /* แก้กลับมาใช้สั่งเปิด infoSection ตัวหลักแล้วค่ะ */
+        }
+    }
+
+    document.getElementById('cust_date').setAttribute('min', new Date().toISOString().split('T')[0]);
+
+    document.getElementById('bookingForm').onsubmit = e => {
+        e.preventDefault();
+        const btn = document.getElementById('submitBtn');
+        btn.disabled = true;
+        btn.innerText = "กำลังประมวลผลข้อมูล...";
+
+        const mainDetail = document.getElementById('cust_detail').value;
+        const rVal = document.getElementById('extra_removal').value;
+        const oVal = document.getElementById('extra_ownhair').value;
+        const sVal = document.getElementById('extra_shaping').value;
+        const fullExtraText = `ถอด: ${rVal} / นำผมมาเอง: ${oVal} / ปั้นปม: ${sVal}`;
+
+        const file = document.getElementById('fileInput').files[0];
+        const reader = new FileReader();
+        reader.onload = function() {
+            const params = new URLSearchParams();
+            params.append('name', document.getElementById('cust_name').value);
+            params.append('phone', document.getElementById('cust_phone').value);
+            params.append('lineId', document.getElementById('cust_line').value);
+            params.append('bookingType', 'ต่อผมนาโน');
+            params.append('detail', `${mainDetail} (${fullExtraText})`);
+            params.append('date', document.getElementById('cust_date').value);
+            params.append('time', document.getElementById('cust_time').value);
+            params.append('fileData', reader.result.split(',')[1]);
+            params.append('mimeType', file.type);
+            params.append('fileName', file.name);
+
+            fetch(scriptURL, { method: 'POST', body: params })
+            .then(response => response.text())
+            .then(result => {
+                if(result === "AlreadyBooked") {
+                    alert("ขออภัย คิวเวลานี้ถูกจองไปเมื่อสักครู่ กรุณาเลือกเวลาใหม่");
+                    location.reload();
+                } else {
+                    document.getElementById('res_name').innerText = document.getElementById('cust_name').value;
+                    document.getElementById('res_date').innerText = document.getElementById('cust_date').value;
+                    document.getElementById('res_time').innerText = document.getElementById('cust_time').value;
+                    document.getElementById('res_detail').innerText = mainDetail;
+                    document.getElementById('res_extra').innerText = `ถอด: ${rVal} | นำผม: ${oVal} | ปั้นปม: ${sVal}`;
+                    document.getElementById('ticketModal').style.display = 'flex';
+                }
+            })
+            .catch(() => {
+                alert('จองสำเร็จแล้ว');
+                location.reload();
+            });
+        };
+        reader.readAsDataURL(file);
+    };
+</script>
+</body>
+</html>
