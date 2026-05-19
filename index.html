@@ -133,7 +133,7 @@
             font-weight: 500;
             cursor: pointer;
             border: 1.5px solid var(--gold); 
-            background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="%23c5a059" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>');
+            background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="%23c5a059" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>');
             background-repeat: no-repeat;
             background-position: calc(100% - 12px) center;
         }
@@ -156,6 +156,7 @@
         .is-available { color: #2d6a4f; background: #f0fdf4; border: 1px solid #dcfce7; }
         .is-full { color: #a4161a; background: #fff5f5; border: 1px solid #fee2e2; }
 
+        /* กล่องแจ้งเตือนงานถอดผมมาก่อนเวลา 30 นาที */
         .removal-warning {
             display: none;
             background: #fff5f5;
@@ -170,6 +171,7 @@
             animation: pulse 2s infinite;
         }
 
+        /* กล่องแจ้งเตือนปั้นปม */
         .shaping-notice {
             display: none;
             background: #fff5f5;
@@ -177,13 +179,14 @@
             border: 2px solid var(--danger);
             padding: 15px;
             font-size: 13px;
-            margin-top: 10px;
+            margin-top: 5px;
             margin-bottom: 15px;
             border-radius: 4px;
             font-weight: 400;
             line-height: 1.6;
         }
 
+        /* กล่องแจ้งเตือนขยับปม */
         .refit-notice {
             display: none;
             background: #fffdf5;
@@ -352,4 +355,87 @@
             <input type="tel" id="cust_phone" placeholder="เบอร์โทรศัพท์ติดต่อ" required>
             <input type="text" id="cust_line" placeholder="LINE ID" required>
             
-            <span class="step-label
+            <span class="step-label">03 / รายการบริการหลัก</span>
+            <select id="cust_detail" required onchange="toggleRefitWarning()">
+                <option value="">กำลังตรวจสอบสต็อกสินค้า...</option>
+            </select>
+
+            <div id="refitWarning" class="refit-notice">
+                ⚠️ ขยับปมต้องรอปั้นในวันถัดไป ไม่สามารถทำวันเดียวได้ แนะนำถอดมาก่อนแล้วส่งปั้น
+            </div>
+
+            <span class="step-label">04 / รายละเอียดเพิ่มเติม</span>
+            <select id="extra_removal" required onchange="toggleRemovalWarning()">
+                <option value="ไม่ถอด">1. ถอดผม : ไม่ถอด</option>
+                <option value="ถอดนาโน">1. ถอดผม : ถอดนาโน</option>
+                <option value="ถอดเคราติน">1. ถอดผม : ถอดเคราติน</option>
+            </select>
+            
+            <div id="removalWarning" class="removal-warning">
+                ⚠️ กรณีมีงานถอดผม กรุณามาก่อนเวลานัดหมาย 30 นาทีนะคะ
+            </div>
+
+            <select id="extra_ownhair" required>
+                <option value="ไม่ได้นำมาเอง">2. นำผมมาเอง : ไม่ได้นำมาเอง</option>
+                <option value="นำผมมาเอง 1 มัด">2. นำผมมาเอง : 1 มัด</option>
+                <option value="นำผมมาเอง 2 มัด">2. นำผมมาเอง : 2 มัด</option>
+                <option value="นำผมมาเอง 3 มัด">2. นำผมมาเอง : 3 มัด</option>
+            </select>
+
+            <select id="extra_shaping" required onchange="toggleShapingWarning()">
+                <option value="ไม่มี">3. ปั้นปม : ไม่มี</option>
+                <option value="มี">3. ปั้นปม : มี</option>
+            </select>
+
+            <div id="shapingWarning" class="shaping-notice">
+                <b>🚨 เงื่อนไขสำคัญสำหรับงานปั้นปม:</b><br>
+                ได้คิวแล้ว ไม่ต้องรอร้านคอนเฟิร์ม มาให้ตรงเวลา เลท15นาทีหักมัดจำ ไม่ฟังข้ออ้างอะไรทั้งนั้น เลท30นาทีหักมัดจำ เลี้ยวกลับได้เลยไม่ต้องมา มีถอดมาก่อน30นาที ไม่มาก็หักมัดจำ มีปั้นส่งมาก่อน ไม่ส่ง=ไม่ทำปั้นไม่ทัน<br><br>
+                <b>📌 ส่งมาที่:</b> 56/265เพนท์วิล อ.คลองหลวง อ.คลองหลวง จ.ปทุมธานี 12120 0960564585 น้ำ
+            </div>
+
+            <div id="paymentArea" class="payment-area">
+                <div class="qr-box">
+                    <p>ชำระยอดมัดจำ 500 บาท</p>
+                    <img src="att.8Sn_yZRe9NxRT7e82xRROxZGprBrwV_hRbURzB6XKpo.jpeg">
+                    <div class="payment-note">
+                        ช่องทาง: QR Transfer / Credit Card / SPayLater
+                    </div>
+                </div>
+                <span class="step-label">แนบหลักฐานการโอนเงิน</span>
+                <input type="file" id="fileInput" accept="image/*" required style="border:none; padding:10px 0;">
+                <button type="submit" id="submitBtn">ยืนยันการจองคิว</button>
+            </div>
+        </div>
+    </form>
+</div>
+
+<div id="ticketModal" class="modal">
+    <div class="ticket">
+        <div class="confirmed-badge">ได้รับคิวเรียบร้อย</div>
+        <div class="ticket-header">
+            <h3>HOUSE265 TICKET</h3>
+            <p style="font-size: 10px; letter-spacing: 2px; color: #999; text-transform: uppercase;">Official Booking Confirmation</p>
+        </div>
+        <div class="ticket-body">
+            <p>ชื่อผู้จอง: <b id="res_name"></b></p>
+            <p>วันที่นัดหมาย: <b id="res_date"></b></p>
+            <p>เวลา: <b id="res_time"></b></p>
+            <p>รายการ: <b id="res_detail"></b></p>
+            <p>บริการเพิ่มเติม: <b id="res_extra"></b></p>
+            <p>สถานะ: <b style="color:var(--gold-dark);">ยืนยันแล้ว (มัดจำครบถ้วน)</b></p>
+        </div>
+        <div class="screenshot-reminder">
+            🚨 กรุณา "แคปใบจอง" หน้าจอนี้<br>ส่งกลับมาทาง LINE ของร้านทันที!
+        </div>
+        <div class="contact-info">
+            ได้รับคิวแน่นอนค่ะ กรุณามาให้ตรงตามเวลานัดหมาย<br>
+            หากติดธุระหรือต้องการเลื่อนคิว ติดต่อเบอร์ <b>096-056-4585</b>
+        </div>
+        <div class="ticket-footer">
+            <button onclick="location.reload()">เสร็จสิ้น</button>
+        </div>
+    </div>
+</div>
+
+<script>
+    const scriptURL = '
