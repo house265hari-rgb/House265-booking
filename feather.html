@@ -168,7 +168,6 @@
             100% { background: #d4af37; }
         }
 
-        /* ตู้แจ้งเตือนกติกาในใบจองแบบเน้นย้ำพิเศษ */
         .ticket-warning-box {
             background: rgba(212, 175, 55, 0.05);
             border-top: 1px solid var(--gold);
@@ -275,7 +274,7 @@
     </form>
 </div>
 
-<!-- TICKET MODAL (ใบจองที่ลูกค้าต้องแคปหน้าจอ) -->
+<!-- TICKET MODAL -->
 <div id="ticketModal" class="modal">
     <div class="ticket">
         <div class="screenshot-alert">📸 แคปหน้าจอนี้ ส่งให้ทางร้านทันที!</div>
@@ -284,10 +283,9 @@
             <div style="font-size: 10px; letter-spacing: 2px;">HOUSE265 EXCLUSIVE</div>
         </div>
         
-        <!-- ส่วนข้อความเตือนความชัดเจนที่เพิ่มเข้าไป -->
         <div class="ticket-warning-box">
             <strong>✨ จองคิวได้แล้ว ได้แล้วจริงๆ ✨</strong>
-            มาให้ตรงเวลานะคะ <span style="color:var(--error); font-weight:bold;">เลท 15 นาทีหักมัดจำไม่มีข้ออ้างอะไรทั้งนั้น เลท 30 นาทีตัดคิวไม่ต้องมาแล้ว</span> มีถอดมาก่อน 1 ชั่วโมง ไม่มาก่อนหักมัดจำ หวังว่าจะเข้าใจ ไม่อ้างนั่นนี้ <span style="color:var(--gold-light);">กรุณาเผื่อเวลาเดินทางนะคะ 🙏🏻</span>
+            มาให้ตรงเวลานะคะ <span style="color:var(--error); font-weight:bold;">เลท 15 นาทีหักมัดจำไม่มีข้ออ้างอะไรทั้งนั้น เลท 30 นาทีตัดคิวไม่ต้องมาแล้ว</span> มีถอดมาก่อน 1 ชั่วโมง ไม่มาก่อนหักมัดจำ หวังว่าจะเข้าใจ ไม่อ้างนั่นนี้ <span style="color:var(--gold-light);">กรุณาเผื่อเวลาเดินทางนะคะ 🙏ิ</span>
         </div>
 
         <div class="ticket-content">
@@ -370,14 +368,11 @@
 
     function renderAddHairOptions() {
         const addHairSelect = document.getElementById('cust_add_hair');
-        addHairSelect.innerHTML = '<option value="none">ไม่เพิ่มผม</option>';
-        const sizes = Object.keys(priceList).filter(s => s !== "ขยับปnot-found"); // คงไว้ตามโครงเดิมของระบบ
-
-        const staticSizes = Object.keys(priceList).filter(s => s !== "ขยับปมขนนก");
+        const sizes = Object.keys(priceList).filter(s => s !== "ขยับปมขนนก");
         const amounts = ["1 มัด", "1.5 มัด", "2 มัด", "3 มัด"];
 
         addHairSelect.innerHTML = '<option value="none">ไม่เพิ่มผม</option>';
-        staticSizes.forEach(size => {
+        sizes.forEach(size => {
             amounts.forEach(amtText => {
                 const opt = document.createElement('option');
                 const currentStock = parseFloat(stockData[size]) || 0;
