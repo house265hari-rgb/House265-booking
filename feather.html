@@ -487,7 +487,7 @@
         if (day === 6) { 
             timeSelect.innerHTML += '<option value="12.00-15.00">12.00 - 15.00 น.</option>'; 
         } else { 
-            timeSelect.innerHTML += '<option value="11.00-16.00">11.00 - 16.00 น.</option>';
+            
             timeSelect.innerHTML += '<option value="12.00-16.00">12.00 - 16.00 น.</option>';
             timeSelect.innerHTML += '<option value="19.00-21.00">19.00 - 21.00 น. (คิวพิเศษ +400)</option>';
         }
@@ -539,8 +539,8 @@
             const parts = detail.split(" : ");
             basePrice = priceList[parts[0]];
             multiplier = parseFloat(parts[1]);
-            if (parts[1] === "1.5 มัด") coupon = 500;
-            if (parts[1] === "2 มัด" || parts[1] === "3 มัด") coupon = 1300;
+            if (parts[1] === "1.5 มัด") coupon = 0;
+            if (parts[1] === "2 มัด" || parts[1] === "3 มัด") coupon = 0;
             finalDetailText = `${detail} (${hairColor})`;
         }
         if (time.includes("+400")) extra = 400;
